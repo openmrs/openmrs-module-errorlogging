@@ -9,4 +9,135 @@
         for a list of supported elements and attributes
     -->        
     
+    <changeSet id="20120531-1400" author="snoppy">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="exception_log" />
+            </not>
+        </preConditions>
+        <comment>Create table to store exception</comment>
+        <createTable tableName="exception_log">
+            <column name="exception_log_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="exception_class" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="exception_message" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="date_thrown" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="exception_thrown_by" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="exception_log_exception_thrown_by_fk"
+                baseTableName="exception_log" baseColumnNames="exception_thrown_by"
+                referencedTableName="users" referencedColumnNames="user_id" />
+    </changeSet>
+        
+    <changeSet id="20120531-1401" author="snoppy">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="exception_log_detail" />
+            </not>
+        </preConditions>
+        <comment>Create table to store exception log detail</comment>
+        <createTable tableName="exception_log_detail">
+            <column name="exception_log_detail_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="file_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="class_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="method_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="line_number" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="exception_log_id" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="exception_log_detail_exception_log_id_fk"
+                baseTableName="exception_log_detail" baseColumnNames="exception_log_id"
+                referencedTableName="exception_log" referencedColumnNames="exception_log_id" />
+    </changeSet>
+    
+    <changeSet id="20120531-1402" author="snoppy">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="exception_root_cause" />
+            </not>
+        </preConditions>
+        <comment>Create table to store root cause of exception</comment>
+        <createTable tableName="exception_root_cause">
+            <column name="exception_root_cause_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="exception_class" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="exception_message" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="exception_log_id" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="exception_root_cause_exception_log_id_fk"
+                baseTableName="exception_root_cause" baseColumnNames="exception_log_id"
+                referencedTableName="exception_log" referencedColumnNames="exception_log_id" />
+    </changeSet>
+    
+    <changeSet id="20120531-1403" author="snoppy">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="exception_root_cause_detail" />
+            </not>
+        </preConditions>
+        <comment>Create table to store extra information about the root cause of exception</comment>
+        <createTable tableName="exception_root_cause_detail">
+            <column name="exception_root_cause_detail_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="file_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="class_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="method_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="line_number" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="exception_root_cause_id" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="exception_root_cause_detail_exception_root_cause_id_fk"
+                baseTableName="exception_root_cause_detail" baseColumnNames="exception_root_cause_id"
+                referencedTableName="exception_root_cause" referencedColumnNames="exception_root_cause_id" />
+    </changeSet>
+    
 </databaseChangeLog>
