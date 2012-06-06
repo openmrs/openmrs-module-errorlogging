@@ -14,6 +14,7 @@ package org.openmrs.module.errorlogging.api.db.hibernate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
+import org.openmrs.module.errorlogging.ExceptionLog;
 import org.openmrs.module.errorlogging.api.db.ExceptionLogDAO;
 
 /**
@@ -36,5 +37,21 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
      */
     public SessionFactory getSessionFactory() {
         return sessionFactory;
+    }
+
+    @Override
+    public ExceptionLog saveExceptionLog(ExceptionLog exceptionLog) {
+        sessionFactory.getCurrentSession().saveOrUpdate(exceptionLog);
+        return exceptionLog;
+    }
+
+    @Override
+    public void deleteExceptionLog(ExceptionLog exceptionLog) {
+        sessionFactory.getCurrentSession().delete(exceptionLog);
+    }
+
+    @Override
+    public ExceptionLog getExceptionLog(Integer exceptionLogId) {
+        return (ExceptionLog) sessionFactory.getCurrentSession().get(ExceptionLog.class, exceptionLogId);
     }
 }

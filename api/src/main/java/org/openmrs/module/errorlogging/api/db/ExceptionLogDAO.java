@@ -11,13 +11,27 @@
  */
 package org.openmrs.module.errorlogging.api.db;
 
-import org.openmrs.module.errorlogging.api.ExceptionLogService;
+import org.openmrs.module.errorlogging.ExceptionLog;
 
 /**
  * Database methods for {@link ExceptionLogService}.
  */
 public interface ExceptionLogDAO {
-    /*
-     * Add DAO methods here
+
+    /**
+     * @param exceptionLog
+     * @return saved ExceptionLog
      */
+    public ExceptionLog saveExceptionLog(ExceptionLog exceptionLog);
+
+    /**
+     * @param exceptionLog
+     */
+    public void deleteExceptionLog(ExceptionLog exceptionLog);
+
+    /**
+     * @param exceptionLogId
+     * @return ExceptionLog with the given id
+     */
+    public ExceptionLog getExceptionLog(Integer exceptionLogId);
 }
