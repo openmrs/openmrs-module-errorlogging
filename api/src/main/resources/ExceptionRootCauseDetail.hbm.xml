@@ -5,11 +5,11 @@
 
 <hibernate-mapping package="org.openmrs.module.errorlogging">
 
-    <class name="ExceptionLogDetail" table="exception_log_detail">
-        <id name="exceptionLogDetailId" type="int" column="exception_log_detail_id" unsaved-value="0">
+    <class name="ExceptionRootCauseDetail" table="exception_root_cause_detail">
+        <id name="exceptionRootCauseDetailId" type="int" column="exception_root_cause_detail_id" unsaved-value="0">
             <generator class="native" />
         </id>
-        <discriminator column="exceptionLogDetailId" insert="false" />
+        <discriminator column="exceptionRootCauseDetailId" insert="false" />
         <property name="uuid" type="java.lang.String" column="uuid"
                   length="38" unique="true" />
         <property name="fileName" type="java.lang.String" column="file_name"
@@ -20,9 +20,10 @@
                   length="255" not-null="true" />
         <property name="lineNumber" type="int" column="line_number"
                   length="11" not-null="true" />
-        <many-to-one name="exceptionLog" class="ExceptionLog" 
-                     column="exception_log_id"
-                     cascade="save-update,delete" unique="true" not-null="true"/>
+        <many-to-one name="exceptionRootCause" 
+                     class="ExceptionRootCause" 
+                     column="exception_root_cause_id"
+                     cascade="save-update,delete" unique="true" not-null="true"/>     
     </class>
 
 </hibernate-mapping>

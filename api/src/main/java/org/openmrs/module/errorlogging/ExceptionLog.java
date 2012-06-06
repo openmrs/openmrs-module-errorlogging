@@ -28,6 +28,8 @@ public class ExceptionLog extends BaseOpenmrsObject implements Serializable {
     private String exceptionMessage;
     private Date dateThrown;
     private User exceptionThrownBy;
+    private ExceptionLogDetail exceptionLogDetail;
+    private ExceptionRootCause exceptionRootCause;
 
     @Override
     public Integer getId() {
@@ -107,5 +109,33 @@ public class ExceptionLog extends BaseOpenmrsObject implements Serializable {
      */
     public void setExceptionThrownBy(User exceptionThrownBy) {
         this.exceptionThrownBy = exceptionThrownBy;
+    }
+
+    /**
+     * @return the exceptionLogDetail
+     */
+    public ExceptionLogDetail getExceptionLogDetail() {
+        return exceptionLogDetail;
+    }
+
+    /**
+     * @param exceptionLogDetail the exceptionLogDetail to set
+     */
+    public void setExceptionLogDetail(ExceptionLogDetail exceptionLogDetail) {
+        this.exceptionLogDetail = exceptionLogDetail;
+    }
+
+    /**
+     * @return the exceptionRootCause
+     */
+    public ExceptionRootCause getExceptionRootCause() {
+        return exceptionRootCause;
+    }
+
+    /**
+     * @param exceptionRootCause the exceptionRootCause to set
+     */
+    public void setExceptionRootCause(ExceptionRootCause exceptionRootCause) {
+        this.exceptionRootCause = exceptionRootCause;
     }
 }

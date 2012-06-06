@@ -5,24 +5,24 @@
 
 <hibernate-mapping package="org.openmrs.module.errorlogging">
 
-    <class name="ExceptionLogDetail" table="exception_log_detail">
-        <id name="exceptionLogDetailId" type="int" column="exception_log_detail_id" unsaved-value="0">
+    <class name="ExceptionRootCause" table="exception_root_cause">
+        <id name="exceptionRootCauseId" type="int" column="exception_root_cause_id" unsaved-value="0">
             <generator class="native" />
         </id>
-        <discriminator column="exceptionLogDetailId" insert="false" />
+        <discriminator column="exceptionRootCauseId" insert="false" />
         <property name="uuid" type="java.lang.String" column="uuid"
                   length="38" unique="true" />
-        <property name="fileName" type="java.lang.String" column="file_name"
+        <property name="exceptionClass" type="java.lang.String" column="exception_class"
                   length="255" not-null="true" />
-        <property name="className" type="java.lang.String" column="class_name"
+        <property name="exceptionMessage" type="java.lang.String" column="exception_message"
                   length="255" not-null="true" />
-        <property name="methodName" type="java.lang.String" column="method_name"
-                  length="255" not-null="true" />
-        <property name="lineNumber" type="int" column="line_number"
-                  length="11" not-null="true" />
         <many-to-one name="exceptionLog" class="ExceptionLog" 
                      column="exception_log_id"
                      cascade="save-update,delete" unique="true" not-null="true"/>
+        <one-to-one name="exceptionRootCauseDetail" 
+                    class="ExceptionRootCauseDetail" 
+                    property-ref="exceptionRootCause"
+                    cascade="save-update,delete" />
     </class>
 
 </hibernate-mapping>

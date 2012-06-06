@@ -5,16 +5,30 @@
 
 <hibernate-mapping package="org.openmrs.module.errorlogging">
 
-<!--
-	<class name="ExceptionLog"
-		table="${project.parent.artifactId}_ExceptionLog">
-		<id name="id" type="int" column="id" unsaved-value="0">
-			<generator class="native" />
-		</id>
-		<discriminator column="id" insert="false" />
-		<property name="uuid" type="java.lang.String" column="uuid"
-			length="38" unique="true" />
-	</class>
--->
+    <class name="ExceptionLog" table="exception_log">
+        <id name="exceptionLogId" type="int" column="exception_log_id" unsaved-value="0">
+            <generator class="native" />
+        </id>
+        <discriminator column="id" insert="false" />
+        <property name="uuid" type="java.lang.String" column="uuid"
+                  length="38" unique="true" />
+        <property name="exceptionClass" type="java.lang.String" column="exception_class"
+                  length="255" not-null="true" />
+        <property name="exceptionMessage" type="java.lang.String" column="exception_message"
+                  length="255" not-null="true" />
+        <property name="dateThrown" type="java.util.Date" column="date_thrown"
+                  length="19" not-null="true" />
+        <many-to-one name="exceptionThrownBy" class="org.openmrs.User" not-null="true">
+            <column name="exception_thrown_by" />
+        </many-to-one>
+        <one-to-one name="exceptionLogDetail" 
+                    class="ExceptionLogDetail" 
+                    property-ref="exceptionLog"
+                    cascade="save-update,delete" />
+        <one-to-one name="exceptionRootCause" 
+                    class="ExceptionRootCause" 
+                    property-ref="exceptionLog"
+                    cascade="save-update,delete" />
+    </class>
 
 </hibernate-mapping>

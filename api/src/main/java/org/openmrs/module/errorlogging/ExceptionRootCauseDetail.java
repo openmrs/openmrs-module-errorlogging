@@ -18,38 +18,38 @@ import org.openmrs.BaseOpenmrsObject;
 /**
  * It is a model class. It should extend either {@link BaseOpenmrsObject} or {@link BaseOpenmrsMetadata}.
  */
-public class ExceptionLogDetail extends BaseOpenmrsObject implements Serializable {
+public class ExceptionRootCauseDetail extends BaseOpenmrsObject implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private Integer exceptionLogDetailId;
+    private Integer exceptionRootCauseDetailId;
     private String fileName;
     private String className;
     private String methodName;
     private Integer lineNumber;
-    private ExceptionLog exceptionLog;
+    private ExceptionRootCause exceptionRootCause;
 
     @Override
     public Integer getId() {
-        return getExceptionLogDetailId();
+        return getExceptionRootCauseDetailId();
     }
 
     @Override
     public void setId(Integer id) {
-        setExceptionLogDetailId(id);
+        setExceptionRootCauseDetailId(id);
     }
 
     /**
-     * @return the exceptionLogDetailId
+     * @return the exceptionRootCauseDetailId
      */
-    public Integer getExceptionLogDetailId() {
-        return exceptionLogDetailId;
+    public Integer getExceptionRootCauseDetailId() {
+        return exceptionRootCauseDetailId;
     }
 
     /**
-     * @param exceptionLogDetailId the exceptionLogDetailId to set
+     * @param exceptionRootCauseDetailId the exceptionRootCauseDetailId to set
      */
-    public void setExceptionLogDetailId(Integer exceptionLogDetailId) {
-        this.exceptionLogDetailId = exceptionLogDetailId;
+    public void setExceptionRootCauseDetailId(Integer exceptionRootCauseDetailId) {
+        this.exceptionRootCauseDetailId = exceptionRootCauseDetailId;
     }
 
     /**
@@ -109,16 +109,16 @@ public class ExceptionLogDetail extends BaseOpenmrsObject implements Serializabl
     }
 
     /**
-     * @return the exceptionLog
+     * @return the exceptionRootCause
      */
-    public ExceptionLog getExceptionLog() {
-        return exceptionLog;
+    public ExceptionRootCause getExceptionRootCause() {
+        return exceptionRootCause;
     }
 
     /**
-     * @param exceptionLog the exceptionLog to set
+     * @param exceptionRootCause the exceptionRootCause to set
      */
-    public void setExceptionLog(ExceptionLog exceptionLog) {
-        this.exceptionLog = exceptionLog;
+    public void setExceptionRootCause(ExceptionRootCause exceptionRootCause) {
+        this.exceptionRootCause = exceptionRootCause;
     }
 }
