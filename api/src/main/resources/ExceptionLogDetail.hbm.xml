@@ -9,7 +9,7 @@
         <id name="exceptionLogDetailId" type="int" column="exception_log_detail_id" unsaved-value="0">
             <generator class="native" />
         </id>
-        <discriminator column="exceptionLogDetailId" insert="false" />
+        <discriminator column="exception_log_detail_id" insert="false" />
         <property name="uuid" type="java.lang.String" column="uuid"
                   length="38" unique="true" />
         <property name="fileName" type="java.lang.String" column="file_name"
