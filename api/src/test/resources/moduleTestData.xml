@@ -1,28 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <dataset>
-    <exception_log exception_log_id = "1"
-                   exception_class = "Exception Log Class"
-                   exception_message = "Exception Log Message"
-                   date_thrown = "2012-06-06 23:51:00"
-                   exception_thrown_by = "1"
-                   uuid = "af23612u-u153-47d5-a85a-8gr9d5234c72"/>
-    <exception_log_detail exception_log_detail_id = "2"
-                          file_name = "File Name Of Exception"
-                          class_name = "Class Name Of Exception"
-                          method_name = "Method Name Of Exception"
-                          line_number = "23" 
-                          exception_log_id = "1" 
-                          uuid = "kf28612u-m183-47d5-a45a-8gr9d5234c53" />
-    <exception_root_cause exception_root_cause_id = "3"
-                          exception_class = "Exception Root Cause Class"
-                          exception_message = "Exception Root Cause Message"
-                          exception_log_id = "1" 
-                          uuid = "lf78612e-m183-37d5-a45b-8ur9d5834c12" />
-    <exception_root_cause_detail exception_root_cause_detail_id = "4" 
-                                 file_name = "File Name Of Exception Root Cause"
-                                 class_name = "Class Name Of Exception Root Cause"
-                                 method_name = "Method Name Of Exception Root Cause"
-                                 line_number = "51"
-                                 exception_root_cause_id = "3"
-                                 uuid = "bf48652e-l113-07d5-a45b-8ur9d0834c49" />
+    <exception_log exception_log_id = "1" exception_class = "Exception Log Class" exception_message = "Exception Log Message" date_thrown = "2012-06-06 23:51:00.0" exception_thrown_by = "1" uuid = "af23612u-u153-47d5-a85a-8gr9d5234c72"/>
+    <exception_log_detail exception_log_detail_id = "2" file_name = "File Name Of Exception" class_name = "Class Name Of Exception" method_name = "Method Name Of Exception" line_number = "23" exception_log_id = "1" uuid = "kf28612u-m183-47d5-a45a-8gr9d5234c53"/>
+    <exception_root_cause exception_root_cause_id = "3" exception_class = "Exception Root Cause Class" exception_message = "Exception Root Cause Message" exception_log_id = "1" uuid = "lf78612e-m183-37d5-a45b-8ur9d5834c12"/>
+    <exception_root_cause_detail exception_root_cause_detail_id = "4" file_name = "File Name Of Exception Root Cause" class_name = "Class Name Of Exception Root Cause" method_name = "Method Name Of Exception Root Cause" line_number = "51" exception_root_cause_id = "3" uuid = "bf48652e-l113-07d5-a45b-8ur9d0834c49"/>
 </dataset>

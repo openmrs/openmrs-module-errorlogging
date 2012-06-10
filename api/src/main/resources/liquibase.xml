@@ -15,21 +15,24 @@
                 <tableExists tableName="exception_log" />
             </not>
         </preConditions>
-        <comment>Create table to store exception</comment>
+        <comment>Creating exception_log table</comment>
         <createTable tableName="exception_log">
             <column name="exception_log_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" />
             </column>
-            <column name="exception_class" type="varchar(255)">
+            <column name="exception_class" type="varchar(512)">
                 <constraints nullable="false" />
             </column>
-            <column name="exception_message" type="varchar(255)">
+            <column name="exception_message" type="varchar(512)">
                 <constraints nullable="false" />
             </column>
-            <column name="date_thrown" type="datetime">
+            <column name="exception_datetime" type="datetime">
                 <constraints nullable="false" />
             </column>
-            <column name="exception_thrown_by" type="int">
+            <column name="openmrs_version" type="varchar(30)">
+                <constraints nullable="false" />
+            </column>
+            <column name="user_id" type="int">
                 <constraints nullable="false" />
             </column>
             <column name="uuid" type="char(38)">
@@ -47,7 +50,7 @@
                 <tableExists tableName="exception_log_detail" />
             </not>
         </preConditions>
-        <comment>Create table to store exception log detail</comment>
+        <comment>Creating exception_log_detai table</comment>
         <createTable tableName="exception_log_detail">
             <column name="exception_log_detail_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" />
@@ -82,15 +85,15 @@
                 <tableExists tableName="exception_root_cause" />
             </not>
         </preConditions>
-        <comment>Create table to store root cause of exception</comment>
+        <comment>Creating exception_root_cause table</comment>
         <createTable tableName="exception_root_cause">
             <column name="exception_root_cause_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" />
             </column>
-            <column name="exception_class" type="varchar(255)">
+            <column name="exception_class" type="varchar(512)">
                 <constraints nullable="false" />
             </column>
-            <column name="exception_message" type="varchar(255)">
+            <column name="exception_message" type="varchar(512)">
                 <constraints nullable="false" />
             </column>
             <column name="exception_log_id" type="int">
@@ -111,7 +114,7 @@
                 <tableExists tableName="exception_root_cause_detail" />
             </not>
         </preConditions>
-        <comment>Create table to store extra information about the root cause of exception</comment>
+        <comment>Creating exception_root_cause_detail table</comment>
         <createTable tableName="exception_root_cause_detail">
             <column name="exception_root_cause_detail_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" />
