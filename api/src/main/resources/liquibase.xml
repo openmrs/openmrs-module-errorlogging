@@ -39,8 +39,8 @@
                 <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint constraintName="exception_log_exception_thrown_by_fk"
-                baseTableName="exception_log" baseColumnNames="exception_thrown_by"
+        <addForeignKeyConstraint constraintName="exception_log_user_id_fk"
+                baseTableName="exception_log" baseColumnNames="user_id"
                 referencedTableName="users" referencedColumnNames="user_id" />
     </changeSet>
         

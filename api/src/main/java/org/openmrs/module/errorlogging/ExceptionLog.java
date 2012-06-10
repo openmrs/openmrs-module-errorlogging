@@ -26,6 +26,7 @@ public class ExceptionLog extends BaseOpenmrsObject implements Serializable {
     private Integer exceptionLogId;
     private String exceptionClass;
     private String exceptionMessage;
+    private String openmrsVersion;
     private Date dateThrown;
     private User exceptionThrownBy;
     private ExceptionLogDetail exceptionLogDetail;
@@ -81,6 +82,20 @@ public class ExceptionLog extends BaseOpenmrsObject implements Serializable {
      */
     public void setExceptionMessage(String exceptionMessage) {
         this.exceptionMessage = exceptionMessage;
+    }
+    
+    /**
+     * @return the openmrsVersion
+     */
+    public String getOpenmrsVersion() {
+        return openmrsVersion;
+    }
+
+    /**
+     * @param openmrsVersion the openmrsVersion to set
+     */
+    public void setOpenmrsVersion(String openmrsVersion) {
+        this.openmrsVersion = openmrsVersion;
     }
 
     /**
@@ -138,4 +153,6 @@ public class ExceptionLog extends BaseOpenmrsObject implements Serializable {
     public void setExceptionRootCause(ExceptionRootCause exceptionRootCause) {
         this.exceptionRootCause = exceptionRootCause;
     }
+
+    
 }
