@@ -20,9 +20,9 @@ import org.openmrs.test.BaseModuleContextSensitiveTest;
  * Tests {@link ${ExceptionLogService}}.
  */
 public class ExceptionLogServiceTest extends BaseModuleContextSensitiveTest {
-
-    @Test
-    public void shouldSetupContext() {
-        assertNotNull(Context.getService(ExceptionLogService.class));
-    }
+	
+	@Test
+	public void shouldSetupContext() {
+		assertNotNull(Context.getService(ExceptionLogService.class));
+	}
 }

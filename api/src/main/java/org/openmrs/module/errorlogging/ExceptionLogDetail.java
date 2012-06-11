@@ -19,106 +19,112 @@ import org.openmrs.BaseOpenmrsObject;
  * It is a model class. It should extend either {@link BaseOpenmrsObject} or {@link BaseOpenmrsMetadata}.
  */
 public class ExceptionLogDetail extends BaseOpenmrsObject implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-    private Integer exceptionLogDetailId;
-    private String fileName;
-    private String className;
-    private String methodName;
-    private Integer lineNumber;
-    private ExceptionLog exceptionLog;
-
-    @Override
-    public Integer getId() {
-        return getExceptionLogDetailId();
-    }
-
-    @Override
-    public void setId(Integer id) {
-        setExceptionLogDetailId(id);
-    }
-
-    /**
-     * @return the exceptionLogDetailId
-     */
-    public Integer getExceptionLogDetailId() {
-        return exceptionLogDetailId;
-    }
-
-    /**
-     * @param exceptionLogDetailId the exceptionLogDetailId to set
-     */
-    public void setExceptionLogDetailId(Integer exceptionLogDetailId) {
-        this.exceptionLogDetailId = exceptionLogDetailId;
-    }
-
-    /**
-     * @return the fileName
-     */
-    public String getFileName() {
-        return fileName;
-    }
-
-    /**
-     * @param fileName the fileName to set
-     */
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    /**
-     * @return the className
-     */
-    public String getClassName() {
-        return className;
-    }
-
-    /**
-     * @param className the className to set
-     */
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
-    /**
-     * @return the methodName
-     */
-    public String getMethodName() {
-        return methodName;
-    }
-
-    /**
-     * @param methodName the methodName to set
-     */
-    public void setMethodName(String methodName) {
-        this.methodName = methodName;
-    }
-
-    /**
-     * @return the lineNumber
-     */
-    public Integer getLineNumber() {
-        return lineNumber;
-    }
-
-    /**
-     * @param lineNumber the lineNumber to set
-     */
-    public void setLineNumber(Integer lineNumber) {
-        this.lineNumber = lineNumber;
-    }
-
-    /**
-     * @return the exceptionLog
-     */
-    public ExceptionLog getExceptionLog() {
-        return exceptionLog;
-    }
-
-    /**
-     * @param exceptionLog the exceptionLog to set
-     */
-    public void setExceptionLog(ExceptionLog exceptionLog) {
-        this.exceptionLog = exceptionLog;
-    }
+	
+	private static final long serialVersionUID = 1L;
+	
+	private Integer exceptionLogDetailId;
+	
+	private String fileName;
+	
+	private String className;
+	
+	private String methodName;
+	
+	private Integer lineNumber;
+	
+	private ExceptionLog exceptionLog;
+	
+	@Override
+	public Integer getId() {
+		return getExceptionLogDetailId();
+	}
+	
+	@Override
+	public void setId(Integer id) {
+		setExceptionLogDetailId(id);
+	}
+	
+	/**
+	 * @return the exceptionLogDetailId
+	 */
+	public Integer getExceptionLogDetailId() {
+		return exceptionLogDetailId;
+	}
+	
+	/**
+	 * @param exceptionLogDetailId the exceptionLogDetailId to set
+	 */
+	public void setExceptionLogDetailId(Integer exceptionLogDetailId) {
+		this.exceptionLogDetailId = exceptionLogDetailId;
+	}
+	
+	/**
+	 * @return the fileName
+	 */
+	public String getFileName() {
+		return fileName;
+	}
+	
+	/**
+	 * @param fileName the fileName to set
+	 */
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	
+	/**
+	 * @return the className
+	 */
+	public String getClassName() {
+		return className;
+	}
+	
+	/**
+	 * @param className the className to set
+	 */
+	public void setClassName(String className) {
+		this.className = className;
+	}
+	
+	/**
+	 * @return the methodName
+	 */
+	public String getMethodName() {
+		return methodName;
+	}
+	
+	/**
+	 * @param methodName the methodName to set
+	 */
+	public void setMethodName(String methodName) {
+		this.methodName = methodName;
+	}
+	
+	/**
+	 * @return the lineNumber
+	 */
+	public Integer getLineNumber() {
+		return lineNumber;
+	}
+	
+	/**
+	 * @param lineNumber the lineNumber to set
+	 */
+	public void setLineNumber(Integer lineNumber) {
+		this.lineNumber = lineNumber;
+	}
+	
+	/**
+	 * @return the exceptionLog
+	 */
+	public ExceptionLog getExceptionLog() {
+		return exceptionLog;
+	}
+	
+	/**
+	 * @param exceptionLog the exceptionLog to set
+	 */
+	public void setExceptionLog(ExceptionLog exceptionLog) {
+		this.exceptionLog = exceptionLog;
+	}
 }

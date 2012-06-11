@@ -21,21 +21,22 @@ import org.openmrs.module.errorlogging.api.db.ExceptionLogDAO;
  * It is a default implementation of {@link ExceptionLogService}.
  */
 public class ExceptionLogServiceImpl extends BaseOpenmrsService implements ExceptionLogService {
-
-    protected final Log log = LogFactory.getLog(this.getClass());
-    private ExceptionLogDAO dao;
-
-    /**
-     * @param dao the dao to set
-     */
-    public void setDao(ExceptionLogDAO dao) {
-        this.dao = dao;
-    }
-
-    /**
-     * @return the dao
-     */
-    public ExceptionLogDAO getDao() {
-        return dao;
-    }
+	
+	protected final Log log = LogFactory.getLog(this.getClass());
+	
+	private ExceptionLogDAO dao;
+	
+	/**
+	 * @param dao the dao to set
+	 */
+	public void setDao(ExceptionLogDAO dao) {
+		this.dao = dao;
+	}
+	
+	/**
+	 * @return the dao
+	 */
+	public ExceptionLogDAO getDao() {
+		return dao;
+	}
 }

@@ -26,8 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public interface ExceptionLogService extends OpenmrsService {
-    /*
-     * Add service methods here
-     *
-     */
+	/*
+	 * Add service methods here
+	 *
+	 */
 }

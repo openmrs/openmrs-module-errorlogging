@@ -21,37 +21,38 @@ import org.openmrs.module.errorlogging.api.db.ExceptionLogDAO;
  * It is a default implementation of  {@link ExceptionLogDAO}.
  */
 public class HibernateExceptionLogDAO implements ExceptionLogDAO {
-
-    protected final Log log = LogFactory.getLog(this.getClass());
-    private SessionFactory sessionFactory;
-
-    /**
-     * @param sessionFactory the sessionFactory to set
-     */
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-    /**
-     * @return the sessionFactory
-     */
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-
-    @Override
-    public ExceptionLog saveExceptionLog(ExceptionLog exceptionLog) {
-        sessionFactory.getCurrentSession().saveOrUpdate(exceptionLog);
-        return exceptionLog;
-    }
-
-    @Override
-    public void deleteExceptionLog(ExceptionLog exceptionLog) {
-        sessionFactory.getCurrentSession().delete(exceptionLog);
-    }
-
-    @Override
-    public ExceptionLog getExceptionLog(Integer exceptionLogId) {
-        return (ExceptionLog) sessionFactory.getCurrentSession().get(ExceptionLog.class, exceptionLogId);
-    }
+	
+	protected final Log log = LogFactory.getLog(this.getClass());
+	
+	private SessionFactory sessionFactory;
+	
+	/**
+	 * @param sessionFactory the sessionFactory to set
+	 */
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+	
+	/**
+	 * @return the sessionFactory
+	 */
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+	
+	@Override
+	public ExceptionLog saveExceptionLog(ExceptionLog exceptionLog) {
+		sessionFactory.getCurrentSession().saveOrUpdate(exceptionLog);
+		return exceptionLog;
+	}
+	
+	@Override
+	public void deleteExceptionLog(ExceptionLog exceptionLog) {
+		sessionFactory.getCurrentSession().delete(exceptionLog);
+	}
+	
+	@Override
+	public ExceptionLog getExceptionLog(Integer exceptionLogId) {
+		return (ExceptionLog) sessionFactory.getCurrentSession().get(ExceptionLog.class, exceptionLogId);
+	}
 }

@@ -20,22 +20,22 @@ import org.openmrs.module.BaseModuleActivator;
  * started or stopped.
  */
 public class ErrorLoggingActivator extends BaseModuleActivator {
-
-    protected Log log = LogFactory.getLog(getClass());
-
-    /**
-     * @see org.openmrs.module.BaseModuleActivator#started()
-     */
-    @Override
-    public void started() {
-        log.info("Starting Error Logging Module");
-    }
-
-    /**
-     * @see org.openmrs.module.BaseModuleActivator#stopped()
-     */
-    @Override
-    public void stopped() {
-        log.info("Shutting down Error Logging Module");
-    }
+	
+	protected Log log = LogFactory.getLog(getClass());
+	
+	/**
+	 * @see org.openmrs.module.BaseModuleActivator#started()
+	 */
+	@Override
+	public void started() {
+		log.info("Starting Error Logging Module");
+	}
+	
+	/**
+	 * @see org.openmrs.module.BaseModuleActivator#stopped()
+	 */
+	@Override
+	public void stopped() {
+		log.info("Shutting down Error Logging Module");
+	}
 }

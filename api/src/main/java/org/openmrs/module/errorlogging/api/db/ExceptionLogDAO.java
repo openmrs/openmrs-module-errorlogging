@@ -17,21 +17,21 @@ import org.openmrs.module.errorlogging.ExceptionLog;
  * Database methods for {@link ExceptionLogService}.
  */
 public interface ExceptionLogDAO {
-
-    /**
-     * @param exceptionLog
-     * @return saved ExceptionLog
-     */
-    public ExceptionLog saveExceptionLog(ExceptionLog exceptionLog);
-
-    /**
-     * @param exceptionLog
-     */
-    public void deleteExceptionLog(ExceptionLog exceptionLog);
-
-    /**
-     * @param exceptionLogId
-     * @return ExceptionLog with the given id
-     */
-    public ExceptionLog getExceptionLog(Integer exceptionLogId);
+	
+	/**
+	 * @param exceptionLog
+	 * @return saved ExceptionLog
+	 */
+	public ExceptionLog saveExceptionLog(ExceptionLog exceptionLog);
+	
+	/**
+	 * @param exceptionLog
+	 */
+	public void deleteExceptionLog(ExceptionLog exceptionLog);
+	
+	/**
+	 * @param exceptionLogId
+	 * @return ExceptionLog with the given id
+	 */
+	public ExceptionLog getExceptionLog(Integer exceptionLogId);
 }

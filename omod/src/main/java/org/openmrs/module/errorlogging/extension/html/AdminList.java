@@ -21,30 +21,30 @@ import org.openmrs.module.web.extension.AdministrationSectionExt;
  * under the "errorlogging.title" heading.
  */
 public class AdminList extends AdministrationSectionExt {
-
-    /**
-     * @see AdministrationSectionExt#getMediaType()
-     */
-    @Override
-    public Extension.MEDIA_TYPE getMediaType() {
-        return Extension.MEDIA_TYPE.html;
-    }
-
-    /**
-     * @see AdministrationSectionExt#getTitle()
-     */
-    @Override
-    public String getTitle() {
-        return "errorlogging.title";
-    }
-
-    /**
-     * @see AdministrationSectionExt#getLinks()
-     */
-    @Override
-    public Map<String, String> getLinks() {
-        LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
-        map.put("/module/errorlogging/manage.form", "errorlogging.manage");
-        return map;
-    }
+	
+	/**
+	 * @see AdministrationSectionExt#getMediaType()
+	 */
+	@Override
+	public Extension.MEDIA_TYPE getMediaType() {
+		return Extension.MEDIA_TYPE.html;
+	}
+	
+	/**
+	 * @see AdministrationSectionExt#getTitle()
+	 */
+	@Override
+	public String getTitle() {
+		return "errorlogging.title";
+	}
+	
+	/**
+	 * @see AdministrationSectionExt#getLinks()
+	 */
+	@Override
+	public Map<String, String> getLinks() {
+		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+		map.put("/module/errorlogging/manage.form", "errorlogging.manage");
+		return map;
+	}
 }

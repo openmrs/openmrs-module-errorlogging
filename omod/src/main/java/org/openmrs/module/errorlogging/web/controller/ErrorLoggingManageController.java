@@ -24,11 +24,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class ErrorLoggingManageController {
-
-    protected final Log log = LogFactory.getLog(getClass());
-
-    @RequestMapping(value = "/module/errorlogging/manage", method = RequestMethod.GET)
-    public void manage(ModelMap model) {
-        model.addAttribute("user", Context.getAuthenticatedUser());
-    }
+	
+	protected final Log log = LogFactory.getLog(getClass());
+	
+	@RequestMapping(value = "/module/errorlogging/manage", method = RequestMethod.GET)
+	public void manage(ModelMap model) {
+		model.addAttribute("user", Context.getAuthenticatedUser());
+	}
 }
