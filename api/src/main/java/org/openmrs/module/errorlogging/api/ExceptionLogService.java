@@ -11,7 +11,10 @@
  */
 package org.openmrs.module.errorlogging.api;
 
+import java.util.Date;
+import java.util.List;
 import org.openmrs.api.OpenmrsService;
+import org.openmrs.module.errorlogging.ExceptionLog;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -26,8 +29,12 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public interface ExceptionLogService extends OpenmrsService {
-	/*
-	 * Add service methods here
-	 *
-	 */
+	
+	public ExceptionLog saveExceptionLog(ExceptionLog exceptionLog);
+	
+	public void deleteExceptionLog(ExceptionLog exceptionLog);
+	
+	public ExceptionLog getExceptionLog(Integer exceptionLogId);
+	
+	public List<ExceptionLog> getExceptionLogs(String classname, Date exceptionDateTime, Integer start, Integer length);
 }

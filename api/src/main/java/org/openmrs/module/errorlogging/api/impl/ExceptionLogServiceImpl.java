@@ -11,9 +11,12 @@
  */
 package org.openmrs.module.errorlogging.api.impl;
 
+import java.util.Date;
+import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.impl.BaseOpenmrsService;
+import org.openmrs.module.errorlogging.ExceptionLog;
 import org.openmrs.module.errorlogging.api.ExceptionLogService;
 import org.openmrs.module.errorlogging.api.db.ExceptionLogDAO;
 
@@ -38,5 +41,25 @@ public class ExceptionLogServiceImpl extends BaseOpenmrsService implements Excep
 	 */
 	public ExceptionLogDAO getDao() {
 		return dao;
+	}
+	
+	@Override
+	public ExceptionLog saveExceptionLog(ExceptionLog exceptionLog) {
+		return dao.saveExceptionLog(exceptionLog);
+	}
+	
+	@Override
+	public void deleteExceptionLog(ExceptionLog exceptionLog) {
+		dao.deleteExceptionLog(exceptionLog);
+	}
+	
+	@Override
+	public ExceptionLog getExceptionLog(Integer exceptionLogId) {
+		return dao.getExceptionLog(exceptionLogId);
+	}
+	
+	@Override
+	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date exceptionDateTime, Integer start, Integer length) {
+		return dao.getExceptionLogs(exceptionClass, exceptionDateTime, start, length);
 	}
 }
