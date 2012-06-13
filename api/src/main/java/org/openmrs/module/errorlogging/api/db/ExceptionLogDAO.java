@@ -11,6 +11,8 @@
  */
 package org.openmrs.module.errorlogging.api.db;
 
+import java.util.Date;
+import java.util.List;
 import org.openmrs.module.errorlogging.ExceptionLog;
 
 /**
@@ -34,4 +36,13 @@ public interface ExceptionLogDAO {
 	 * @return ExceptionLog with the given id
 	 */
 	public ExceptionLog getExceptionLog(Integer exceptionLogId);
+	
+	/**	
+	 * @param classname
+	 * @param exceptionDateTime
+	 * @param start
+	 * @param length
+	 * @return all exception logs
+	 */
+	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date exceptionDateTime, Integer start, Integer length);
 }

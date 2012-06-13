@@ -11,9 +11,13 @@
  */
 package org.openmrs.module.errorlogging.api.db.hibernate;
 
+import java.util.Date;
+import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.openmrs.module.errorlogging.ExceptionLog;
 import org.openmrs.module.errorlogging.api.db.ExceptionLogDAO;
 
@@ -54,5 +58,19 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 	@Override
 	public ExceptionLog getExceptionLog(Integer exceptionLogId) {
 		return (ExceptionLog) sessionFactory.getCurrentSession().get(ExceptionLog.class, exceptionLogId);
+	}
+	
+	@Override
+	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date exceptionDateTime, Integer start, Integer length) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExceptionLog.class);
+		if (exceptionClass != null) {
+			criteria.add(Restrictions.eq("exceptionClass", exceptionClass));
+		}
+		if (exceptionDateTime != null) {
+			criteria.add(Restrictions.eq("dateThrown", exceptionDateTime));
+		}
+		criteria.setFirstResult(start);
+		criteria.setMaxResults(length);
+		return criteria.list();
 	}
 }
