@@ -6,23 +6,21 @@
 <hibernate-mapping package="org.openmrs.module.errorlogging">
 
     <class name="ExceptionLogDetail" table="exception_log_detail">
-        <id name="exceptionLogDetailId" type="int" column="exception_log_detail_id" unsaved-value="0">
-            <generator class="native" />
+        <id name="exceptionLogDetailId" type="int" unsaved-value="0">
+            <column name="exception_log_detail_id" />
+            <generator class="foreign">
+                <param name="property">exceptionLog</param>
+            </generator>
         </id>
-        <discriminator column="exception_log_detail_id" insert="false" />
+        <one-to-one name="exceptionLog" class="ExceptionLog" constrained="true" />
         <property name="uuid" type="java.lang.String" column="uuid"
                   length="38" unique="true" />
-        <property name="fileName" type="java.lang.String" column="file_name"
-                  length="255" not-null="true" />
         <property name="className" type="java.lang.String" column="class_name"
                   length="255" not-null="true" />
         <property name="methodName" type="java.lang.String" column="method_name"
                   length="255" not-null="true" />
         <property name="lineNumber" type="int" column="line_number"
                   length="11" not-null="true" />
-        <many-to-one name="exceptionLog" class="ExceptionLog" 
-                     column="exception_log_id"
-                     cascade="save-update,delete" unique="true" not-null="true"/>
     </class>
 
 </hibernate-mapping>

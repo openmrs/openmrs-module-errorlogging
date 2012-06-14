@@ -55,9 +55,6 @@
             <column name="exception_log_detail_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" />
             </column>
-            <column name="file_name" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
             <column name="class_name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
@@ -67,15 +64,12 @@
             <column name="line_number" type="int">
                 <constraints nullable="false" />
             </column>
-            <column name="exception_log_id" type="int">
-                <constraints nullable="false" />
-            </column>
             <column name="uuid" type="char(38)">
                 <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
         <addForeignKeyConstraint constraintName="exception_log_detail_exception_log_id_fk"
-                baseTableName="exception_log_detail" baseColumnNames="exception_log_id"
+                baseTableName="exception_log_detail" baseColumnNames="exception_log_detail_id"
                 referencedTableName="exception_log" referencedColumnNames="exception_log_id" />
     </changeSet>
     
@@ -96,15 +90,12 @@
             <column name="exception_message" type="varchar(512)">
                 <constraints nullable="false" />
             </column>
-            <column name="exception_log_id" type="int">
-                <constraints nullable="false" />
-            </column>
             <column name="uuid" type="char(38)">
                 <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
         <addForeignKeyConstraint constraintName="exception_root_cause_exception_log_id_fk"
-                baseTableName="exception_root_cause" baseColumnNames="exception_log_id"
+                baseTableName="exception_root_cause" baseColumnNames="exception_root_cause_id"
                 referencedTableName="exception_log" referencedColumnNames="exception_log_id" />
     </changeSet>
     
@@ -119,9 +110,6 @@
             <column name="exception_root_cause_detail_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" />
             </column>
-            <column name="file_name" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
             <column name="class_name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
@@ -131,15 +119,12 @@
             <column name="line_number" type="int">
                 <constraints nullable="false" />
             </column>
-            <column name="exception_root_cause_id" type="int">
-                <constraints nullable="false" />
-            </column>
             <column name="uuid" type="char(38)">
                 <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
         <addForeignKeyConstraint constraintName="exception_root_cause_detail_exception_root_cause_id_fk"
-                baseTableName="exception_root_cause_detail" baseColumnNames="exception_root_cause_id"
+                baseTableName="exception_root_cause_detail" baseColumnNames="exception_root_cause_detail_id"
                 referencedTableName="exception_root_cause" referencedColumnNames="exception_root_cause_id" />
     </changeSet>
     

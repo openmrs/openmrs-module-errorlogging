@@ -6,24 +6,21 @@
 <hibernate-mapping package="org.openmrs.module.errorlogging">
 
     <class name="ExceptionRootCauseDetail" table="exception_root_cause_detail">
-        <id name="exceptionRootCauseDetailId" type="int" column="exception_root_cause_detail_id" unsaved-value="0">
-            <generator class="native" />
+        <id name="exceptionRootCauseDetailId" type="int" unsaved-value="0">
+            <column name="exception_root_cause_detail_id" />
+            <generator class="foreign">
+                <param name="property">exceptionRootCause</param>
+            </generator>
         </id>
-        <discriminator column="exception_root_cause_detail_id" insert="false" />
+        <one-to-one name="exceptionRootCause" class="ExceptionRootCause" constrained="true" />
         <property name="uuid" type="java.lang.String" column="uuid"
                   length="38" unique="true" />
-        <property name="fileName" type="java.lang.String" column="file_name"
-                  length="255" not-null="true" />
         <property name="className" type="java.lang.String" column="class_name"
                   length="255" not-null="true" />
         <property name="methodName" type="java.lang.String" column="method_name"
                   length="255" not-null="true" />
         <property name="lineNumber" type="int" column="line_number"
-                  length="11" not-null="true" />
-        <many-to-one name="exceptionRootCause" 
-                     class="ExceptionRootCause" 
-                     column="exception_root_cause_id"
-                     cascade="save-update,delete" unique="true" not-null="true"/>     
+                  length="11" not-null="true" />      
     </class>
 
 </hibernate-mapping>

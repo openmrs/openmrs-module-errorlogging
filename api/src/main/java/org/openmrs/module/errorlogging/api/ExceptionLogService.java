@@ -15,6 +15,9 @@ import java.util.Date;
 import java.util.List;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.errorlogging.ExceptionLog;
+import org.openmrs.module.errorlogging.ExceptionLogDetail;
+import org.openmrs.module.errorlogging.ExceptionRootCause;
+import org.openmrs.module.errorlogging.ExceptionRootCauseDetail;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -30,11 +33,41 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface ExceptionLogService extends OpenmrsService {
 	
+	/**
+	 * Create or update exception log, including detail information:
+	 * @see ExceptionLogDetail
+	 * @see ExceptionRootCause
+	 * @see ExceptionRootCauseDetail
+	 * Saves the given <code>exceptionLog</code> to the database
+	 * 
+	 * @param exceptionLog exception log to be created or updated
+	 * @return exception log that was created or updated
+	 */
 	public ExceptionLog saveExceptionLog(ExceptionLog exceptionLog);
 	
+	/**
+	 * Deletes a exception log and all detail information related with it from the database
+	 * 
+	 * @param exceptionLog exception log to be deleted from the database
+	 */
 	public void deleteExceptionLog(ExceptionLog exceptionLog);
 	
+	/**
+	 * Get exception log by its exceptionLogId
+	 * 
+	 * @param exceptionLogId id of exception log
+	 * @return exception log
+	 */
 	public ExceptionLog getExceptionLog(Integer exceptionLogId);
 	
-	public List<ExceptionLog> getExceptionLogs(String classname, Date exceptionDateTime, Integer start, Integer length);
+	/**
+	 * Get the list of exception logs by classname that thrown since minExceptionDateTime
+	 * 
+	 * @param classname classname of the exception
+	 * @param minExceptionDateTime date since which exceptions thrown
+	 * @param start starting from the "start" record
+	 * @param length retrieve the next "length" records from database
+	 * @return list of exception logs
+	 */
+	public List<ExceptionLog> getExceptionLogs(String classname, Date minExceptionDateTime, Integer start, Integer length);
 }

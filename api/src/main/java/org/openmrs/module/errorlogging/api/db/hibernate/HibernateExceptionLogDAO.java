@@ -17,6 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.module.errorlogging.ExceptionLog;
 import org.openmrs.module.errorlogging.api.db.ExceptionLogDAO;
@@ -44,31 +45,50 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 		return sessionFactory;
 	}
 	
+	/**
+	 * @see {@link ExceptionLogService#saveExceptionLog(ExceptionLog)}
+	 * @see {@link ExceptionLogDAOe#saveExceptionLog(ExceptionLog)}
+	 */
 	@Override
 	public ExceptionLog saveExceptionLog(ExceptionLog exceptionLog) {
 		sessionFactory.getCurrentSession().saveOrUpdate(exceptionLog);
 		return exceptionLog;
 	}
 	
+	/**
+	 * @see {@link ExceptionLogService#deleteExceptionLog())}
+	 * @see {@link ExceptionLogDAO#deleteExceptionLog())}
+	 */
 	@Override
 	public void deleteExceptionLog(ExceptionLog exceptionLog) {
 		sessionFactory.getCurrentSession().delete(exceptionLog);
 	}
 	
+	/**
+	 * @see {@link ExceptionLogService#getExceptionLog(Integer)}
+	 * @see {@link ExceptionLogDAO#getExceptionLog(Integer)}
+	 */
 	@Override
 	public ExceptionLog getExceptionLog(Integer exceptionLogId) {
 		return (ExceptionLog) sessionFactory.getCurrentSession().get(ExceptionLog.class, exceptionLogId);
 	}
 	
+	/**
+	 * @see {@link ExceptionLogService#getExceptionLogs(String, Date, Integer, Integer)}
+	 * @see {@link ExceptionLogDAO#getExceptionLogs(String, Date, Integer, Integer)}
+	 */
 	@Override
-	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date exceptionDateTime, Integer start, Integer length) {
+	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date minExceptionDateTime, Integer start,
+	                                           Integer length) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExceptionLog.class);
 		if (exceptionClass != null) {
 			criteria.add(Restrictions.eq("exceptionClass", exceptionClass));
 		}
-		if (exceptionDateTime != null) {
-			criteria.add(Restrictions.eq("dateThrown", exceptionDateTime));
+		if (minExceptionDateTime != null) {
+			criteria.add(Restrictions.ge("exceptionDateTime", minExceptionDateTime));
 		}
+		criteria.addOrder(Order.desc("exceptionClass"));
+		criteria.addOrder(Order.desc("exceptionDateTime"));
 		criteria.setFirstResult(start);
 		criteria.setMaxResults(length);
 		return criteria.list();

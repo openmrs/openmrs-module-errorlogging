@@ -24,8 +24,6 @@ public class ExceptionRootCauseDetail extends BaseOpenmrsObject implements Seria
 	
 	private Integer exceptionRootCauseDetailId;
 	
-	private String fileName;
-	
 	private String className;
 	
 	private String methodName;
@@ -56,20 +54,6 @@ public class ExceptionRootCauseDetail extends BaseOpenmrsObject implements Seria
 	 */
 	public void setExceptionRootCauseDetailId(Integer exceptionRootCauseDetailId) {
 		this.exceptionRootCauseDetailId = exceptionRootCauseDetailId;
-	}
-	
-	/**
-	 * @return the fileName
-	 */
-	public String getFileName() {
-		return fileName;
-	}
-	
-	/**
-	 * @param fileName the fileName to set
-	 */
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
 	}
 	
 	/**
@@ -126,5 +110,32 @@ public class ExceptionRootCauseDetail extends BaseOpenmrsObject implements Seria
 	 */
 	public void setExceptionRootCause(ExceptionRootCause exceptionRootCause) {
 		this.exceptionRootCause = exceptionRootCause;
+	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 0;
+		hash += (exceptionRootCauseDetailId != null ? exceptionRootCauseDetailId.hashCode() : 0);
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof ExceptionRootCauseDetail)) {
+			return false;
+		}
+		ExceptionRootCauseDetail other = (ExceptionRootCauseDetail) object;
+		if ((this.exceptionRootCauseDetailId == null && other.exceptionRootCauseDetailId != null)
+		        || (this.exceptionRootCauseDetailId != null && !this.exceptionRootCauseDetailId
+		                .equals(other.exceptionRootCauseDetailId))) {
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return "ExceptionRootCauseDetail[ exceptionRootCauseDetailId=" + "; className" + className + "; methodName"
+		        + methodName + " ]";
 	}
 }

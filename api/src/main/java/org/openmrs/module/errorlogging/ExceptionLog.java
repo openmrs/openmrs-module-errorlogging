@@ -32,9 +32,9 @@ public class ExceptionLog extends BaseOpenmrsObject implements Serializable {
 	
 	private String openmrsVersion;
 	
-	private Date dateThrown;
+	private Date exceptionDateTime;
 	
-	private User exceptionThrownBy;
+	private User user;
 	
 	private ExceptionLogDetail exceptionLogDetail;
 	
@@ -107,34 +107,6 @@ public class ExceptionLog extends BaseOpenmrsObject implements Serializable {
 	}
 	
 	/**
-	 * @return the dateThrown
-	 */
-	public Date getDateThrown() {
-		return dateThrown;
-	}
-	
-	/**
-	 * @param dateThrown the dateThrown to set
-	 */
-	public void setDateThrown(Date dateThrown) {
-		this.dateThrown = dateThrown;
-	}
-	
-	/**
-	 * @return the exceptionThrownBy
-	 */
-	public User getExceptionThrownBy() {
-		return exceptionThrownBy;
-	}
-	
-	/**
-	 * @param exceptionThrownBy the exceptionThrownBy to set
-	 */
-	public void setExceptionThrownBy(User exceptionThrownBy) {
-		this.exceptionThrownBy = exceptionThrownBy;
-	}
-	
-	/**
 	 * @return the exceptionLogDetail
 	 */
 	public ExceptionLogDetail getExceptionLogDetail() {
@@ -162,4 +134,57 @@ public class ExceptionLog extends BaseOpenmrsObject implements Serializable {
 		this.exceptionRootCause = exceptionRootCause;
 	}
 	
+	/**
+	 * @return the exceptionDateTime
+	 */
+	public Date getExceptionDateTime() {
+		return exceptionDateTime;
+	}
+	
+	/**
+	 * @param exceptionDateTime the exceptionDateTime to set
+	 */
+	public void setExceptionDateTime(Date exceptionDateTime) {
+		this.exceptionDateTime = exceptionDateTime;
+	}
+	
+	/**
+	 * @return the user
+	 */
+	public User getUser() {
+		return user;
+	}
+	
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 0;
+		hash += (exceptionLogId != null ? exceptionLogId.hashCode() : 0);
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof ExceptionLog)) {
+			return false;
+		}
+		ExceptionLog other = (ExceptionLog) object;
+		if ((this.exceptionLogId == null && other.exceptionLogId != null)
+		        || (this.exceptionLogId != null && !this.exceptionLogId.equals(other.exceptionLogId))) {
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return "ExceptionLog[ exceptionLogId=" + exceptionLogId + "; exceptionClass" + exceptionClass + "; exceptionMessage"
+		        + exceptionMessage + "]";
+	}
 }

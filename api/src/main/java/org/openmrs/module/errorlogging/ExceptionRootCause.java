@@ -111,4 +111,30 @@ public class ExceptionRootCause extends BaseOpenmrsObject implements Serializabl
 	public void setExceptionRootCauseDetail(ExceptionRootCauseDetail exceptionRootCauseDetail) {
 		this.exceptionRootCauseDetail = exceptionRootCauseDetail;
 	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 0;
+		hash += (exceptionRootCauseId != null ? exceptionRootCauseId.hashCode() : 0);
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof ExceptionRootCause)) {
+			return false;
+		}
+		ExceptionRootCause other = (ExceptionRootCause) object;
+		if ((this.exceptionRootCauseId == null && other.exceptionRootCauseId != null)
+		        || (this.exceptionRootCauseId != null && !this.exceptionRootCauseId.equals(other.exceptionRootCauseId))) {
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return "ExceptionRootCause[ exceptionRootCauseId=" + exceptionRootCauseId + "; exceptionClass" + exceptionClass
+		        + "exceptionMessage" + exceptionMessage + " ]";
+	}
 }

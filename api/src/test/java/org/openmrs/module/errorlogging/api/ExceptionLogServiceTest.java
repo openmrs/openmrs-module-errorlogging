@@ -11,22 +11,18 @@
  */
 package org.openmrs.module.errorlogging.api;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.User;
-import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.errorlogging.ExceptionLog;
 import org.openmrs.module.errorlogging.ExceptionLogDetail;
@@ -34,6 +30,7 @@ import org.openmrs.module.errorlogging.ExceptionRootCause;
 import org.openmrs.module.errorlogging.ExceptionRootCauseDetail;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.test.Verifies;
+import org.openmrs.util.OpenmrsConstants;
 
 /**
  * Tests {@link ${ExceptionLogService}}.
@@ -58,11 +55,12 @@ public class ExceptionLogServiceTest extends BaseModuleContextSensitiveTest {
 	public void saveExceptionLog_shouldCreateNewObjectWhenExceptionLogIdIsNull() {
 		User user = Context.getAuthenticatedUser();
 		ExceptionLog excLog = new ExceptionLog();
-		excLog.setDateThrown(new Date());
+		excLog.setExceptionDateTime(new Date());
 		excLog.setExceptionClass("Exc Test Class");
+		excLog.setOpenmrsVersion(OpenmrsConstants.OPENMRS_VERSION_SHORT);
 		excLog.setExceptionMessage("Exc Test Message");
 		excLog.setUuid("mf28662u-i183-4mw5-a15a-8gr9d5234r13");
-		excLog.setExceptionThrownBy(user);
+		excLog.setUser(user);
 		assertNull(excLog.getExceptionLogId());
 		service.saveExceptionLog(excLog);
 		assertNotNull(excLog.getExceptionLogId());
@@ -89,16 +87,16 @@ public class ExceptionLogServiceTest extends BaseModuleContextSensitiveTest {
 	@Verifies(value = "should save cascade ExceptionLog->(ExceptionLogDetail & ExceptionRootCause->ExceptionRootCauseDetail)", method = "saveExceptionLog(ExceptionLog)")
 	public void saveExceptionLog_shouldSaveCascade() {
 		ExceptionLog excLog = new ExceptionLog();
-		excLog.setDateThrown(new Date());
+		excLog.setExceptionDateTime(new Date());
 		excLog.setExceptionClass("Exception Test Class");
+		excLog.setOpenmrsVersion(OpenmrsConstants.OPENMRS_VERSION_SHORT);
 		excLog.setExceptionMessage("Exception Test Message");
 		excLog.setUuid("mf28662u-i183-4mw5-a15a-8gr9d5234r13");
-		excLog.setExceptionThrownBy(Context.getAuthenticatedUser());
+		excLog.setUser(Context.getAuthenticatedUser());
 		assertNull(excLog.getId());
 		
 		ExceptionLogDetail excLogDetail = new ExceptionLogDetail();
 		excLogDetail.setClassName("Exception Log Detail Test Class Name");
-		excLogDetail.setFileName("Exception Log Detail Test File Name");
 		excLogDetail.setMethodName("Exception Log Detail Test Method Name");
 		excLogDetail.setLineNumber(17);
 		excLogDetail.setExceptionLog(excLog);
@@ -116,7 +114,6 @@ public class ExceptionLogServiceTest extends BaseModuleContextSensitiveTest {
 		
 		ExceptionRootCauseDetail excRootCauseDetail = new ExceptionRootCauseDetail();
 		excRootCauseDetail.setClassName("Exception Root Cause Test Class Name");
-		excRootCauseDetail.setFileName("Exception Root Cause Test File Name");
 		excRootCauseDetail.setMethodName("Exception Root Causel Test Method Name");
 		excRootCauseDetail.setLineNumber(11);
 		excRootCauseDetail.setExceptionRootCause(excRootCase);
@@ -155,17 +152,17 @@ public class ExceptionLogServiceTest extends BaseModuleContextSensitiveTest {
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		Date date = null;
 		try {
-			date = (Date) format.parse("2012-12-06 22:12:00.0");
+			date = (Date) format.parse("2012-13-06 22:12:00.0");
 		}
 		catch (ParseException ex) {
 			log.error("Cannot parse date", ex);
 		}
 		
 		excLogList = service.getExceptionLogs(null, date, 0, 10);
-		assertEquals(excLogList.size(), 1);
+		assertEquals(excLogList.size(), 2);
 		
 		excLogList = service.getExceptionLogs("Exception Log Class2", date, 0, 10);
-		assertEquals(excLogList.size(), 1);
+		assertEquals(excLogList.size(), 2);
 	}
 	
 	/**
@@ -173,21 +170,18 @@ public class ExceptionLogServiceTest extends BaseModuleContextSensitiveTest {
 	 */
 	@Test
 	@Verifies(value = "should delete cascade exception log", method = "deleteExceptionLog()")
-	public void deleteExceptionLog_shouldDeleteCascade() {
+	public void deleteExceptionLog_shouldDeleteCascade() throws SQLException {
 		ExceptionLog excLog = service.getExceptionLog(1);
 		assertNotNull(excLog);
 		ExceptionLogDetail excLogDetail = excLog.getExceptionLogDetail();
 		assertNotNull(excLogDetail);
-		ExceptionRootCause excRooCause = excLog.getExceptionRootCause();
-		assertNotNull(excRooCause);
-		ExceptionRootCauseDetail excRootCauseDetail = excRooCause.getExceptionRootCauseDetail();
+		ExceptionRootCause excRootCause = excLog.getExceptionRootCause();
+		assertNotNull(excRootCause);
+		ExceptionRootCauseDetail excRootCauseDetail = excRootCause.getExceptionRootCauseDetail();
 		assertNotNull(excRootCauseDetail);
 		
 		service.deleteExceptionLog(excLog);
 		
 		assertNull(service.getExceptionLog(1));
-		assertNull(service.getExceptionLog(1).getExceptionLogDetail());
-		assertNull(service.getExceptionLog(1).getExceptionRootCause());
-		assertNull(service.getExceptionLog(1).getExceptionRootCause().getExceptionRootCauseDetail());
 	}
 }

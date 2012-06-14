@@ -43,23 +43,36 @@ public class ExceptionLogServiceImpl extends BaseOpenmrsService implements Excep
 		return dao;
 	}
 	
+	/**
+	 * @see {@link ExceptionLogService# saveExceptionLog(ExceptionLog)}
+	 */
 	@Override
 	public ExceptionLog saveExceptionLog(ExceptionLog exceptionLog) {
 		return dao.saveExceptionLog(exceptionLog);
 	}
 	
+	/**
+	 * @see {@link ExceptionLogService#deleteExceptionLog(ExceptionLog)}
+	 */
 	@Override
 	public void deleteExceptionLog(ExceptionLog exceptionLog) {
 		dao.deleteExceptionLog(exceptionLog);
 	}
 	
+	/**
+	 * @see {@link ExceptionLogService#getExceptionLog(Integer)}
+	 */
 	@Override
 	public ExceptionLog getExceptionLog(Integer exceptionLogId) {
 		return dao.getExceptionLog(exceptionLogId);
 	}
 	
+	/**
+	 * @see {@link ExceptionLogService#getExceptionLogs(String, Date, Integer, Integer)}
+	 */
 	@Override
-	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date exceptionDateTime, Integer start, Integer length) {
-		return dao.getExceptionLogs(exceptionClass, exceptionDateTime, start, length);
+	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date minExceptionDateTime, Integer start,
+	                                           Integer length) {
+		return dao.getExceptionLogs(exceptionClass, minExceptionDateTime, start, length);
 	}
 }

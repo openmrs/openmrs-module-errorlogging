@@ -21,28 +21,23 @@ import org.openmrs.module.errorlogging.ExceptionLog;
 public interface ExceptionLogDAO {
 	
 	/**
-	 * @param exceptionLog
-	 * @return saved ExceptionLog
+	 * @see {@link ExceptionLogService#saveExceptionLog(ExceptionLog)}
 	 */
 	public ExceptionLog saveExceptionLog(ExceptionLog exceptionLog);
 	
 	/**
-	 * @param exceptionLog
+	 * @see {@link ExceptionLogService#deleteExceptionLog(ExceptionLog)}
 	 */
 	public void deleteExceptionLog(ExceptionLog exceptionLog);
 	
 	/**
-	 * @param exceptionLogId
-	 * @return ExceptionLog with the given id
+	 * @see {@link ExceptionLogService#getExceptionLog(Integer)}
 	 */
 	public ExceptionLog getExceptionLog(Integer exceptionLogId);
 	
-	/**	
-	 * @param classname
-	 * @param exceptionDateTime
-	 * @param start
-	 * @param length
-	 * @return all exception logs
+	/**
+	 * @see {@link ExceptionLogService#getExceptionLogs(String, Date, Integer, Integer)}
 	 */
-	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date exceptionDateTime, Integer start, Integer length);
+	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date minExceptionDateTime, Integer start,
+	                                           Integer length);
 }

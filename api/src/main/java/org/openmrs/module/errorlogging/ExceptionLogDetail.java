@@ -24,8 +24,6 @@ public class ExceptionLogDetail extends BaseOpenmrsObject implements Serializabl
 	
 	private Integer exceptionLogDetailId;
 	
-	private String fileName;
-	
 	private String className;
 	
 	private String methodName;
@@ -56,20 +54,6 @@ public class ExceptionLogDetail extends BaseOpenmrsObject implements Serializabl
 	 */
 	public void setExceptionLogDetailId(Integer exceptionLogDetailId) {
 		this.exceptionLogDetailId = exceptionLogDetailId;
-	}
-	
-	/**
-	 * @return the fileName
-	 */
-	public String getFileName() {
-		return fileName;
-	}
-	
-	/**
-	 * @param fileName the fileName to set
-	 */
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
 	}
 	
 	/**
@@ -126,5 +110,31 @@ public class ExceptionLogDetail extends BaseOpenmrsObject implements Serializabl
 	 */
 	public void setExceptionLog(ExceptionLog exceptionLog) {
 		this.exceptionLog = exceptionLog;
+	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 0;
+		hash += (exceptionLogDetailId != null ? exceptionLogDetailId.hashCode() : 0);
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof ExceptionLogDetail)) {
+			return false;
+		}
+		ExceptionLogDetail other = (ExceptionLogDetail) object;
+		if ((this.exceptionLogDetailId == null && other.exceptionLogDetailId != null)
+		        || (this.exceptionLogDetailId != null && !this.exceptionLogDetailId.equals(other.exceptionLogDetailId))) {
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return "ExceptionLogDetail[ exceptionLogDetailId=" + exceptionLogDetailId + "; className" + className
+		        + "; methodName" + methodName + " ]";
 	}
 }

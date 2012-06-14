@@ -6,23 +6,20 @@
 <hibernate-mapping package="org.openmrs.module.errorlogging">
 
     <class name="ExceptionRootCause" table="exception_root_cause">
-        <id name="exceptionRootCauseId" type="int" column="exception_root_cause_id" unsaved-value="0">
-            <generator class="native" />
+        <id name="exceptionRootCauseId" type="int" unsaved-value="0">
+            <column name="exception_root_cause_id" />
+            <generator class="foreign">
+                <param name="property">exceptionLog</param>
+            </generator>
         </id>
-        <discriminator column="exception_root_cause_id" insert="false" />
+        <one-to-one name="exceptionLog" class="ExceptionLog" constrained="true" />
         <property name="uuid" type="java.lang.String" column="uuid"
                   length="38" unique="true" />
         <property name="exceptionClass" type="java.lang.String" column="exception_class"
-                  length="255" not-null="true" />
+                  length="512" not-null="true" />
         <property name="exceptionMessage" type="java.lang.String" column="exception_message"
-                  length="255" not-null="true" />
-        <many-to-one name="exceptionLog" class="ExceptionLog" 
-                     column="exception_log_id"
-                     cascade="save-update,delete" unique="true" not-null="true"/>
-        <one-to-one name="exceptionRootCauseDetail" 
-                    class="ExceptionRootCauseDetail" 
-                    property-ref="exceptionRootCause"
-                    cascade="save-update,delete" />
+                  length="512" not-null="true" />
+        <one-to-one name="exceptionRootCauseDetail" class="ExceptionRootCauseDetail" cascade="all,delete,evict" />
     </class>
 
 </hibernate-mapping>
