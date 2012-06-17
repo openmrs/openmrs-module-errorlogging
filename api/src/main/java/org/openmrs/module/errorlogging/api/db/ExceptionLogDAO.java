@@ -26,7 +26,7 @@ public interface ExceptionLogDAO {
 	public ExceptionLog saveExceptionLog(ExceptionLog exceptionLog);
 	
 	/**
-	 * @see {@link ExceptionLogService#deleteExceptionLog(ExceptionLog)}
+	 * @see {@link ExceptionLogService#purgeExceptionLog(ExceptionLog)}
 	 */
 	public void deleteExceptionLog(ExceptionLog exceptionLog);
 	

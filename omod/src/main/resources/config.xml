@@ -30,6 +30,9 @@
     <mappingFiles>
 				
         ExceptionLog.hbm.xml
+        ExceptionLogDetail.hbm.xml
+        ExceptionRootCause.hbm.xml
+        ExceptionRootCauseDetail.hbm.xml
 				
     </mappingFiles>
 

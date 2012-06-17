@@ -56,7 +56,7 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 	}
 	
 	/**
-	 * @see {@link ExceptionLogService#deleteExceptionLog())}
+	 * @see {@link ExceptionLogService#purgeExceptionLog())}
 	 * @see {@link ExceptionLogDAO#deleteExceptionLog())}
 	 */
 	@Override

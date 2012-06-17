@@ -13,14 +13,13 @@ package org.openmrs.module.errorlogging;
 
 import java.io.Serializable;
 import java.util.Date;
-import org.openmrs.BaseOpenmrsMetadata;
-import org.openmrs.BaseOpenmrsObject;
-import org.openmrs.User;
+import org.openmrs.*;
+import org.simpleframework.xml.Element;
 
 /**
  * It is a model class. It should extend either {@link BaseOpenmrsObject} or {@link BaseOpenmrsMetadata}.
  */
-public class ExceptionLog extends BaseOpenmrsObject implements Serializable {
+public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Retireable, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -35,6 +34,22 @@ public class ExceptionLog extends BaseOpenmrsObject implements Serializable {
 	private Date exceptionDateTime;
 	
 	private User user;
+	
+	private User creator;
+	
+	private Date dateCreated;
+	
+	private User changedBy;
+	
+	private Date dateChanged;
+	
+	private Boolean retired = false;
+	
+	private User retiredBy;
+	
+	private Date dateRetired;
+	
+	private String retireReason;
 	
 	private ExceptionLogDetail exceptionLogDetail;
 	
@@ -186,5 +201,135 @@ public class ExceptionLog extends BaseOpenmrsObject implements Serializable {
 	public String toString() {
 		return "ExceptionLog[ exceptionLogId=" + exceptionLogId + "; exceptionClass" + exceptionClass + "; exceptionMessage"
 		        + exceptionMessage + "]";
+	}
+	
+	/**
+	 * @return the creator
+	 */
+	@Override
+	public User getCreator() {
+		return creator;
+	}
+	
+	/**
+	 * @param creator the creator to set
+	 */
+	@Override
+	public void setCreator(User creator) {
+		this.creator = creator;
+	}
+	
+	/**
+	 * @return the dateCreated
+	 */
+	@Override
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+	
+	/**
+	 * @param dateCreated dateCreated to set
+	 */
+	@Override
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+	
+	/**
+	 * @return the changedBy
+	 */
+	@Override
+	public User getChangedBy() {
+		return changedBy;
+	}
+	
+	/**
+	 * @param changedBy the changedBy to set
+	 */
+	@Override
+	public void setChangedBy(User changedBy) {
+		this.changedBy = changedBy;
+	}
+	
+	/**
+	 * @return the dateChanged
+	 */
+	@Override
+	public Date getDateChanged() {
+		return dateChanged;
+	}
+	
+	/**
+	 * @param dateChanged the dateChanged to set
+	 */
+	@Override
+	public void setDateChanged(Date dateChanged) {
+		this.dateChanged = dateChanged;
+	}
+	
+	/**
+	 * @return the retired
+	 */
+	@Override
+	@Element
+	public Boolean isRetired() {
+		return retired;
+	}
+	
+	/**
+	 * @param retired the retired to set
+	 */
+	@Override
+	@Element
+	public void setRetired(Boolean retired) {
+		this.retired = retired;
+	}
+	
+	/**
+	 * @return the retiredBy
+	 */
+	@Override
+	public User getRetiredBy() {
+		return retiredBy;
+	}
+	
+	/**
+	 * @param retiredBy the retiredBy to set
+	 */
+	@Override
+	public void setRetiredBy(User retiredBy) {
+		this.retiredBy = retiredBy;
+	}
+	
+	/**
+	 * @return the dateRetired
+	 */
+	@Override
+	public Date getDateRetired() {
+		return dateRetired;
+	}
+	
+	/**
+	 * @param dateRetired the dateRetired to set
+	 */
+	@Override
+	public void setDateRetired(Date dateRetired) {
+		this.dateRetired = dateRetired;
+	}
+	
+	/**
+	 * @return the retireReason
+	 */
+	@Override
+	public String getRetireReason() {
+		return retireReason;
+	}
+	
+	/**
+	 * @param retireReason the retireReason to set
+	 */
+	@Override
+	public void setRetireReason(String retireReason) {
+		this.retireReason = retireReason;
 	}
 }

@@ -52,10 +52,10 @@ public class ExceptionLogServiceImpl extends BaseOpenmrsService implements Excep
 	}
 	
 	/**
-	 * @see {@link ExceptionLogService#deleteExceptionLog(ExceptionLog)}
+	 * @see {@link ExceptionLogService#purgeExceptionLog(ExceptionLog)}
 	 */
 	@Override
-	public void deleteExceptionLog(ExceptionLog exceptionLog) {
+	public void purgeExceptionLog(ExceptionLog exceptionLog) {
 		dao.deleteExceptionLog(exceptionLog);
 	}
 	

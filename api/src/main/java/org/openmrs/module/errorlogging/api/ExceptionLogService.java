@@ -50,7 +50,7 @@ public interface ExceptionLogService extends OpenmrsService {
 	 * 
 	 * @param exceptionLog exception log to be deleted from the database
 	 */
-	public void deleteExceptionLog(ExceptionLog exceptionLog);
+	public void purgeExceptionLog(ExceptionLog exceptionLog);
 	
 	/**
 	 * Get exception log by its exceptionLogId
@@ -61,9 +61,9 @@ public interface ExceptionLogService extends OpenmrsService {
 	public ExceptionLog getExceptionLog(Integer exceptionLogId);
 	
 	/**
-	 * Get the list of exception logs by classname that thrown since minExceptionDateTime
+	 * Get the list of exception logs by class name that thrown since minExceptionDateTime
 	 * 
-	 * @param classname classname of the exception
+	 * @param classname class name of the exception
 	 * @param minExceptionDateTime date since which exceptions thrown
 	 * @param start starting from the "start" record
 	 * @param length retrieve the next "length" records from database
