@@ -271,7 +271,6 @@ public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Retire
 	 * @return the retired
 	 */
 	@Override
-	@Element
 	public Boolean isRetired() {
 		return retired;
 	}
@@ -280,7 +279,6 @@ public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Retire
 	 * @param retired the retired to set
 	 */
 	@Override
-	@Element
 	public void setRetired(Boolean retired) {
 		this.retired = retired;
 	}
