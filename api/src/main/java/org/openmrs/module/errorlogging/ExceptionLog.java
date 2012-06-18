@@ -14,7 +14,6 @@ package org.openmrs.module.errorlogging;
 import java.io.Serializable;
 import java.util.Date;
 import org.openmrs.*;
-import org.simpleframework.xml.Element;
 
 /**
  * It is a model class. It should extend either {@link BaseOpenmrsObject} or {@link BaseOpenmrsMetadata}.
