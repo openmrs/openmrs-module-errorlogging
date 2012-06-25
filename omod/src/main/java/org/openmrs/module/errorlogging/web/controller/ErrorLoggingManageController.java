@@ -44,7 +44,7 @@ public class ErrorLoggingManageController {
 		ExceptionLogService service = Context.getService(ExceptionLogService.class);
 		service.getExceptionLogs(null, null, 0, 10);
 		List<ExceptionLog> excList = service.getExceptionLogs(null, null, 0, 10);
-		if (excList != null) {
+		if (excList != null && excList.size() > 0) {
 			return excList.get(0).getExceptionLogDetail();
 		} else {
 			return null;

@@ -11,7 +11,6 @@
  */
 package org.openmrs.module.errorlogging.util;
 
-import java.util.Date;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.openmrs.module.errorlogging.ExceptionLog;
 import org.openmrs.module.errorlogging.ExceptionLogDetail;
@@ -38,7 +37,6 @@ public class ExceptionLogUtil {
 		ExceptionLog excLog = new ExceptionLog();
 		excLog.setExceptionClass(exception.getClass().getName());
 		excLog.setExceptionMessage(exception.getMessage());
-		excLog.setExceptionDateTime(new Date());
 		excLog.setOpenmrsVersion(OpenmrsConstants.OPENMRS_VERSION_SHORT);
 		
 		StackTraceElement[] stTrElements = exception.getStackTrace();

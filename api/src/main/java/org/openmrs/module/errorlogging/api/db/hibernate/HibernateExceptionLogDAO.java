@@ -85,9 +85,9 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 			criteria.add(Restrictions.eq("exceptionClass", exceptionClass));
 		}
 		if (minExceptionDateTime != null) {
-			criteria.add(Restrictions.ge("exceptionDateTime", minExceptionDateTime));
+			criteria.add(Restrictions.ge("dateCreated", minExceptionDateTime));
 		}
-		criteria.addOrder(Order.desc("exceptionDateTime"));
+		criteria.addOrder(Order.desc("dateCreated"));
 		criteria.addOrder(Order.desc("exceptionClass"));
 		criteria.setFirstResult(start);
 		criteria.setMaxResults(length);

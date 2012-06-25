@@ -30,10 +30,6 @@ public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Retire
 	
 	private String openmrsVersion;
 	
-	private Date exceptionDateTime;
-	
-	private User user;
-	
 	private User creator;
 	
 	private Date dateCreated;
@@ -152,55 +148,29 @@ public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Retire
 	 * @return the exceptionDateTime
 	 */
 	public Date getExceptionDateTime() {
-		return exceptionDateTime;
+		return getDateCreated();
 	}
 	
 	/**
 	 * @param exceptionDateTime the exceptionDateTime to set
 	 */
 	public void setExceptionDateTime(Date exceptionDateTime) {
-		this.exceptionDateTime = exceptionDateTime;
+		setDateCreated(dateCreated);
 	}
 	
 	/**
 	 * @return the user
 	 */
 	public User getUser() {
-		return user;
+		return getCreator();
 	}
 	
 	/**
 	 * @param user the user to set
 	 */
 	public void setUser(User user) {
-		this.user = user;
-	}
-	
-	@Override
-	public int hashCode() {
-		int hash = 0;
-		hash += (exceptionLogId != null ? exceptionLogId.hashCode() : 0);
-		return hash;
-	}
-	
-	@Override
-	public boolean equals(Object object) {
-		if (!(object instanceof ExceptionLog)) {
-			return false;
-		}
-		ExceptionLog other = (ExceptionLog) object;
-		if ((this.exceptionLogId == null && other.exceptionLogId != null)
-		        || (this.exceptionLogId != null && !this.exceptionLogId.equals(other.exceptionLogId))) {
-			return false;
-		}
-		return true;
-	}
-	
-	@Override
-	public String toString() {
-		return "ExceptionLog[ exceptionLogId=" + exceptionLogId + "; exceptionClass=" + exceptionClass
-		        + "; exceptionMessage=" + exceptionMessage + "]";
-	}
+		setCreator(user);
+	}		
 	
 	/**
 	 * @return the creator
@@ -328,5 +298,31 @@ public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Retire
 	@Override
 	public void setRetireReason(String retireReason) {
 		this.retireReason = retireReason;
+	}
+        
+        @Override
+	public int hashCode() {
+		int hash = 0;
+		hash += (exceptionLogId != null ? exceptionLogId.hashCode() : 0);
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof ExceptionLog)) {
+			return false;
+		}
+		ExceptionLog other = (ExceptionLog) object;
+		if ((this.exceptionLogId == null && other.exceptionLogId != null)
+		        || (this.exceptionLogId != null && !this.exceptionLogId.equals(other.exceptionLogId))) {
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return "ExceptionLog[ exceptionLogId=" + exceptionLogId + "; exceptionClass=" + exceptionClass
+		        + "; exceptionMessage=" + exceptionMessage + "]";
 	}
 }

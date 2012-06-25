@@ -37,8 +37,6 @@
             <column defaultValueBoolean="false" name="retired" type="boolean">
                 <constraints nullable="false"/>
             </column>
-            <column name="creator" type="int"/>
-            <column name="date_created" type="datetime"/>
             <column name="changed_by" type="int"/>
             <column name="date_changed" type="datetime"/>
             <column name="retired_by" type="int"/>

@@ -21,12 +21,10 @@
                   length="512" />
         <property name="openmrsVersion" type="java.lang.String" column="openmrs_version"
                   length="30" not-null="true" />
-        <property name="exceptionDateTime" type="java.util.Date" column="exception_datetime"
-                  length="19" not-null="true" />
         <property name="retired" type="java.lang.Boolean"
                   column="retired" length="1" not-null="true"/>
         <property name="dateCreated" type="java.util.Date"
-                  column="date_created" length="19" />
+                  column="exception_datetime" length="19" not-null="true" />
         <property name="dateChanged" type="java.util.Date"
                   column="date_changed" length="19" />			
         <property name="retireReason" type="java.lang.String"
@@ -39,10 +37,7 @@
         <many-to-one name="changedBy" class="org.openmrs.User">
             <column name="changed_by" />
         </many-to-one>		
-        <many-to-one name="creator" class="org.openmrs.User">
-            <column name="creator" />
-        </many-to-one>
-        <many-to-one name="user" class="org.openmrs.User" not-null="true">
+        <many-to-one name="creator" class="org.openmrs.User" not-null="true">
             <column name="user_id" />
         </many-to-one>
         <one-to-one name="exceptionLogDetail" class="ExceptionLogDetail" cascade="all,delete,evict" />
