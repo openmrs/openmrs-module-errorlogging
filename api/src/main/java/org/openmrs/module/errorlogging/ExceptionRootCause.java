@@ -134,7 +134,7 @@ public class ExceptionRootCause extends BaseOpenmrsObject implements Serializabl
 	
 	@Override
 	public String toString() {
-		return "ExceptionRootCause[ exceptionRootCauseId=" + exceptionRootCauseId + "; exceptionClass" + exceptionClass
-		        + "exceptionMessage" + exceptionMessage + " ]";
+		return "ExceptionRootCause[ exceptionRootCauseId=" + exceptionRootCauseId + "; exceptionClass=" + exceptionClass
+		        + "exceptionMessage=" + exceptionMessage + " ]";
 	}
 }

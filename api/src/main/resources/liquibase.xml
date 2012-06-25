@@ -24,7 +24,6 @@
                 <constraints nullable="false" />
             </column>
             <column name="exception_message" type="varchar(512)">
-                <constraints nullable="false" />
             </column>
             <column name="exception_datetime" type="datetime">
                 <constraints nullable="false" />
@@ -98,7 +97,6 @@
                 <constraints nullable="false" />
             </column>
             <column name="exception_message" type="varchar(512)">
-                <constraints nullable="false" />
             </column>
             <column name="uuid" type="char(38)">
                 <constraints nullable="false" unique="true"/>

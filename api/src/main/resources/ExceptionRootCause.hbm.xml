@@ -18,7 +18,7 @@
         <property name="exceptionClass" type="java.lang.String" column="exception_class"
                   length="512" not-null="true" />
         <property name="exceptionMessage" type="java.lang.String" column="exception_message"
-                  length="512" not-null="true" />
+                  length="512" />
         <one-to-one name="exceptionRootCauseDetail" class="ExceptionRootCauseDetail" cascade="all,delete,evict" />
     </class>
 

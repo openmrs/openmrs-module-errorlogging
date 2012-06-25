@@ -198,8 +198,8 @@ public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Retire
 	
 	@Override
 	public String toString() {
-		return "ExceptionLog[ exceptionLogId=" + exceptionLogId + "; exceptionClass" + exceptionClass + "; exceptionMessage"
-		        + exceptionMessage + "]";
+		return "ExceptionLog[ exceptionLogId=" + exceptionLogId + "; exceptionClass=" + exceptionClass
+		        + "; exceptionMessage=" + exceptionMessage + "]";
 	}
 	
 	/**

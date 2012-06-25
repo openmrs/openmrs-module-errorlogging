@@ -135,7 +135,7 @@ public class ExceptionRootCauseDetail extends BaseOpenmrsObject implements Seria
 	
 	@Override
 	public String toString() {
-		return "ExceptionRootCauseDetail[ exceptionRootCauseDetailId=" + "; className" + className + "; methodName"
+		return "ExceptionRootCauseDetail[ exceptionRootCauseDetailId=" + "; className=" + className + "; methodName="
 		        + methodName + " ]";
 	}
 }
