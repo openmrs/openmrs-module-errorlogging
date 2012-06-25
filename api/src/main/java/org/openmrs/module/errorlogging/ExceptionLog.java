@@ -155,7 +155,7 @@ public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Retire
 	 * @param exceptionDateTime the exceptionDateTime to set
 	 */
 	public void setExceptionDateTime(Date exceptionDateTime) {
-		setDateCreated(dateCreated);
+		this.setDateCreated(exceptionDateTime);
 	}
 	
 	/**
@@ -169,7 +169,7 @@ public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Retire
 	 * @param user the user to set
 	 */
 	public void setUser(User user) {
-		setCreator(user);
+		this.setCreator(user);
 	}		
 	
 	/**
