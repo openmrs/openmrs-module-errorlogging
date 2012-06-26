@@ -170,7 +170,7 @@ public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Retire
 	 */
 	public void setUser(User user) {
 		this.setCreator(user);
-	}		
+	}
 	
 	/**
 	 * @return the creator
@@ -299,8 +299,8 @@ public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Retire
 	public void setRetireReason(String retireReason) {
 		this.retireReason = retireReason;
 	}
-        
-        @Override
+	
+	@Override
 	public int hashCode() {
 		int hash = 0;
 		hash += (exceptionLogId != null ? exceptionLogId.hashCode() : 0);
