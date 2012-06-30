@@ -40,4 +40,9 @@ public interface ExceptionLogDAO {
 	 */
 	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date minExceptionDateTime, Integer start,
 	                                           Integer length);
+	
+	/**
+	 * @see {@link ExceptionLogService#getCountOfExceptionLogs(String, Date)}
+	 */
+	public Integer getCountOfExceptionLogs(String exceptionClass, Date minExceptionDateTime);
 }

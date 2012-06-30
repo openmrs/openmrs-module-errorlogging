@@ -18,6 +18,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.module.errorlogging.ExceptionLog;
 import org.openmrs.module.errorlogging.api.db.ExceptionLogDAO;
@@ -92,5 +93,22 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 		criteria.setFirstResult(start);
 		criteria.setMaxResults(length);
 		return criteria.list();
+	}
+	
+	/**
+	 * @see {@link ExceptionLogService#getCountOfExceptionLogs(String, Date)}
+	 * @see {@link ExceptionLogDAO#getCountOfExceptionLogs(String, Date)}
+	 */
+	@Override
+	public Integer getCountOfExceptionLogs(String exceptionClass, Date minExceptionDateTime) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExceptionLog.class);
+		if (exceptionClass != null) {
+			criteria.add(Restrictions.eq("exceptionClass", exceptionClass));
+		}
+		if (minExceptionDateTime != null) {
+			criteria.add(Restrictions.ge("dateCreated", minExceptionDateTime));
+		}
+		criteria.setProjection(Projections.rowCount());
+		return (Integer) criteria.uniqueResult();
 	}
 }

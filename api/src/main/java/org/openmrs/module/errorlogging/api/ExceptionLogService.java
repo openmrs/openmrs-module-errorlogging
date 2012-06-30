@@ -63,11 +63,21 @@ public interface ExceptionLogService extends OpenmrsService {
 	/**
 	 * Get the list of exception logs by class name that thrown since minExceptionDateTime
 	 * 
-	 * @param classname class name of the exception
+	 * @param exceptionClass class name of the exception
 	 * @param minExceptionDateTime date since which exceptions thrown
 	 * @param start starting from the "start" record
 	 * @param length retrieve the next "length" records from database
 	 * @return list of exception logs
 	 */
-	public List<ExceptionLog> getExceptionLogs(String classname, Date minExceptionDateTime, Integer start, Integer length);
+	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date minExceptionDateTime, Integer start,
+	                                           Integer length);
+	
+	/**
+	 * Return the number of exception logs matching a search class name and the minExceptionDateTime
+	 * 
+	 * @param exceptionClass class name of the exception
+	 * @param minExceptionDateTime date since which exceptions thrown
+	 * @return the number of exception logs matching the search arguments
+	 */
+	public Integer getCountOfExceptionLogs(String exceptionClass, Date minExceptionDateTime);
 }
