@@ -1,0 +1,21 @@
+#exceptionLogTable tr.top{ background-color: #E7E7E7;}
+#exceptionLogTable th, #exceptionLogTable td { text-align: left; vertical-align: top; padding: 5px;  } 
+#exceptionLogTable tr.even { background-color: #F7F7F7; }
+.viewLink{
+    color: #31587a;
+    text-decoration:underline;
+    cursor:pointer;
+    cursor:hand;
+}
+.viewLinkClick{
+    color: #31587a;
+    text-decoration:none;
+    font-weight: bold;
+    cursor:pointer;
+    cursor:hand;
+}
+.viewLink:hover {
+    text-decoration: none;
+}
+.trTop{ background-color: #E7E7E7;}
+.trTdExcLogClass th, .trTdExcLogClass td{text-align: left; vertical-align: top; padding: 5px;}

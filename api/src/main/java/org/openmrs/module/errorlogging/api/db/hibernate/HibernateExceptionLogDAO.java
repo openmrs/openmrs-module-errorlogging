@@ -100,7 +100,7 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 	 * @see {@link ExceptionLogDAO#getCountOfExceptionLogs(String, Date)}
 	 */
 	@Override
-	public Integer getCountOfExceptionLogs(String exceptionClass, Date minExceptionDateTime) {
+	public Long getCountOfExceptionLogs(String exceptionClass, Date minExceptionDateTime) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExceptionLog.class);
 		if (exceptionClass != null) {
 			criteria.add(Restrictions.eq("exceptionClass", exceptionClass));
@@ -109,6 +109,6 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 			criteria.add(Restrictions.ge("dateCreated", minExceptionDateTime));
 		}
 		criteria.setProjection(Projections.rowCount());
-		return (Integer) criteria.uniqueResult();
+		return (Long) criteria.uniqueResult();
 	}
 }

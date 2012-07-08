@@ -20,7 +20,6 @@ import org.openmrs.module.errorlogging.ExceptionLog;
 import org.openmrs.module.errorlogging.api.ExceptionLogService;
 import org.openmrs.module.errorlogging.api.db.ExceptionLogDAO;
 import org.openmrs.module.errorlogging.util.ExceptionLogUtil;
-import org.openmrs.util.OpenmrsUtil;
 
 /**
  * It is a default implementation of {@link ExceptionLogService}.
@@ -83,6 +82,6 @@ public class ExceptionLogServiceImpl extends BaseOpenmrsService implements Excep
 	 */
 	@Override
 	public Integer getCountOfExceptionLogs(String exceptionClass, Date minExceptionDateTime) {
-		return dao.getCountOfExceptionLogs(exceptionClass, minExceptionDateTime);
+		return ExceptionLogUtil.convertToInteger(dao.getCountOfExceptionLogs(exceptionClass, minExceptionDateTime));
 	}
 }
