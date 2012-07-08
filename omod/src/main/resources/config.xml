@@ -25,6 +25,22 @@
         <point>org.openmrs.admin.list</point>
         <class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.AdminList</class>
     </extension>
+    
+    <extension>
+        <point>org.openmrs.uncaughtException</point>
+        <class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.UncaughtExceptionExtension</class>
+    </extension>
+    
+    
+    <filter>
+        <filter-name>exceptionLogRequestFilter</filter-name>
+        <filter-class>${project.parent.groupId}.${project.parent.artifactId}.web.filter.ExceptionLogRequestFilter</filter-class>
+    </filter>
+	
+    <filter-mapping>
+        <filter-name>exceptionLogRequestFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 	
 	<!-- Maps hibernate file's, if present -->
     <mappingFiles>
