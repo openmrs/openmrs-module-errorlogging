@@ -12,6 +12,7 @@
 package org.openmrs.module.errorlogging.web.dwr;
 
 import org.openmrs.module.errorlogging.ExceptionLogDetail;
+import org.openmrs.module.errorlogging.ExceptionRootCauseDetail;
 
 public class ExceptionLogDetailListItem {
 	
@@ -23,10 +24,16 @@ public class ExceptionLogDetailListItem {
 	
 	private Integer lineNumber;
 	
-	public ExceptionLogDetailListItem(ExceptionLogDetail excLogdetail) {
-		this.className = excLogdetail.getClassName();
-		this.methodName = excLogdetail.getMethodName();
-		this.lineNumber = excLogdetail.getLineNumber();
+	public ExceptionLogDetailListItem(ExceptionLogDetail excLogDetail) {
+		this.className = excLogDetail.getClassName();
+		this.methodName = excLogDetail.getMethodName();
+		this.lineNumber = excLogDetail.getLineNumber();
+	}
+	
+	public ExceptionLogDetailListItem(ExceptionRootCauseDetail excRootCaouseDetail) {
+		this.className = excRootCaouseDetail.getClassName();
+		this.methodName = excRootCaouseDetail.getMethodName();
+		this.lineNumber = excRootCaouseDetail.getLineNumber();
 	}
 	
 	/**

@@ -90,7 +90,7 @@ public class DWRExceptionLogService {
 	 * @param excLogId exception log id
 	 * @return exception log detail
 	 */
-	public ExceptionLogDetailListItem getExceptionLogdetail(Integer excLogId) {
+	public ExceptionLogDetailListItem getExceptionLogDetail(Integer excLogId) {
 		ExceptionLog excLog = exceptionLogService.getExceptionLog(excLogId);
 		if (excLog != null && excLog.getExceptionLogDetail() != null) {
 			ExceptionLogDetailListItem excLogDetailItem = new ExceptionLogDetailListItem(excLog.getExceptionLogDetail());
@@ -114,6 +114,25 @@ public class DWRExceptionLogService {
 		} else {
 			return null;
 		}
+	}
+	
+	/**
+	 * Get root cause detail of exception
+	 * 
+	 * @param excLogId exception log id
+	 * @return root cause detail of exception
+	 */
+	public ExceptionLogDetailListItem getExceptionRootCauseDetail(Integer excLogId) {
+		ExceptionLog excLog = exceptionLogService.getExceptionLog(excLogId);
+		if (excLog != null && excLog.getExceptionRootCause() != null) {
+			if (excLog.getExceptionRootCause() != null
+			        && excLog.getExceptionRootCause().getExceptionRootCauseDetail() != null) {
+				ExceptionLogDetailListItem excLogRootCauseDetailItem = new ExceptionLogDetailListItem(excLog
+				        .getExceptionRootCause().getExceptionRootCauseDetail());
+				return excLogRootCauseDetailItem;
+			}
+		}
+		return null;
 	}
 	
 	/**

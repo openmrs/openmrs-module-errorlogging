@@ -69,8 +69,9 @@
                 <param name="class" value="org.openmrs.module.errorlogging.web.dwr.DWRExceptionLogService"/>
                 <include method="getExceptionLogs"/>
                 <include method="getCountOfExceptionLogs"/>
-                <include method="getExceptionLogdetail"/>
+                <include method="getExceptionLogDetail"/>
                 <include method="getExceptionRootCause"/>
+                <include method="getExceptionRootCauseDetail"/>
                 <include method="saveIgnoredErrors"/>
                 <include method="getIgnoredErrors"/>
             </create>
@@ -81,8 +82,9 @@
             import org.openmrs.module.errorlogging.web.dwr.DWRExceptionLogService;
             DWRExceptionLogService.getExceptionLogs(String exceptionClass, String minExceptionDate, String minExceptionTime,Integer start, Integer length);
             DWRExceptionLogService.getCountOfExceptionLogs(String exceptionClass, String minExceptionDate, String minExceptionTime);
-            DWRExceptionLogService.getExceptionLogdetail(Integer excLogId);
+            DWRExceptionLogService.getExceptionLogDetail(Integer excLogId);
             DWRExceptionLogService.getExceptionRootCause(Integer excLogId);
+            DWRExceptionLogService.getExceptionRootCauseDetail(Integer excLogId);
             DWRExceptionLogService.saveIgnoredErrors(String errors);
             DWRExceptionLogService.getIgnoredErrors();
             ]]>

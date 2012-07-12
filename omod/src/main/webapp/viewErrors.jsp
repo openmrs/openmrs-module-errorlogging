@@ -128,10 +128,33 @@
     </div>
 </div>
 
+<div id="exceptionRootCauseDetail"  style="display:none; margin-top: 10px;">
+    <b class="boxHeader"><spring:message code="errorlogging.exceptionRootCauseDetailTable.title" /></b>
+    <div class="box">
+        <table id="exceptionRootCauseDetailTable" cellpadding="0" cellspacing="0" width="100%">
+            <thead>
+                <tr class="trTdExcLogClass trTop">
+                    <th>Class Name</th>
+                    <th>Method Name</th>
+                    <th>Line Number</th>
+                </tr>
+            </thead>
+            <tbody id="ercdbody">
+                <tr id="ercdpattern" class="trTdExcLogClass" style="display:none;">
+                    <td><span id="tableExceptionRCDetailClassName">Class Name</span></td>
+                    <td><span id="tableExceptionRCDetailMethodName">Method Name</span></td>
+                    <td><span id="tableExceptionRCDetailLineNumber">Line Number</span></td>              
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <script type="text/javascript">
     var lastSearch = 0; 
     var prevExcLogDetail;
     var prevExcRootCause;
+    var count;
     function fillTable(prevOrNext) {
         var start;        
         var form = document.forms['querytools'];
@@ -229,14 +252,14 @@
     
     function getCount(excClass, dateString, timeString){
         DWRExceptionLogService.getCountOfExceptionLogs(excClass, dateString, timeString, function(countOfExcLogs){
-            window.count = countOfExcLogs;
+            count = countOfExcLogs;
         });
     }
     
     function showExcLogDetail(excLogId){
         var len = ("tableExceptionDetail").length;
         var id = excLogId.toString().substr(len, excLogId.toString().length-len);
-        DWRExceptionLogService.getExceptionLogdetail(id,function(excLogDetail){
+        DWRExceptionLogService.getExceptionLogDetail(id,function(excLogDetail){
             // Delete all the rows except for the "pattern" row
             dwr.util.removeAllRows("eldbody", { filter:function(tr) {return (tr.id != "eldpattern");}});
             // Create a new set cloned from the pattern row
@@ -270,6 +293,7 @@
             // Create a new set cloned from the pattern row
             if($("exceptionRootCause").style.display == "block" && prevExcRootCause==excLogId){
                 $("exceptionRootCause").style.display = "none";
+                 $("exceptionRootCauseDetail").style.display = "none";
                 $("tableExceptionRootCause"+id).setAttribute("class", "viewLink");
             }else{
                 if(excRootCause != null){           
@@ -283,6 +307,30 @@
                         $(prevExcRootCause).setAttribute("class", "viewLink");                  
                     }
                     prevExcRootCause = excLogId;
+                }
+            }
+        });    
+    }
+    
+    function showExcRCDetail(excLogId){
+        var len = ("tableExceptionRCDetail").length;
+        var id = excLogId.toString().substr(len, excLogId.toString().length-len);
+        DWRExceptionLogService.getExceptionRootCauseDetail(id,function(excRootCauseDetail){
+            // Delete all the rows except for the "pattern" row
+            dwr.util.removeAllRows("ercdbody", { filter:function(tr) {return (tr.id != "ercdpattern");}});
+            // Create a new set cloned from the pattern row
+            if($("exceptionRootCauseDetail").style.display == "block"){
+                $("exceptionRootCauseDetail").style.display = "none";
+                $("tableExceptionRCDetail"+id).setAttribute("class", "viewLink");
+            }else{
+                if(excRootCauseDetail != null){           
+                    dwr.util.cloneNode("ercdpattern", { idSuffix:id });
+                    dwr.util.setValue("tableExceptionRCDetailClassName" + id, excRootCauseDetail.className);
+                    dwr.util.setValue("tableExceptionRCDetailMethodName" + id, excRootCauseDetail.methodName);
+                    dwr.util.setValue("tableExceptionRCDetailLineNumber" + id, excRootCauseDetail.lineNumber);          
+                    $("ercdpattern" + id).style.display = "table-row";
+                    $("exceptionRootCauseDetail").style.display = "block";
+                    $("tableExceptionRCDetail"+id).setAttribute("class", "viewLinkClick");                                    
                 }
             }
         });    
