@@ -11,20 +11,21 @@
  */
 package org.openmrs.module.errorlogging.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import org.junit.Test;
+import org.openmrs.api.APIAuthenticationException;
 import org.openmrs.api.APIException;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.errorlogging.ExceptionLog;
 import org.openmrs.module.errorlogging.ExceptionLogDetail;
 import org.openmrs.module.errorlogging.ExceptionRootCause;
 import org.openmrs.module.errorlogging.ExceptionRootCauseDetail;
+import org.openmrs.test.BaseModuleContextSensitiveTest;
 
 /**
  * Contains test methods for {@link ExceptionLogUtil}.
  */
-public class ExceptionLogUtilTest {
+public class ExceptionLogUtilTest extends BaseModuleContextSensitiveTest {
 	
 	@Test
 	public void parseException_shouldCreateNewObjectWhenExceptionThrown() {
@@ -85,5 +86,21 @@ public class ExceptionLogUtilTest {
 		assertEquals(GeneratorDAO.class.getName(), excRootCauseDetail.getClassName());
 		assertEquals("iota", excRootCauseDetail.getMethodName());
 		assertEquals(new Integer(89), excRootCauseDetail.getLineNumber());
+	}
+	
+	@Test
+	public void parseIgnoredException_shouldReturnArrayOfExceptionClasses() {
+		String str = "  org.openmrs.api.APIAuthenticationException, ContextAuthenticationException,DAOException ";
+		String[] expectedResult = new String[] { "org.openmrs.api.APIAuthenticationException",
+		        "ContextAuthenticationException", "DAOException" };
+		String[] result = ExceptionLogUtil.parseIgnoredException(str);
+		assertArrayEquals(expectedResult, result);
+	}
+	
+	@Test
+	public void isIgnoredException_shouldReturnTrueIfExceptionIsIgnored() throws Exception {
+		executeDataSet("moduleTestData.xml");
+		APIAuthenticationException exception = new APIAuthenticationException("APIAuthenticationException");
+		assertTrue("APIAuthenticationException should be ignored", ExceptionLogUtil.isIgnoredException(exception));
 	}
 }

@@ -12,6 +12,8 @@
 package org.openmrs.module.errorlogging.util;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.openmrs.GlobalProperty;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.errorlogging.ExceptionLog;
 import org.openmrs.module.errorlogging.ExceptionLogDetail;
 import org.openmrs.module.errorlogging.ExceptionRootCause;
@@ -22,6 +24,8 @@ import org.openmrs.util.OpenmrsConstants;
  * Contains utility methods for the module.
  */
 public class ExceptionLogUtil {
+	
+	public static final String ERRROR_LOGGING_GP_IGNORED_EXCEPTION = "errorlogging.ignore.errors";
 	
 	/**
 	 * Gets information about exception and fills {@link ExceptionLog}  and {@link ExceptionLogDetail}.
@@ -83,5 +87,45 @@ public class ExceptionLogUtil {
 			throw new IllegalArgumentException(longValue + " cannot be cast to Integer without changing its value.");
 		}
 		return longValue.intValue();
+	}
+	
+	/**
+	 * Retrieves an array of ignored exceptions from input string
+	 * 
+	 * @param ieString a string that includes ignored exceptions separated by a comma
+	 * @return an array of ignored exceptions
+	 */
+	public static String[] parseIgnoredException(String ieString) {
+		ieString = ieString.replaceAll("\\s+", "");
+		if (ieString != null && !ieString.equals("")) {
+			return ieString.split(",");
+		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * Check if exception is in the ignore list
+	 * 
+	 * @param exception exception that need to be checked
+	 * @return true if exception is in the ignore list, otherwise - false
+	 */
+	public static boolean isIgnoredException(Exception exception) {
+		String exceptionClassFull = exception.getClass().getName();
+		String exceptionClassSimple = exception.getClass().getSimpleName();
+		GlobalProperty ignoredExcProp = Context.getAdministrationService().getGlobalPropertyObject(
+		    ERRROR_LOGGING_GP_IGNORED_EXCEPTION);
+		if (ignoredExcProp != null) {
+			String ignoredExc = ignoredExcProp.getPropertyValue();
+			String[] ignoredExceptions = parseIgnoredException(ignoredExc);
+			if (ignoredExceptions != null && ignoredExceptions.length > 0) {
+				for (String ie : ignoredExceptions) {
+					if (ie.equals(exceptionClassSimple) || ie.equals(exceptionClassFull)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 }

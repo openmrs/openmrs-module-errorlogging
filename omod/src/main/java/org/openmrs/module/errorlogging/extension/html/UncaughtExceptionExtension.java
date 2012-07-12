@@ -32,7 +32,7 @@ public class UncaughtExceptionExtension extends Extension {
 		HttpServletRequest request = ExceptionLogRequestFilter.getRequest();
 		
 		Exception exception = (Exception) request.getAttribute("javax.servlet.error.exception");
-		if (exception != null) {
+		if (exception != null && !ExceptionLogUtil.isIgnoredException(exception)) {
 			ExceptionLog excLog = ExceptionLogUtil.parseException(exception);
 			if (excLog != null) {
 				ExceptionLogService service = Context.getService(ExceptionLogService.class);

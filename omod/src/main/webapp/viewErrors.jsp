@@ -8,9 +8,6 @@
 <openmrs:htmlInclude file="/moduleResources/errorlogging/viewErrors.css"/>
 
 <script src="<openmrs:contextPath/>/dwr/interface/DWRExceptionLogService.js"></script>
-<style>
-   
-</style>
 
 <b class="boxHeader"><spring:message code="errorlogging.querytools.title" /></b>
 <div class="box" id="querytoolsbox">
@@ -37,7 +34,6 @@
         </table>       
     </form>
 </div>
-
 
 <div>
     <input type="button" value="Show"  style="margin-left: auto; margin-top: 10px;"onclick="fillTable('show')"/>
@@ -159,7 +155,12 @@
             }
             lastSearch = start;
         }else if(prevOrNext == 'end'){
-            lastSearch = count - (count % onPage);
+            var leftover = count % onPage;
+            if(leftover > 0){
+                lastSearch = count - leftover;
+            }else{
+                lastSearch = count - onPage;
+            }
             start = lastSearch;
         }else{
             lastSearch = 0;
@@ -199,7 +200,7 @@
             
             lastSearch += onPage;       
         
-            if(lastSearch > count){               
+            if(lastSearch >= count){               
                 $("next_exceptionlog").disabled = true;
                 $("end_exceptionlog").disabled = true;
             }else{

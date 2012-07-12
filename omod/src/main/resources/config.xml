@@ -30,8 +30,16 @@
         <point>org.openmrs.uncaughtException</point>
         <class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.UncaughtExceptionExtension</class>
     </extension>
+
     
-    
+    <!-- Global Module Properties -->
+    <globalProperty>
+        <property>${project.parent.artifactId}.ignore.errors</property>
+        <defaultValue></defaultValue>
+        <description>Allows admin to set which errors to ignore to prevent large numbers of errors getting into table</description>
+    </globalProperty>
+    <!-- /Global Module Properties -->
+        
     <filter>
         <filter-name>exceptionLogRequestFilter</filter-name>
         <filter-class>${project.parent.groupId}.${project.parent.artifactId}.web.filter.ExceptionLogRequestFilter</filter-class>
@@ -56,13 +64,15 @@
         <allow>
             <convert converter="bean" match="org.openmrs.module.errorlogging.web.dwr.ExceptionLogListItem" />
             <convert converter="bean" match="org.openmrs.module.errorlogging.web.dwr.ExceptionLogDetailListItem" />
-             <convert converter="bean" match="org.openmrs.module.errorlogging.web.dwr.ExceptionRootCauseListItem" />
+            <convert converter="bean" match="org.openmrs.module.errorlogging.web.dwr.ExceptionRootCauseListItem" />
             <create creator="new" javascript="DWRExceptionLogService">
                 <param name="class" value="org.openmrs.module.errorlogging.web.dwr.DWRExceptionLogService"/>
                 <include method="getExceptionLogs"/>
                 <include method="getCountOfExceptionLogs"/>
                 <include method="getExceptionLogdetail"/>
                 <include method="getExceptionRootCause"/>
+                <include method="saveIgnoredErrors"/>
+                <include method="getIgnoredErrors"/>
             </create>
         </allow>
  
@@ -73,6 +83,8 @@
             DWRExceptionLogService.getCountOfExceptionLogs(String exceptionClass, String minExceptionDate, String minExceptionTime);
             DWRExceptionLogService.getExceptionLogdetail(Integer excLogId);
             DWRExceptionLogService.getExceptionRootCause(Integer excLogId);
+            DWRExceptionLogService.saveIgnoredErrors(String errors);
+            DWRExceptionLogService.getIgnoredErrors();
             ]]>
         </signatures>
     </dwr>
