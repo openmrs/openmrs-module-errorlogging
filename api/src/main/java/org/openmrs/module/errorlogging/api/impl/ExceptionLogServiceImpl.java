@@ -82,6 +82,6 @@ public class ExceptionLogServiceImpl extends BaseOpenmrsService implements Excep
 	 */
 	@Override
 	public Integer getCountOfExceptionLogs(String exceptionClass, Date minExceptionDateTime) {
-		return ExceptionLogUtil.convertToInteger(dao.getCountOfExceptionLogs(exceptionClass, minExceptionDateTime));
+		return dao.getCountOfExceptionLogs(exceptionClass, minExceptionDateTime);
 	}
 }

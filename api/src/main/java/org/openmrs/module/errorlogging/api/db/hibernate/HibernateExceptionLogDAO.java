@@ -22,6 +22,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.module.errorlogging.ExceptionLog;
 import org.openmrs.module.errorlogging.api.db.ExceptionLogDAO;
+import org.openmrs.module.errorlogging.util.ExceptionLogUtil;
 
 /**
  * It is a default implementation of  {@link ExceptionLogDAO}.
@@ -100,7 +101,7 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 	 * @see {@link ExceptionLogDAO#getCountOfExceptionLogs(String, Date)}
 	 */
 	@Override
-	public Long getCountOfExceptionLogs(String exceptionClass, Date minExceptionDateTime) {
+	public Integer getCountOfExceptionLogs(String exceptionClass, Date minExceptionDateTime) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExceptionLog.class);
 		if (exceptionClass != null) {
 			criteria.add(Restrictions.eq("exceptionClass", exceptionClass));
@@ -109,6 +110,11 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 			criteria.add(Restrictions.ge("dateCreated", minExceptionDateTime));
 		}
 		criteria.setProjection(Projections.rowCount());
-		return (Long) criteria.uniqueResult();
+		Object count = criteria.uniqueResult();
+		if (count instanceof Integer) {
+			return (Integer) count;
+		} else {
+			return ExceptionLogUtil.convertToInteger((Long) count);
+		}
 	}
 }
