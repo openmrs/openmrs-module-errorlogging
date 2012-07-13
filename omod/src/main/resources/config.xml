@@ -30,7 +30,11 @@
         <point>org.openmrs.uncaughtException</point>
         <class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.UncaughtExceptionExtension</class>
     </extension>
-
+    
+    <extension>
+        <point>org.openmrs.errorHandler</point>
+        <class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.ErrorHandlerExtension</class>
+    </extension>
     
     <!-- Global Module Properties -->
     <globalProperty>
