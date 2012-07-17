@@ -45,12 +45,17 @@
             <label for="onPage">On page:</label>
             <input type="text" id="onPage"  style="width: 25px;" name="onPage" value="5"/>
 
-            <input type="button" id="begin_exceptionlog" value="Begin" disabled="true" onclick="fillTable('begin')"/>
-            <input type="button" id="prev_exceptionlog" value="Prev" disabled="true" onclick="fillTable('prev')"/>
-            <input type="button" id="next_exceptionlog" value="Next" disabled="true" onclick="fillTable('next')"/>
-            <input type="button" id="end_exceptionlog" value="End" disabled="true" onclick="fillTable('end')"/>
-        </div>
+            <input type="button" id="beginExceptionlog" value="<<" title="Begin" disabled="true" onclick="fillTable('begin')"/>
+            <input type="button" id="prevExceptionlog" value="<" title="Previous" disabled="true" onclick="fillTable('prev')"/>
 
+            <label for="pageNum">Page:</label>
+            <select id="pageNum" name="pageNum" style="width : 45px;" disabled="true" onclick="fillTable('page')">
+            </select>
+
+            <input type="button" id="nextExceptionlog" value=">" title="Next" disabled="true" onclick="fillTable('next')"/>
+            <input type="button" id="endExceptionlog" value=">>" title="End" disabled="true" onclick="fillTable('end')"/>
+            <input type="button" id="removeExcLogs" value="Remove selected" disabled="true" style="float: right; margin-right: auto;" onclick="removeSelectedExcLogs()"/>
+        </div>	
     </form>
 </div>
 
@@ -60,6 +65,7 @@
         <table id="exceptionLogTable" cellpadding="0" cellspacing="0" width="100%" >
             <thead>
                 <tr class="top">
+                    <th><input type="checkbox" id="selectAllExcLogs" name="selectAllExcLogs"></th>
                     <th>Exception Class</th>
                     <th>Exception Message</th>
                     <th>OpenMRS<br/>Version</th>
@@ -67,10 +73,12 @@
                     <th>User</th>
                     <th>Detail</th>
                     <th>Root<br/>Cause</th>
+                    <th>Report</th>
                 </tr>
             </thead>
             <tbody id="elbody">
                 <tr id="elpattern" style="display:none;">
+                    <td><input type="checkbox" id="tableExceptionLogSelect" class="tableExceptionLogSelect" onclick="selectTableExcLogCheckBox()"/></td>
                     <td><span id="tableExceptionLogClass">Exception Class</span></td>
                     <td><span id="tableExceptionLogMessage">Exception Message</span></td>
                     <td><span id="tableExceptionLogOpenMRSVersion">OpenMRS Version</span></td>
@@ -78,6 +86,7 @@
                     <td><span id="tableExceptionUser">User</span></td>
                     <td><span id="tableExceptionDetail" class="viewLink" onclick="showExcLogDetail(this.id)">View</span></td>
                     <td><span id="tableExceptionRootCause" class="viewLink" onclick="showExcRootCause(this.id)">View</span></td>
+                    <td><input type="button" id="tableExceptionLogReportBtn" value="Report"/></td>
                 </tr>
             </tbody>
         </table>
@@ -152,6 +161,7 @@
 
 <script type="text/javascript">
     var lastSearch = 0; 
+    var prevonPage;
     var prevExcLogDetail;
     var prevExcRootCause;
     var count;
@@ -159,8 +169,15 @@
         var start;        
         var form = document.forms['querytools'];
         var excClass = form.elements['exceptionLogClass'].value;
-        var onPage = parseInt(document.forms['tablenavigation'].elements['onPage'].value);
-
+        var onPage = parseInt(document.forms['tablenavigation'].elements['onPage'].value, 10);
+        if( prevonPage != undefined && prevonPage != onPage && prevOrNext != "show"){
+            onPage = prevonPage;
+            document.forms['tablenavigation'].elements['onPage'].value = onPage;
+        }
+        if(isNaN(onPage)){
+            alert("Please, enter correct value to \"On page:\" input field");
+            return;
+        }
         var dateString = form.elements['exceptionLogDate'].value;
         var timeString = form.elements['exceptionLogTime'].value;   
         
@@ -171,12 +188,16 @@
         
         if(prevOrNext == 'next'){
             start = lastSearch;
+            var currPage = parseInt($j("#pageNum option:selected").text());
+            $("pageNum").selectedIndex = currPage;            
         }else if(prevOrNext == 'prev'){
             start = lastSearch - 2 * onPage;
             if(start < 0){
                 start = 0;
             }
             lastSearch = start;
+            var currPage = parseInt($j("#pageNum option:selected").text());
+            $("pageNum").selectedIndex = currPage - 2;         
         }else if(prevOrNext == 'end'){
             var leftover = count % onPage;
             if(leftover > 0){
@@ -185,9 +206,14 @@
                 lastSearch = count - onPage;
             }
             start = lastSearch;
+        }else if(prevOrNext == "page"){
+            var page = parseInt($j("#pageNum option:selected").text());
+            lastSearch = onPage * page - onPage;
+            start = lastSearch;
         }else{
             lastSearch = 0;
             start = 0;
+            prevonPage = onPage;
         }    
         
         dwr.engine.beginBatch();
@@ -209,9 +235,12 @@
                     dwr.util.setValue("tableExceptionLogOpenMRSVersion" + exceptionLogId, exceptionLog.openmrsVersion);
                     dwr.util.setValue("tableExceptionLogDateTime" + exceptionLogId, exceptionLog.exceptionDateTime);
                     dwr.util.setValue("tableExceptionUser" + exceptionLogId, exceptionLog.user);
+                    $("tableExceptionLogSelect" + exceptionLogId).name = exceptionLogId;
                     $("elpattern" + exceptionLogId).style.display = "table-row";
                     if(i % 2 == 0){
                         $("elpattern" + exceptionLogId).className = "even";
+                    }else{
+                        $("elpattern" + exceptionLogId).className = "odd";
                     }
                 }
                 $("exceptionLogs").style.display = "block";
@@ -221,29 +250,43 @@
                 isEmpty=true;               
             }
             
-            lastSearch += onPage;       
+            lastSearch += onPage;    
         
             if(lastSearch >= count){               
-                $("next_exceptionlog").disabled = true;
-                $("end_exceptionlog").disabled = true;
+                $("nextExceptionlog").disabled = true;
+                $("endExceptionlog").disabled = true;
             }else{
-                $("next_exceptionlog").disabled = false;
-                $("end_exceptionlog").disabled = false;
+                $("nextExceptionlog").disabled = false;
+                $("endExceptionlog").disabled = false;
             }
             
             if(isEmpty == false){
-                if((lastSearch - 2 * onPage) >= 0){
-                    $("prev_exceptionlog").disabled = false;
-                    $("begin_exceptionlog").disabled = false;
-                }else{
-                    $("prev_exceptionlog").disabled = true;
-                    $("begin_exceptionlog").disabled = true;
+                if(prevOrNext == 'show'){
+                    $j('#pageNum >option').remove();
+                    $("pageNum").disabled = false;
+                    var pages = Math.floor(count / onPage);
+                    var leftover = count % onPage;
+                    if(leftover > 0){
+                        pages += 1;
+                    }
+                    for (var i = 0; i < pages; i++) {
+                        $("pageNum").options[i] = new Option (i+1, i+1);
+                    }
                 }
+
+                if((lastSearch - 2 * onPage) >= 0){
+                    $("prevExceptionlog").disabled = false;
+                    $("beginExceptionlog").disabled = false;
+                }else{
+                    $("prevExceptionlog").disabled = true;
+                    $("beginExceptionlog").disabled = true;
+                }                                
             }else{
-                $("begin_exceptionlog").disabled = true;
-                $("prev_exceptionlog").disabled = true;
-                $("next_exceptionlog").disabled = true;
-                $("end_exceptionlog").disabled = true;
+                $("beginExceptionlog").disabled = true;
+                $("prevExceptionlog").disabled = true;
+                $("nextExceptionlog").disabled = true;
+                $("endExceptionlog").disabled = true;
+                $("pageNum").disabled = true;
                 
             }
         });   
@@ -259,7 +302,7 @@
     function showExcLogDetail(excLogId){
         var len = ("tableExceptionDetail").length;
         var id = excLogId.toString().substr(len, excLogId.toString().length-len);
-        DWRExceptionLogService.getExceptionLogDetail(id,function(excLogDetail){
+        DWRExceptionLogService.getExceptionLogDetail(id, function(excLogDetail){
             // Delete all the rows except for the "pattern" row
             dwr.util.removeAllRows("eldbody", { filter:function(tr) {return (tr.id != "eldpattern");}});
             // Create a new set cloned from the pattern row
@@ -287,13 +330,13 @@
     function showExcRootCause(excLogId){
         var len = ("tableExceptionRootCause").length;
         var id = excLogId.toString().substr(len, excLogId.toString().length-len);
-        DWRExceptionLogService.getExceptionRootCause(id,function(excRootCause){
+        DWRExceptionLogService.getExceptionRootCause(id, function(excRootCause){
             // Delete all the rows except for the "pattern" row
             dwr.util.removeAllRows("ercbody", { filter:function(tr) {return (tr.id != "ercpattern");}});
             // Create a new set cloned from the pattern row
             if($("exceptionRootCause").style.display == "block" && prevExcRootCause==excLogId){
                 $("exceptionRootCause").style.display = "none";
-                 $("exceptionRootCauseDetail").style.display = "none";
+                $("exceptionRootCauseDetail").style.display = "none";
                 $("tableExceptionRootCause"+id).setAttribute("class", "viewLink");
             }else{
                 if(excRootCause != null){           
@@ -315,7 +358,7 @@
     function showExcRCDetail(excLogId){
         var len = ("tableExceptionRCDetail").length;
         var id = excLogId.toString().substr(len, excLogId.toString().length-len);
-        DWRExceptionLogService.getExceptionRootCauseDetail(id,function(excRootCauseDetail){
+        DWRExceptionLogService.getExceptionRootCauseDetail(id, function(excRootCauseDetail){
             // Delete all the rows except for the "pattern" row
             dwr.util.removeAllRows("ercdbody", { filter:function(tr) {return (tr.id != "ercdpattern");}});
             // Create a new set cloned from the pattern row
@@ -334,6 +377,68 @@
                 }
             }
         });    
+    }  
+    
+    $j(function(){
+        // add multiple select / deselect functionality
+        $j("#selectAllExcLogs").click(function () {
+            $j('.tableExceptionLogSelect').attr('checked', this.checked);
+            showHideRemoveButton();
+        });        
+    });
+    
+    $j(document).ready(function(){
+        $j("tr.odd, tr.even").live("hover",function(){
+            var a = $j(this);
+            a.toggleClass("trHover");
+            a.children().toggleClass("trHover");
+        })
+    });  
+    
+    function removeSelectedExcLogs(){
+        var selected_cb = [];
+        selected_cb = $j("#exceptionLogTable").find("input:checkbox:checked:not('#selectAllExcLogs')");
+        var chklength = selected_cb.length; 
+        if(chklength == 0){
+            return;
+        }
+        var agree = confirm("Are you sure you want to remove?");
+        if (!agree){
+            return;
+        }
+        var res = [];
+        for(var i = 0; i < chklength; i++)
+        {
+            var id = parseInt(selected_cb[i].name, 10);
+            if(isNaN(id)){
+                return;
+            }
+            res[i] = id;
+        }
+        if(res.length > 0){
+            DWRExceptionLogService.purgeExceptionLogs(res, function(result){
+                if(result){
+                    fillTable("show");
+                }
+            });
+        }
+    }
+    
+    function selectTableExcLogCheckBox(){
+        if($j(".tableExceptionLogSelect").length - 1 == $j(".tableExceptionLogSelect:checked").length) {
+            $j("#selectAllExcLogs").attr("checked", "checked");               
+        } else {
+            $j("#selectAllExcLogs").removeAttr("checked");
+        }
+        showHideRemoveButton();
+    }
+    
+    function showHideRemoveButton(){
+        if($j("#exceptionLogTable").find("input:checkbox:checked:not('#selectAllExcLogs')").length > 0){
+            $("removeExcLogs").disabled = false;
+        }else{
+            $("removeExcLogs").disabled = true;
+        }               
     }
 </script>
 <%@ include file="/WEB-INF/template/footer.jsp"%>

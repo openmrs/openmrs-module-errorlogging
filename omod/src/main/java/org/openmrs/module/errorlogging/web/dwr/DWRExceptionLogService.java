@@ -27,7 +27,8 @@ import org.openmrs.module.errorlogging.api.ExceptionLogService;
 import org.openmrs.module.errorlogging.util.ExceptionLogUtil;
 
 /**
- * This class exposes some of the methods in {@link ExceptionLogService} via the dwr package
+ * This class exposes some of the methods in {@link ExceptionLogService} via the
+ * dwr package
  */
 public class DWRExceptionLogService {
 	
@@ -40,8 +41,9 @@ public class DWRExceptionLogService {
 	}
 	
 	/**
-	 * Get the list of exception logs by class name that thrown since minExceptionDate and minExceptionTime
-	 * 
+	 * Get the list of exception logs by class name that thrown since
+	 * minExceptionDate and minExceptionTime
+	 *
 	 * @param exceptionClass class name of the exception
 	 * @param minExceptionDate date since which exceptions thrown
 	 * @param minExceptionTime time since which exceptions thrown
@@ -67,8 +69,9 @@ public class DWRExceptionLogService {
 	}
 	
 	/**
-	 * Get the number of exception logs matching a search class name, the minExceptionDate and the minExceptionTime
-	 * 
+	 * Get the number of exception logs matching a search class name, the
+	 * minExceptionDate and the minExceptionTime
+	 *
 	 * @param exceptionClass class name of the exception
 	 * @param minExceptionDate date since which exceptions thrown
 	 * @param minExceptionTime time since which exceptions thrown
@@ -86,7 +89,7 @@ public class DWRExceptionLogService {
 	
 	/**
 	 * Get exception log detail
-	 * 
+	 *
 	 * @param excLogId exception log id
 	 * @return exception log detail
 	 */
@@ -102,7 +105,7 @@ public class DWRExceptionLogService {
 	
 	/**
 	 * Get root cause of exception
-	 * 
+	 *
 	 * @param excLogId exception log id
 	 * @return root cause of exception
 	 */
@@ -118,7 +121,7 @@ public class DWRExceptionLogService {
 	
 	/**
 	 * Get root cause detail of exception
-	 * 
+	 *
 	 * @param excLogId exception log id
 	 * @return root cause detail of exception
 	 */
@@ -137,7 +140,7 @@ public class DWRExceptionLogService {
 	
 	/**
 	 * Save errors that have to be ignored
-	 * 
+	 *
 	 * @param errors that have to be ignored
 	 * @return true in the case of a successful saving, otherwise - false
 	 */
@@ -156,7 +159,7 @@ public class DWRExceptionLogService {
 	
 	/**
 	 * Get ignored errors
-	 * 
+	 *
 	 * @return string which include ignored errors
 	 */
 	public String getIgnoredErrors() {
@@ -170,8 +173,25 @@ public class DWRExceptionLogService {
 	}
 	
 	/**
+	 * Delete exception logs
+	 *
+	 * @param ids ids of exception logs
+	 * @return true true in the case of a successful deleting, otherwise - false
+	 */
+	public boolean purgeExceptionLogs(Integer... ids) {
+		for (Integer id : ids) {
+			ExceptionLog excLog = exceptionLogService.getExceptionLog(id);
+			if (excLog == null) {
+				return false;
+			}
+			exceptionLogService.purgeExceptionLog(excLog);
+		}
+		return true;
+	}
+	
+	/**
 	 * Convert input string arguments to Date
-	 * 
+	 *
 	 * @param minExceptionDate date string
 	 * @param minExceptionTime time string
 	 * @return converted date

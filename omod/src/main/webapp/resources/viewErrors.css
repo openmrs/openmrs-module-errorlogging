@@ -1,6 +1,19 @@
-#exceptionLogTable tr.top{ background-color: #E7E7E7;}
-#exceptionLogTable th, #exceptionLogTable td { text-align: left; vertical-align: top; padding: 5px;  } 
-#exceptionLogTable tr.even { background-color: #F7F7F7; }
+#exceptionLogTable tr.top{ 
+    background-color: #E7E7E7;
+}
+#exceptionLogTable th, #exceptionLogTable td { 
+    text-align: left; 
+    vertical-align: top;
+    padding: 5px;  
+} 
+#exceptionLogTable tr.even { 
+    background-color: #F7F7F7;
+    cursor: default;
+}
+#exceptionLogTable tr.odd { 
+    background-color: #FFFFFF;
+    cursor: default;
+}
 .viewLink{
     color: #31587a;
     text-decoration:underline;
@@ -17,5 +30,15 @@
 .viewLink:hover {
     text-decoration: none;
 }
-.trTop{ background-color: #E7E7E7;}
-.trTdExcLogClass th, .trTdExcLogClass td{text-align: left; vertical-align: top; padding: 5px;}
+.trTop{ 
+    background-color: #E7E7E7;
+}
+.trTdExcLogClass th, .trTdExcLogClass td{
+    text-align: left; 
+    vertical-align: top; 
+    padding: 5px;
+}
+
+.trHover{
+    background-color: #f0e68c;
+}

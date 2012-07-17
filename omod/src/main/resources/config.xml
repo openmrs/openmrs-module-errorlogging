@@ -78,6 +78,7 @@
                 <include method="getExceptionRootCauseDetail"/>
                 <include method="saveIgnoredErrors"/>
                 <include method="getIgnoredErrors"/>
+                <include method="purgeExceptionLogs"/>
             </create>
         </allow>
  
@@ -91,6 +92,7 @@
             DWRExceptionLogService.getExceptionRootCauseDetail(Integer excLogId);
             DWRExceptionLogService.saveIgnoredErrors(String errors);
             DWRExceptionLogService.getIgnoredErrors();
+            DWRExceptionLogService.purgeExceptionLogs(Integer... ids);
             ]]>
         </signatures>
     </dwr>
