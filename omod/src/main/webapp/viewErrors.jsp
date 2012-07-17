@@ -416,11 +416,13 @@
             res[i] = id;
         }
         if(res.length > 0){
+            dwr.engine.beginBatch();
             DWRExceptionLogService.purgeExceptionLogs(res, function(result){
                 if(result){
                     fillTable("show");
                 }
             });
+            dwr.engine.endBatch();
         }
     }
     
