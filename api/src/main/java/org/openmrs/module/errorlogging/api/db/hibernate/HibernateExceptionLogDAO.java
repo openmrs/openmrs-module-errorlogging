@@ -48,7 +48,6 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 	}
 	
 	/**
-	 * @see {@link ExceptionLogService#saveExceptionLog(ExceptionLog)}
 	 * @see {@link ExceptionLogDAOe#saveExceptionLog(ExceptionLog)}
 	 */
 	@Override
@@ -58,7 +57,6 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 	}
 	
 	/**
-	 * @see {@link ExceptionLogService#purgeExceptionLog())}
 	 * @see {@link ExceptionLogDAO#deleteExceptionLog())}
 	 */
 	@Override
@@ -67,7 +65,6 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 	}
 	
 	/**
-	 * @see {@link ExceptionLogService#getExceptionLog(Integer)}
 	 * @see {@link ExceptionLogDAO#getExceptionLog(Integer)}
 	 */
 	@Override
@@ -76,7 +73,6 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 	}
 	
 	/**
-	 * @see {@link ExceptionLogService#getExceptionLogs(String, Date, Integer, Integer)}
 	 * @see {@link ExceptionLogDAO#getExceptionLogs(String, Date, Integer, Integer)}
 	 */
 	@Override
@@ -90,14 +86,16 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 			criteria.add(Restrictions.ge("dateCreated", minExceptionDateTime));
 		}
 		criteria.addOrder(Order.desc("dateCreated"));
-		criteria.addOrder(Order.desc("exceptionClass"));
-		criteria.setFirstResult(start);
-		criteria.setMaxResults(length);
+		if (start != null && start >= 0) {
+			criteria.setFirstResult(start);
+		}
+		if (length != null && length >= 0) {
+			criteria.setMaxResults(length);
+		}
 		return criteria.list();
 	}
 	
 	/**
-	 * @see {@link ExceptionLogService#getCountOfExceptionLogs(String, Date)}
 	 * @see {@link ExceptionLogDAO#getCountOfExceptionLogs(String, Date)}
 	 */
 	@Override

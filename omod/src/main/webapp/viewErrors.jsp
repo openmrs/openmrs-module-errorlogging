@@ -420,6 +420,7 @@
             DWRExceptionLogService.purgeExceptionLogs(res, function(result){
                 if(result){
                     fillTable("show");
+                    $("removeExcLogs").disabled = true;
                 }
             });
             dwr.engine.endBatch();

@@ -19,7 +19,6 @@ import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.errorlogging.ExceptionLog;
 import org.openmrs.module.errorlogging.api.ExceptionLogService;
 import org.openmrs.module.errorlogging.api.db.ExceptionLogDAO;
-import org.openmrs.module.errorlogging.util.ExceptionLogUtil;
 
 /**
  * It is a default implementation of {@link ExceptionLogService}.
