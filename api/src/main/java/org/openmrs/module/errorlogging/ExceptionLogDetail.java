@@ -114,9 +114,9 @@ public class ExceptionLogDetail extends BaseOpenmrsObject implements Serializabl
 	
 	@Override
 	public int hashCode() {
-		int hash = 0;
-		hash += (exceptionLogDetailId != null ? exceptionLogDetailId.hashCode() : 0);
-		return hash;
+		if (getUuid() == null)
+			return super.hashCode();
+		return getUuid().hashCode();
 	}
 	
 	@Override
@@ -125,16 +125,15 @@ public class ExceptionLogDetail extends BaseOpenmrsObject implements Serializabl
 			return false;
 		}
 		ExceptionLogDetail other = (ExceptionLogDetail) object;
-		if ((this.exceptionLogDetailId == null && other.exceptionLogDetailId != null)
-		        || (this.exceptionLogDetailId != null && !this.exceptionLogDetailId.equals(other.exceptionLogDetailId))) {
+		if (getUuid() == null) {
 			return false;
 		}
-		return true;
+		return getUuid().equals(other.getUuid());
 	}
 	
 	@Override
 	public String toString() {
 		return "ExceptionLogDetail[ exceptionLogDetailId=" + exceptionLogDetailId + "; className=" + className
-		        + "; methodName=" + methodName + " ]";
+		        + "; methodName=" + methodName + "; lineNumber" + lineNumber + " ]";
 	}
 }

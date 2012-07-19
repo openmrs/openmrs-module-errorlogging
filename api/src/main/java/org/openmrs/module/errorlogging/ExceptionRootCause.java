@@ -114,9 +114,9 @@ public class ExceptionRootCause extends BaseOpenmrsObject implements Serializabl
 	
 	@Override
 	public int hashCode() {
-		int hash = 0;
-		hash += (exceptionRootCauseId != null ? exceptionRootCauseId.hashCode() : 0);
-		return hash;
+		if (getUuid() == null)
+			return super.hashCode();
+		return getUuid().hashCode();
 	}
 	
 	@Override
@@ -125,11 +125,10 @@ public class ExceptionRootCause extends BaseOpenmrsObject implements Serializabl
 			return false;
 		}
 		ExceptionRootCause other = (ExceptionRootCause) object;
-		if ((this.exceptionRootCauseId == null && other.exceptionRootCauseId != null)
-		        || (this.exceptionRootCauseId != null && !this.exceptionRootCauseId.equals(other.exceptionRootCauseId))) {
+		if (getUuid() == null) {
 			return false;
 		}
-		return true;
+		return getUuid().equals(other.getUuid());
 	}
 	
 	@Override

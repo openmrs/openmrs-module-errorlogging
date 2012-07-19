@@ -114,9 +114,9 @@ public class ExceptionRootCauseDetail extends BaseOpenmrsObject implements Seria
 	
 	@Override
 	public int hashCode() {
-		int hash = 0;
-		hash += (exceptionRootCauseDetailId != null ? exceptionRootCauseDetailId.hashCode() : 0);
-		return hash;
+		if (getUuid() == null)
+			return super.hashCode();
+		return getUuid().hashCode();
 	}
 	
 	@Override
@@ -125,17 +125,15 @@ public class ExceptionRootCauseDetail extends BaseOpenmrsObject implements Seria
 			return false;
 		}
 		ExceptionRootCauseDetail other = (ExceptionRootCauseDetail) object;
-		if ((this.exceptionRootCauseDetailId == null && other.exceptionRootCauseDetailId != null)
-		        || (this.exceptionRootCauseDetailId != null && !this.exceptionRootCauseDetailId
-		                .equals(other.exceptionRootCauseDetailId))) {
+		if (getUuid() == null) {
 			return false;
 		}
-		return true;
+		return getUuid().equals(other.getUuid());
 	}
 	
 	@Override
 	public String toString() {
-		return "ExceptionRootCauseDetail[ exceptionRootCauseDetailId=" + "; className=" + className + "; methodName="
-		        + methodName + " ]";
+		return "ExceptionRootCauseDetail[ exceptionRootCauseDetailId=" + exceptionRootCauseDetailId + "; className="
+		        + className + "; methodName=" + methodName + "; lineNumber" + lineNumber + " ]";
 	}
 }

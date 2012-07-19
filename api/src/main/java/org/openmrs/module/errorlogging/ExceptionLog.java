@@ -302,9 +302,9 @@ public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Retire
 	
 	@Override
 	public int hashCode() {
-		int hash = 0;
-		hash += (exceptionLogId != null ? exceptionLogId.hashCode() : 0);
-		return hash;
+		if (getUuid() == null)
+			return super.hashCode();
+		return getUuid().hashCode();
 	}
 	
 	@Override
@@ -313,11 +313,10 @@ public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Retire
 			return false;
 		}
 		ExceptionLog other = (ExceptionLog) object;
-		if ((this.exceptionLogId == null && other.exceptionLogId != null)
-		        || (this.exceptionLogId != null && !this.exceptionLogId.equals(other.exceptionLogId))) {
+		if (getUuid() == null) {
 			return false;
 		}
-		return true;
+		return getUuid().equals(other.getUuid());
 	}
 	
 	@Override
