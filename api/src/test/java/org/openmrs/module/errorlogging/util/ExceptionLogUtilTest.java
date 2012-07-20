@@ -32,7 +32,7 @@ public class ExceptionLogUtilTest extends BaseModuleContextSensitiveTest {
 		ExceptionsGenerator excGenerator = new ExceptionsGenerator();
 		ExceptionLog excLog = null;
 		try {
-			excGenerator.alpha();
+			excGenerator.throwException();
 		}
 		catch (Exception exception) {
 			excLog = ExceptionLogUtil.parseException(exception);
@@ -43,17 +43,18 @@ public class ExceptionLogUtilTest extends BaseModuleContextSensitiveTest {
 	@Test
 	public void parseException_shouldCreateExceptionLogDetailWithInnerClassName() {
 		ExceptionsGenerator.InnerClass innerClass = new ExceptionsGenerator().new InnerClass();
+		ExceptionLog excLog = null;
 		try {
-			innerClass.alphaInner();
+			innerClass.throwExceptionInner();
 		}
 		catch (Exception exception) {
-			ExceptionLog excLog = ExceptionLogUtil.parseException(exception);
-			assertNotNull(excLog);
-			
-			ExceptionLogDetail excLogDetail = excLog.getExceptionLogDetail();
-			assertNotNull(excLogDetail);
-			assertEquals(innerClass.getClass().getName(), excLogDetail.getClassName());
+			excLog = ExceptionLogUtil.parseException(exception);
 		}
+		assertNotNull(excLog);
+		
+		ExceptionLogDetail excLogDetail = excLog.getExceptionLogDetail();
+		assertNotNull(excLogDetail);
+		assertEquals(innerClass.getClass().getName(), excLogDetail.getClassName());
 	}
 	
 	@Test
@@ -61,31 +62,31 @@ public class ExceptionLogUtilTest extends BaseModuleContextSensitiveTest {
 		ExceptionsGenerator excGenerator = new ExceptionsGenerator();
 		ExceptionLog excLog = null;
 		try {
-			excGenerator.alpha();
+			excGenerator.throwException();
 		}
 		catch (Exception exception) {
 			excLog = ExceptionLogUtil.parseException(exception);
 		}
 		assertNotNull(excLog);
 		assertEquals(APIException.class.getName(), excLog.getExceptionClass());
-		assertEquals("Sorry, try again later", excLog.getExceptionMessage());
+		assertEquals("APIException from ExceptionsGenerator", excLog.getExceptionMessage());
 		
 		ExceptionLogDetail excLogDetail = excLog.getExceptionLogDetail();
 		assertNotNull(excLogDetail);
 		assertEquals(ExceptionsGenerator.class.getName(), excLogDetail.getClassName());
-		assertEquals("gamma", excLogDetail.getMethodName());
-		assertEquals(new Integer(38), excLogDetail.getLineNumber());
+		assertEquals("throwException", excLogDetail.getMethodName());
+		assertEquals(new Integer(28), excLogDetail.getLineNumber());
 		
 		ExceptionRootCause excRootCause = excLog.getExceptionRootCause();
 		assertNotNull(excRootCause);
 		assertEquals(DAOException.class.getName(), excRootCause.getExceptionClass());
-		assertEquals("Omega server not available", excRootCause.getExceptionMessage());
+		assertEquals("DAOException from ExceptionsGenerator", excRootCause.getExceptionMessage());
 		
 		ExceptionRootCauseDetail excRootCauseDetail = excRootCause.getExceptionRootCauseDetail();
 		assertNotNull(excRootCauseDetail);
-		assertEquals(GeneratorDAO.class.getName(), excRootCauseDetail.getClassName());
-		assertEquals("iota", excRootCauseDetail.getMethodName());
-		assertEquals(new Integer(89), excRootCauseDetail.getLineNumber());
+		assertEquals(ExceptionsGenerator.class.getName(), excRootCauseDetail.getClassName());
+		assertEquals("throwException", excRootCauseDetail.getMethodName());
+		assertEquals(new Integer(25), excRootCauseDetail.getLineNumber());
 	}
 	
 	@Test

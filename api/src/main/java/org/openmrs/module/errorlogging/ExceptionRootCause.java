@@ -32,6 +32,23 @@ public class ExceptionRootCause extends BaseOpenmrsObject implements Serializabl
 	
 	private ExceptionRootCauseDetail exceptionRootCauseDetail;
 	
+	/**
+	 * Default constructor without parameters
+	 */
+	public ExceptionRootCause() {
+	}
+	
+	/**
+	 * Convenience constructor with parameters
+	 * 
+	 * @param exceptionClass exception class
+	 * @param exceptionMessage exception message
+	 */
+	public ExceptionRootCause(String exceptionClass, String exceptionMessage) {
+		this.exceptionClass = exceptionClass;
+		this.exceptionMessage = exceptionMessage;
+	}
+	
 	@Override
 	public Integer getId() {
 		return getExceptionRootCauseId();
@@ -110,6 +127,9 @@ public class ExceptionRootCause extends BaseOpenmrsObject implements Serializabl
 	 */
 	public void setExceptionRootCauseDetail(ExceptionRootCauseDetail exceptionRootCauseDetail) {
 		this.exceptionRootCauseDetail = exceptionRootCauseDetail;
+		if (exceptionRootCauseDetail != null) {
+			exceptionRootCauseDetail.setExceptionRootCause(this);
+		}
 	}
 	
 	@Override

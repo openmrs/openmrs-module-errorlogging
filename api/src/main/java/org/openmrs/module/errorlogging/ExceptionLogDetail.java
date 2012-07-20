@@ -32,6 +32,25 @@ public class ExceptionLogDetail extends BaseOpenmrsObject implements Serializabl
 	
 	private ExceptionLog exceptionLog;
 	
+	/**
+	 * Default constructor without parameters
+	 */
+	public ExceptionLogDetail() {
+	}
+	
+	/**
+	 * Convenience constructor with parameters
+	 * 
+	 * @param className name of class which thrown an exception
+	 * @param methodName name of method which thrown an exception
+	 * @param lineNumber number of line where exception was thrown
+	 */
+	public ExceptionLogDetail(String className, String methodName, Integer lineNumber) {
+		this.className = className;
+		this.methodName = methodName;
+		this.lineNumber = lineNumber;
+	}
+	
 	@Override
 	public Integer getId() {
 		return getExceptionLogDetailId();

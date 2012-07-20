@@ -32,6 +32,25 @@ public class ExceptionRootCauseDetail extends BaseOpenmrsObject implements Seria
 	
 	private ExceptionRootCause exceptionRootCause;
 	
+	/**
+	 * Default constructor without parameters
+	 */
+	public ExceptionRootCauseDetail() {
+	}
+	
+	/**
+	 * Convenience constructor with parameters
+	 * 
+	 * @param className name of class which thrown an exception
+	 * @param methodName name of method which thrown an exception
+	 * @param lineNumber number of line where exception was thrown
+	 */
+	public ExceptionRootCauseDetail(String className, String methodName, Integer lineNumber) {
+		this.className = className;
+		this.methodName = methodName;
+		this.lineNumber = lineNumber;
+	}
+	
 	@Override
 	public Integer getId() {
 		return getExceptionRootCauseDetailId();

@@ -50,6 +50,25 @@ public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Retire
 	
 	private ExceptionRootCause exceptionRootCause;
 	
+	/**
+	 * Default constructor without parameters
+	 */
+	public ExceptionLog() {
+	}
+	
+	/**
+	 * Convenience constructor with parameters
+	 * 
+	 * @param exceptionClass exception class
+	 * @param exceptionMessage exception message
+	 * @param openmrsVersion version of OpenMRS
+	 */
+	public ExceptionLog(String exceptionClass, String exceptionMessage, String openmrsVersion) {
+		this.exceptionClass = exceptionClass;
+		this.exceptionMessage = exceptionMessage;
+		this.openmrsVersion = openmrsVersion;
+	}
+	
 	@Override
 	public Integer getId() {
 		return getExceptionLogId();
@@ -128,6 +147,9 @@ public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Retire
 	 */
 	public void setExceptionLogDetail(ExceptionLogDetail exceptionLogDetail) {
 		this.exceptionLogDetail = exceptionLogDetail;
+		if (exceptionLogDetail != null) {
+			exceptionLogDetail.setExceptionLog(this);
+		}
 	}
 	
 	/**
@@ -142,6 +164,9 @@ public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Retire
 	 */
 	public void setExceptionRootCause(ExceptionRootCause exceptionRootCause) {
 		this.exceptionRootCause = exceptionRootCause;
+		if (exceptionRootCause != null) {
+			exceptionRootCause.setExceptionLog(this);
+		}
 	}
 	
 	/**

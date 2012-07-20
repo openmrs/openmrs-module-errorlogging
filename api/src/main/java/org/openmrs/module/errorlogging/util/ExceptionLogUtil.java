@@ -38,36 +38,25 @@ public class ExceptionLogUtil {
 		if (exception == null) {
 			return null;
 		}
-		ExceptionLog excLog = new ExceptionLog();
-		excLog.setExceptionClass(exception.getClass().getName());
-		excLog.setExceptionMessage(exception.getMessage());
-		excLog.setOpenmrsVersion(OpenmrsConstants.OPENMRS_VERSION_SHORT);
+		ExceptionLog excLog = new ExceptionLog(exception.getClass().getName(), exception.getMessage(),
+		        OpenmrsConstants.OPENMRS_VERSION_SHORT);
 		
 		StackTraceElement[] stTrElements = exception.getStackTrace();
 		if (stTrElements != null) {
-			ExceptionLogDetail excLogDetail = new ExceptionLogDetail();
-			excLogDetail.setClassName(stTrElements[0].getClassName());
-			excLogDetail.setMethodName(stTrElements[0].getMethodName());
-			excLogDetail.setLineNumber(stTrElements[0].getLineNumber());
-			excLogDetail.setExceptionLog(excLog);
+			ExceptionLogDetail excLogDetail = new ExceptionLogDetail(stTrElements[0].getClassName(), stTrElements[0]
+			        .getMethodName(), stTrElements[0].getLineNumber());
 			excLog.setExceptionLogDetail(excLogDetail);
 		}
 		
 		Throwable rootCause = ExceptionUtils.getRootCause(exception);
 		if (rootCause != null) {
-			ExceptionRootCause excRootCause = new ExceptionRootCause();
-			excRootCause.setExceptionClass(rootCause.getClass().getName());
-			excRootCause.setExceptionMessage(rootCause.getMessage());
-			excRootCause.setExceptionLog(excLog);
+			ExceptionRootCause excRootCause = new ExceptionRootCause(rootCause.getClass().getName(), rootCause.getMessage());
 			excLog.setExceptionRootCause(excRootCause);
 			
 			StackTraceElement[] stTrRootCauseElements = rootCause.getStackTrace();
 			if (stTrRootCauseElements != null) {
-				ExceptionRootCauseDetail excRootCauseDetail = new ExceptionRootCauseDetail();
-				excRootCauseDetail.setClassName(stTrRootCauseElements[0].getClassName());
-				excRootCauseDetail.setMethodName(stTrRootCauseElements[0].getMethodName());
-				excRootCauseDetail.setLineNumber(stTrRootCauseElements[0].getLineNumber());
-				excRootCauseDetail.setExceptionRootCause(excRootCause);
+				ExceptionRootCauseDetail excRootCauseDetail = new ExceptionRootCauseDetail(stTrRootCauseElements[0]
+				        .getClassName(), stTrRootCauseElements[0].getMethodName(), stTrRootCauseElements[0].getLineNumber());
 				excRootCause.setExceptionRootCauseDetail(excRootCauseDetail);
 			}
 		}

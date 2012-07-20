@@ -20,76 +20,24 @@ import org.openmrs.api.db.DAOException;
  */
 public class ExceptionsGenerator {
 	
-	private final GeneratorService generatorService = new GeneratorService();
-	
-	public void alpha() {
-		beta();
-	}
-	
-	private void beta() {
-		gamma();
-	}
-	
-	private void gamma() {
+	public void throwException() {
 		try {
-			generatorService.delta();
+			throw new DAOException("DAOException from ExceptionsGenerator");
 		}
 		catch (Exception e) {
-			throw new APIException("Sorry, try again later", e);
+			throw new APIException("APIException from ExceptionsGenerator", e);
 		}
 	}
 	
 	public class InnerClass {
 		
-		public void alphaInner() {
+		public void throwExceptionInner() {
 			try {
-				generatorService.delta();
+				throw new DAOException("DAOException from InnerClass");
 			}
 			catch (Exception e) {
-				throw new APIException("Sorry, try again later", e);
+				throw new APIException("APIException from InnerClass", e);
 			}
-		}
-	}
-}
-
-class GeneratorService {
-	
-	private final GeneratorDAO generatorDao = new GeneratorDAO();
-	
-	public void delta() {
-		epsilon();
-	}
-	
-	private void epsilon() {
-		zeta();
-	}
-	
-	private void zeta() {
-		try {
-			generatorDao.eta();
-		}
-		catch (Exception e) {
-			throw new APIException("Unable to save order", e);
-		}
-	}
-}
-
-class GeneratorDAO {
-	
-	public void eta() {
-		theta();
-	}
-	
-	private void theta() {
-		iota();
-	}
-	
-	public void iota() {
-		try {
-			throw new DAOException("Omega server not available");
-		}
-		catch (Exception e) {
-			throw new DAOException("Database problem", e);
 		}
 	}
 }
