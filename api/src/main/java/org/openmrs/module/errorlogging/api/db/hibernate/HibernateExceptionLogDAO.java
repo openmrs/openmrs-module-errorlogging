@@ -73,17 +73,20 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 	}
 	
 	/**
-	 * @see {@link ExceptionLogDAO#getExceptionLogs(String, Date, Integer, Integer)}
+	 * @see {@link ExceptionLogDAO#getExceptionLogs(String, Date, Date, Integer, Integer)}
 	 */
 	@Override
-	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date minExceptionDateTime, Integer start,
-	                                           Integer length) {
+	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date startExceptionDateTime,
+	                                           Date endExceptionDateTime, Integer start, Integer length) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExceptionLog.class);
 		if (exceptionClass != null) {
 			criteria.add(Restrictions.eq("exceptionClass", exceptionClass));
 		}
-		if (minExceptionDateTime != null) {
-			criteria.add(Restrictions.ge("dateCreated", minExceptionDateTime));
+		if (startExceptionDateTime != null) {
+			criteria.add(Restrictions.ge("dateCreated", startExceptionDateTime));
+		}
+		if (endExceptionDateTime != null) {
+			criteria.add(Restrictions.le("dateCreated", endExceptionDateTime));
 		}
 		criteria.addOrder(Order.desc("dateCreated"));
 		if (start != null && start >= 0) {
@@ -96,16 +99,19 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 	}
 	
 	/**
-	 * @see {@link ExceptionLogDAO#getCountOfExceptionLogs(String, Date)}
+	 * @see {@link ExceptionLogDAO#getCountOfExceptionLogs(String, Date, Date)}
 	 */
 	@Override
-	public Integer getCountOfExceptionLogs(String exceptionClass, Date minExceptionDateTime) {
+	public Integer getCountOfExceptionLogs(String exceptionClass, Date startExceptionDateTime, Date endExceptionDateTime) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExceptionLog.class);
 		if (exceptionClass != null) {
 			criteria.add(Restrictions.eq("exceptionClass", exceptionClass));
 		}
-		if (minExceptionDateTime != null) {
-			criteria.add(Restrictions.ge("dateCreated", minExceptionDateTime));
+		if (startExceptionDateTime != null) {
+			criteria.add(Restrictions.ge("dateCreated", startExceptionDateTime));
+		}
+		if (endExceptionDateTime != null) {
+			criteria.add(Restrictions.le("dateCreated", endExceptionDateTime));
 		}
 		criteria.setProjection(Projections.rowCount());
 		Object count = criteria.uniqueResult();

@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * The main controller.
  */
 @Controller
-public class ErrorLoggingManageController {
+public class ManageErrorLoggingController {
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	

@@ -72,32 +72,38 @@ public class ExceptionLogServiceTest extends BaseModuleContextSensitiveTest {
 	}
 	
 	/**
-	 * @see {@link ExceptionLogService#getExceptionLogs(String, Date, Integer, Integer)}
+	 * @see {@link ExceptionLogService#getExceptionLogs(String, Date, Date, Integer, Integer)}
 	 */
 	@Test
 	public void getExceptionLogs_shouldReturnAllExceptionLogsByClassAndDateTime() {
-		List<ExceptionLog> excLogList = service.getExceptionLogs(null, null, 0, 10);
+		List<ExceptionLog> excLogList = service.getExceptionLogs(null, null, null, 0, 10);
 		assertEquals("Should return all exception logs since 0 to 9", excLogList.size(), 10);
 		
-		excLogList = service.getExceptionLogs(null, null, 10, 10);
+		excLogList = service.getExceptionLogs(null, null, null, 10, 10);
 		assertEquals("Should return all exception logs since 10 to 19", excLogList.size(), 1);
 		
-		excLogList = service.getExceptionLogs("Exception Log Class2", null, 0, 10);
+		excLogList = service.getExceptionLogs("Exception Log Class2", null, null, 0, 10);
 		assertEquals("Should all exeption logs with exceptionClass \"Exception Log Class2\"", excLogList.size(), 3);
 		
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		Date date = null;
+		Date startDate = null;
+		Date endDate = null;
 		try {
-			date = (Date) format.parse("2012-15-06 19:10:11.0");
+			startDate = (Date) format.parse("2012-15-06 19:10:11.0");
+			endDate = (Date) format.parse("2012-24-06 10:14:29.0");
 		}
 		catch (ParseException ex) {
 			log.error("Cannot parse date", ex);
 		}
 		
-		excLogList = service.getExceptionLogs(null, date, 0, 10);
+		excLogList = service.getExceptionLogs(null, startDate, null, 0, 10);
 		assertEquals("Should return all exception logs since date 2012-15-06 19:10:11", excLogList.size(), 8);
 		
-		excLogList = service.getExceptionLogs("Exception Log Class3", date, 0, 10);
+		excLogList = service.getExceptionLogs(null, startDate, endDate, 0, 10);
+		assertEquals("Should return all exception logs since 2012-15-06 19:10:11 to 2012-24-06 10:14:29", excLogList.size(),
+		    7);
+		
+		excLogList = service.getExceptionLogs("Exception Log Class3", startDate, null, 0, 10);
 		assertEquals("Should return all exception logs with exceptionClass \"Exception Log Class3\" "
 		        + "and since date 2012-15-06 19:10:11", excLogList.size(), 2);
 	}
@@ -118,25 +124,30 @@ public class ExceptionLogServiceTest extends BaseModuleContextSensitiveTest {
 	 */
 	@Test
 	public void getCountOfExceptionLogs_shouldReturnCountOfExceptionLogsByClassAndDateTime() {
-		int count = service.getCountOfExceptionLogs(null, null);
+		int count = service.getCountOfExceptionLogs(null, null, null);
 		assertEquals("Should return count of all exception logs", 11, count);
 		
-		count = service.getCountOfExceptionLogs("Exception Log Class2", null);
+		count = service.getCountOfExceptionLogs("Exception Log Class2", null, null);
 		assertEquals("Should return count of all exception logs with with exceptionClass \"Exception Log Class2\"", 3, count);
 		
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		Date date = null;
+		Date startDate = null;
+		Date endDate = null;
 		try {
-			date = (Date) format.parse("2012-16-06 21:11:02.0");
+			startDate = (Date) format.parse("2012-16-06 21:11:02.0");
+			endDate = (Date) format.parse("2012-24-06 10:14:29.0");
 		}
 		catch (ParseException ex) {
 			log.error("Cannot parse date", ex);
 		}
 		
-		count = service.getCountOfExceptionLogs(null, date);
-		assertEquals("Should return count of all exception logs since date 2012-16-06 21:11:02.0", 6, count);
+		count = service.getCountOfExceptionLogs(null, startDate, null);
+		assertEquals("Should return count of all exception logs since date 2012-16-06 21:11:02", 6, count);
 		
-		count = service.getCountOfExceptionLogs("Exception Log Class3", date);
+		count = service.getCountOfExceptionLogs(null, startDate, endDate);
+		assertEquals("Should return count of all exception logs since 2012-16-06 21:11:02 to 2012-24-06 10:14:29", 5, count);
+		
+		count = service.getCountOfExceptionLogs("Exception Log Class3", startDate, null);
 		assertEquals("Should return count of all exception logs with with exceptionClass \"Exception Log Class3\" "
 		        + "and since date 2012-16-06 21:11:02.0", 1, count);
 	}

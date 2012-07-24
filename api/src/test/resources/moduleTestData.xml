@@ -16,5 +16,5 @@
     <exception_log_detail exception_log_detail_id = "3" class_name = "Class Name Of Exception2" method_name = "Method Name Of Exception2" line_number = "25" uuid = "kf28612u-m183-47d5-a45a-8gr9d5234c55"/>
     <exception_root_cause exception_root_cause_id = "1" exception_class = "Exception Root Cause Class" exception_message = "Exception Root Cause Message" uuid = "lf78612e-m183-37d5-a45b-8ur9d5834c12"/>
     <exception_root_cause_detail exception_root_cause_detail_id = "1" class_name = "Class Name Of Exception Root Cause" method_name = "Method Name Of Exception Root Cause" line_number = "51" uuid = "bf48652e-l113-07d5-a45b-8ur9d0834c49"/>
-    <global_property property="errorlogging.ignore.errors" property_value="  org.openmrs.api.APIAuthenticationException, ContextAuthenticationException,DAOException" uuid="21694y2n-081c-4235-9104-d7c650d5e863"/>
+    <global_property property="errorlogging.ignore.errors" property_value="  org.openmrs.api.APIAuthenticationException, org.openmrs.api.context.ContextAuthenticationException,org.openmrs.api.db.DAOException" uuid="21694y2n-081c-4235-9104-d7c650d5e863"/>
 </dataset>

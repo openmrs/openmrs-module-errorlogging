@@ -67,8 +67,6 @@
     <dwr>
         <allow>
             <convert converter="bean" match="org.openmrs.module.errorlogging.web.dwr.ExceptionLogListItem" />
-            <convert converter="bean" match="org.openmrs.module.errorlogging.web.dwr.ExceptionLogDetailListItem" />
-            <convert converter="bean" match="org.openmrs.module.errorlogging.web.dwr.ExceptionRootCauseListItem" />
             <create creator="new" javascript="DWRExceptionLogService">
                 <param name="class" value="org.openmrs.module.errorlogging.web.dwr.DWRExceptionLogService"/>
                 <include method="getExceptionLogs"/>
@@ -85,8 +83,8 @@
         <signatures>
             <![CDATA[
             import org.openmrs.module.errorlogging.web.dwr.DWRExceptionLogService;
-            DWRExceptionLogService.getExceptionLogs(String exceptionClass, String minExceptionDate, String minExceptionTime,Integer start, Integer length);
-            DWRExceptionLogService.getCountOfExceptionLogs(String exceptionClass, String minExceptionDate, String minExceptionTime);
+            DWRExceptionLogService.getExceptionLogs(String exceptionClass, String startDateTimeString, String endDateTimeString, Integer start, Integer length);
+            DWRExceptionLogService.getCountOfExceptionLogs(String exceptionClass, String startDateTimeString, String endDateTimeString);
             DWRExceptionLogService.getExceptionLogDetail(Integer excLogId);
             DWRExceptionLogService.getExceptionRootCause(Integer excLogId);
             DWRExceptionLogService.getExceptionRootCauseDetail(Integer excLogId);

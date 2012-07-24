@@ -46,7 +46,7 @@ public interface ExceptionLogService extends OpenmrsService {
 	public ExceptionLog saveExceptionLog(ExceptionLog exceptionLog);
 	
 	/**
-	 * Deletes a exception log and all detail information related with it from the database
+	 * Delete a exception log and all detail information related with it from the database
 	 * 
 	 * @param exceptionLog exception log to be deleted from the database
 	 */
@@ -64,20 +64,22 @@ public interface ExceptionLogService extends OpenmrsService {
 	 * Get the list of exception logs by class name that thrown since minExceptionDateTime
 	 * 
 	 * @param exceptionClass class name of the exception
-	 * @param minExceptionDateTime date since which exceptions thrown
+	 * @param startExceptionDateTime date since which exceptions thrown
+	 * @param endExceptionDateTime date to which exceptions thrown
 	 * @param start starting from the "start" record
 	 * @param length retrieve the next "length" records from database
 	 * @return list of exception logs
 	 */
-	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date minExceptionDateTime, Integer start,
-	                                           Integer length);
+	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date startExceptionDateTime,
+	                                           Date endExceptionDateTime, Integer start, Integer length);
 	
 	/**
 	 * Return the number of exception logs matching a search class name and the minExceptionDateTime
 	 * 
 	 * @param exceptionClass class name of the exception
-	 * @param minExceptionDateTime date since which exceptions thrown
+	 * @param startExceptionDateTime date since which exceptions thrown
+	 * @param endExceptionDateTime date to which exceptions thrown
 	 * @return the number of exception logs matching the search arguments
 	 */
-	public Integer getCountOfExceptionLogs(String exceptionClass, Date minExceptionDateTime);
+	public Integer getCountOfExceptionLogs(String exceptionClass, Date startExceptionDateTime, Date endExceptionDateTime);
 }

@@ -22,9 +22,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.errorlogging.ErrorLoggingConstants;
 import org.openmrs.module.errorlogging.ExceptionLog;
 import org.openmrs.module.errorlogging.api.ExceptionLogService;
-import org.openmrs.module.errorlogging.util.ExceptionLogUtil;
 
 /**
  * This class exposes some of the methods in {@link ExceptionLogService} via the
@@ -45,22 +45,23 @@ public class DWRExceptionLogService {
 	 * minExceptionDate and minExceptionTime
 	 *
 	 * @param exceptionClass class name of the exception
-	 * @param minExceptionDate date since which exceptions thrown
-	 * @param minExceptionTime time since which exceptions thrown
+	 * @param startExceptionDateTime date/time since which exceptions thrown
+	 * @param endExceptionDateTime date/time to which exceptions thrownn
 	 * @param start starting from the "start" record
 	 * @param length retrieve the next "length" records from database
 	 * @return list of exception logs
 	 */
-	public List<ExceptionLogListItem> getExceptionLogs(String exceptionClass, String minExceptionDate,
-	                                                   String minExceptionTime, Integer start, Integer length) {
+	public List<ExceptionLogListItem> getExceptionLogs(String exceptionClass, String startExceptionDateTime,
+	                                                   String endExceptionDateTime, Integer start, Integer length) {
 		if (StringUtils.isBlank(exceptionClass)) {
 			exceptionClass = null;
 		} else {
 			exceptionClass = exceptionClass.trim();
 		}
-		Date minExceptionDateTime = getDateTime(minExceptionDate, minExceptionTime);
-		List<ExceptionLog> exceptionLogs = exceptionLogService.getExceptionLogs(exceptionClass, minExceptionDateTime, start,
-		    length);
+		Date startDateTime = getDateTime(startExceptionDateTime);
+		Date endDateTime = getDateTime(endExceptionDateTime);
+		List<ExceptionLog> exceptionLogs = exceptionLogService.getExceptionLogs(exceptionClass, startDateTime, endDateTime,
+		    start, length);
 		List<ExceptionLogListItem> exceptionLogItems = new Vector<ExceptionLogListItem>();
 		for (ExceptionLog exLog : exceptionLogs) {
 			exceptionLogItems.add(new ExceptionLogListItem(exLog));
@@ -73,18 +74,19 @@ public class DWRExceptionLogService {
 	 * minExceptionDate and the minExceptionTime
 	 *
 	 * @param exceptionClass class name of the exception
-	 * @param minExceptionDate date since which exceptions thrown
-	 * @param minExceptionTime time since which exceptions thrown
+	 * @param startExceptionDateTime date/time since which exceptions thrown
+	 * @param endExceptionDateTime date/time to which exceptions thrown
 	 * @return number of exception logs
 	 */
-	public Integer getCountOfExceptionLogs(String exceptionClass, String minExceptionDate, String minExceptionTime) {
+	public Integer getCountOfExceptionLogs(String exceptionClass, String startExceptionDateTime, String endExceptionDateTime) {
 		if (StringUtils.isBlank(exceptionClass)) {
 			exceptionClass = null;
 		} else {
 			exceptionClass = exceptionClass.trim();
 		}
-		Date minExceptionDateTime = getDateTime(minExceptionDate, minExceptionTime);
-		return exceptionLogService.getCountOfExceptionLogs(exceptionClass, minExceptionDateTime);
+		Date startDateTime = getDateTime(startExceptionDateTime);
+		Date endDateTime = getDateTime(endExceptionDateTime);
+		return exceptionLogService.getCountOfExceptionLogs(exceptionClass, startDateTime, endDateTime);
 	}
 	
 	/**
@@ -93,10 +95,10 @@ public class DWRExceptionLogService {
 	 * @param excLogId exception log id
 	 * @return exception log detail
 	 */
-	public ExceptionLogDetailListItem getExceptionLogDetail(Integer excLogId) {
+	public ExceptionLogListItem getExceptionLogDetail(Integer excLogId) {
 		ExceptionLog excLog = exceptionLogService.getExceptionLog(excLogId);
 		if (excLog != null && excLog.getExceptionLogDetail() != null) {
-			ExceptionLogDetailListItem excLogDetailItem = new ExceptionLogDetailListItem(excLog.getExceptionLogDetail());
+			ExceptionLogListItem excLogDetailItem = new ExceptionLogListItem(excLog.getExceptionLogDetail());
 			return excLogDetailItem;
 		} else {
 			return null;
@@ -109,10 +111,10 @@ public class DWRExceptionLogService {
 	 * @param excLogId exception log id
 	 * @return root cause of exception
 	 */
-	public ExceptionRootCauseListItem getExceptionRootCause(Integer excLogId) {
+	public ExceptionLogListItem getExceptionRootCause(Integer excLogId) {
 		ExceptionLog excLog = exceptionLogService.getExceptionLog(excLogId);
 		if (excLog != null && excLog.getExceptionRootCause() != null) {
-			ExceptionRootCauseListItem excLogRootCauseItem = new ExceptionRootCauseListItem(excLog.getExceptionRootCause());
+			ExceptionLogListItem excLogRootCauseItem = new ExceptionLogListItem(excLog.getExceptionRootCause());
 			return excLogRootCauseItem;
 		} else {
 			return null;
@@ -125,13 +127,13 @@ public class DWRExceptionLogService {
 	 * @param excLogId exception log id
 	 * @return root cause detail of exception
 	 */
-	public ExceptionLogDetailListItem getExceptionRootCauseDetail(Integer excLogId) {
+	public ExceptionLogListItem getExceptionRootCauseDetail(Integer excLogId) {
 		ExceptionLog excLog = exceptionLogService.getExceptionLog(excLogId);
 		if (excLog != null && excLog.getExceptionRootCause() != null) {
 			if (excLog.getExceptionRootCause() != null
 			        && excLog.getExceptionRootCause().getExceptionRootCauseDetail() != null) {
-				ExceptionLogDetailListItem excLogRootCauseDetailItem = new ExceptionLogDetailListItem(excLog
-				        .getExceptionRootCause().getExceptionRootCauseDetail());
+				ExceptionLogListItem excLogRootCauseDetailItem = new ExceptionLogListItem(excLog.getExceptionRootCause()
+				        .getExceptionRootCauseDetail());
 				return excLogRootCauseDetailItem;
 			}
 		}
@@ -146,7 +148,7 @@ public class DWRExceptionLogService {
 	 */
 	public boolean saveIgnoredErrors(String errors) {
 		GlobalProperty glProp = Context.getAdministrationService().getGlobalPropertyObject(
-		    ExceptionLogUtil.ERRROR_LOGGING_GP_IGNORED_EXCEPTION);
+		    ErrorLoggingConstants.ERRROR_LOGGING_GP_IGNORED_EXCEPTION);
 		if (glProp != null) {
 			glProp.setPropertyValue(errors);
 			GlobalProperty saved = Context.getAdministrationService().saveGlobalProperty(glProp);
@@ -164,9 +166,8 @@ public class DWRExceptionLogService {
 	 */
 	public String getIgnoredErrors() {
 		GlobalProperty glProp = Context.getAdministrationService().getGlobalPropertyObject(
-		    ExceptionLogUtil.ERRROR_LOGGING_GP_IGNORED_EXCEPTION);
+		    ErrorLoggingConstants.ERRROR_LOGGING_GP_IGNORED_EXCEPTION);
 		if (glProp != null) {
-			System.out.println(glProp.getPropertyValue());
 			return glProp.getPropertyValue();
 		}
 		return null;
@@ -192,28 +193,23 @@ public class DWRExceptionLogService {
 	/**
 	 * Convert input string arguments to Date
 	 *
-	 * @param minExceptionDate date string
-	 * @param minExceptionTime time string
+	 * @param exceptionDateTime date string
 	 * @return converted date
 	 */
-	private Date getDateTime(String minExceptionDate, String minExceptionTime) {
-		Date minExceptionDateTime = null;
-		if (StringUtils.isNotBlank(minExceptionDate)) {
-			minExceptionDate = minExceptionDate.trim();
-			if (StringUtils.isNotBlank(minExceptionTime)) {
-				minExceptionTime = minExceptionTime.trim();
-			} else {
-				minExceptionTime = "00:00:00";
-			}
-			String dateTime = minExceptionDate + " " + minExceptionTime;
+	private Date getDateTime(String exceptionDateTime) {
+		Date stExceptionDateTime = null;
+		if (StringUtils.isNotBlank(exceptionDateTime)) {
+			exceptionDateTime = exceptionDateTime.trim();
+			
+			String dateTime = exceptionDateTime + ":00";
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 			try {
-				minExceptionDateTime = (Date) format.parse(dateTime);
+				stExceptionDateTime = (Date) format.parse(dateTime);
 			}
 			catch (ParseException ex) {
 				log.error("Cannot parse date", ex);
 			}
 		}
-		return minExceptionDateTime;
+		return stExceptionDateTime;
 	}
 }

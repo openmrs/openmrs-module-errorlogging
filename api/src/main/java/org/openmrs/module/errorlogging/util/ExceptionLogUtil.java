@@ -11,21 +11,17 @@
  */
 package org.openmrs.module.errorlogging.util;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.errorlogging.ExceptionLog;
-import org.openmrs.module.errorlogging.ExceptionLogDetail;
-import org.openmrs.module.errorlogging.ExceptionRootCause;
-import org.openmrs.module.errorlogging.ExceptionRootCauseDetail;
+import org.openmrs.module.errorlogging.*;
 import org.openmrs.util.OpenmrsConstants;
 
 /**
  * Contains utility methods for the module.
  */
 public class ExceptionLogUtil {
-	
-	public static final String ERRROR_LOGGING_GP_IGNORED_EXCEPTION = "errorlogging.ignore.errors";
 	
 	/**
 	 * Gets information about exception and fills {@link ExceptionLog}  and {@link ExceptionLogDetail}.
@@ -85,12 +81,27 @@ public class ExceptionLogUtil {
 	 * @return an array of ignored exceptions
 	 */
 	public static String[] parseIgnoredException(String ieString) {
-		ieString = ieString.replaceAll("\\s+", "");
-		if (ieString != null && !ieString.equals("")) {
+		if (StringUtils.isNotBlank(ieString)) {
+			ieString = ieString.replaceAll("\\s+", "");
 			return ieString.split(",");
-		} else {
-			return null;
 		}
+		return null;
+	}
+	
+	/**
+	 * Check if exception is in the default ignore list
+	 * 
+	 * @param exception exception that need to be checked
+	 * @return true if exception is in the ignore list, otherwise - false
+	 */
+	public static boolean isDefaultIgnoredException(Exception exception) {
+		String exceptionClassFull = exception.getClass().getName();
+		for (String dfie : ErrorLoggingConstants.ERRROR_LOGGING_DEDAULT_IGNORED_EXCEPTION) {
+			if (dfie.equals(exceptionClassFull)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -100,16 +111,18 @@ public class ExceptionLogUtil {
 	 * @return true if exception is in the ignore list, otherwise - false
 	 */
 	public static boolean isIgnoredException(Exception exception) {
+		if (isDefaultIgnoredException(exception)) {
+			return true;
+		}
 		String exceptionClassFull = exception.getClass().getName();
-		String exceptionClassSimple = exception.getClass().getSimpleName();
 		GlobalProperty ignoredExcProp = Context.getAdministrationService().getGlobalPropertyObject(
-		    ERRROR_LOGGING_GP_IGNORED_EXCEPTION);
+		    ErrorLoggingConstants.ERRROR_LOGGING_GP_IGNORED_EXCEPTION);
 		if (ignoredExcProp != null) {
 			String ignoredExc = ignoredExcProp.getPropertyValue();
 			String[] ignoredExceptions = parseIgnoredException(ignoredExc);
 			if (ignoredExceptions != null && ignoredExceptions.length > 0) {
 				for (String ie : ignoredExceptions) {
-					if (ie.equals(exceptionClassSimple) || ie.equals(exceptionClassFull)) {
+					if (ie.equals(exceptionClassFull)) {
 						return true;
 					}
 				}

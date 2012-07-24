@@ -16,25 +16,45 @@ import java.util.Date;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.errorlogging.ExceptionLog;
+import org.openmrs.module.errorlogging.ExceptionLogDetail;
+import org.openmrs.module.errorlogging.ExceptionRootCause;
+import org.openmrs.module.errorlogging.ExceptionRootCauseDetail;
 
 public class ExceptionLogListItem {
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	private Integer exceptionLogId;
+	private Integer id;
 	
+	private String uuid;
+	
+	//For ExceptionLog and ExceptionRootCause
 	private String exceptionClass;
 	
 	private String exceptionMessage;
 	
+	//For ExceptionLog
 	private String openmrsVersion;
 	
 	private String exceptionDateTime;
 	
 	private String user;
 	
+	//For ExceptionLogDetail and ExceptionRootCauseDetail
+	private String className;
+	
+	private String methodName;
+	
+	private Integer lineNumber;
+	
+	/**
+	 * Constructor for ExceptionLog
+	 * 
+	 * @param exceptionLog 
+	 */
 	public ExceptionLogListItem(ExceptionLog exceptionLog) {
-		this.exceptionLogId = exceptionLog.getId();
+		this.id = exceptionLog.getExceptionLogId();
+		this.uuid = exceptionLog.getUuid();
 		this.exceptionClass = exceptionLog.getExceptionClass();
 		this.exceptionMessage = exceptionLog.getExceptionMessage();
 		setExceptionDateTime(exceptionLog.getExceptionDateTime());
@@ -43,17 +63,69 @@ public class ExceptionLogListItem {
 	}
 	
 	/**
-	 * @return the exceptionLogId
+	 * Constructor for ExceptionRootCause
+	 * 
+	 * @param excRootCause 
 	 */
-	public Integer getExceptionLogId() {
-		return exceptionLogId;
+	public ExceptionLogListItem(ExceptionRootCause excRootCause) {
+		this.id = excRootCause.getExceptionRootCauseId();
+		this.uuid = excRootCause.getUuid();
+		this.exceptionClass = excRootCause.getExceptionClass();
+		this.exceptionMessage = excRootCause.getExceptionMessage();
 	}
 	
 	/**
-	 * @param exceptionLogId the exceptionLogId to set
+	 * Constructor for ExceptionLogDetail
+	 * 
+	 * @param excLogDetail 
 	 */
-	public void setExceptionLogId(Integer exceptionLogId) {
-		this.exceptionLogId = exceptionLogId;
+	public ExceptionLogListItem(ExceptionLogDetail excLogDetail) {
+		this.id = excLogDetail.getExceptionLogDetailId();
+		this.uuid = excLogDetail.getUuid();
+		this.className = excLogDetail.getClassName();
+		this.methodName = excLogDetail.getMethodName();
+		this.lineNumber = excLogDetail.getLineNumber();
+	}
+	
+	/**
+	 * Constructor for ExceptionRootCauseDetail
+	 * 
+	 * @param excRootCaouseDetail 
+	 */
+	public ExceptionLogListItem(ExceptionRootCauseDetail excRootCaouseDetail) {
+		this.id = excRootCaouseDetail.getExceptionRootCauseDetailId();
+		this.uuid = excRootCaouseDetail.getUuid();
+		this.className = excRootCaouseDetail.getClassName();
+		this.methodName = excRootCaouseDetail.getMethodName();
+		this.lineNumber = excRootCaouseDetail.getLineNumber();
+	}
+	
+	/**
+	 * @return the exceptionLogId
+	 */
+	public Integer getId() {
+		return id;
+	}
+	
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	/**
+	 * @return the uuid
+	 */
+	public String getUuid() {
+		return uuid;
+	}
+	
+	/**
+	 * @param uuid the uuid to set
+	 */
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 	
 	/**
@@ -106,6 +178,81 @@ public class ExceptionLogListItem {
 	}
 	
 	/**
+	 * @return the user
+	 */
+	public String getUser() {
+		return user;
+	}
+	
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(String user) {
+		this.user = user;
+	}
+	
+	/**
+	 * @return the className
+	 */
+	public String getClassName() {
+		return className;
+	}
+	
+	/**
+	 * @param className the className to set
+	 */
+	public void setClassName(String className) {
+		this.className = className;
+	}
+	
+	/**
+	 * @return the methodName
+	 */
+	public String getMethodName() {
+		return methodName;
+	}
+	
+	/**
+	 * @param methodName the methodName to set
+	 */
+	public void setMethodName(String methodName) {
+		this.methodName = methodName;
+	}
+	
+	/**
+	 * @return the lineNumber
+	 */
+	public Integer getLineNumber() {
+		return lineNumber;
+	}
+	
+	/**
+	 * @param lineNumber the lineNumber to set
+	 */
+	public void setLineNumber(Integer lineNumber) {
+		this.lineNumber = lineNumber;
+	}
+	
+	@Override
+	public int hashCode() {
+		if (getUuid() == null)
+			return super.hashCode();
+		return getUuid().hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof ExceptionLogListItem)) {
+			return false;
+		}
+		ExceptionLogListItem other = (ExceptionLogListItem) object;
+		if (getUuid() == null) {
+			return false;
+		}
+		return getUuid().equals(other.getUuid());
+	}
+	
+	/**
 	 * @param exceptionDateTime the exceptionDateTime to set
 	 */
 	public void setExceptionDateTime(Date exceptionDateTime) {
@@ -113,7 +260,7 @@ public class ExceptionLogListItem {
 		c.setTime(exceptionDateTime);
 		String day = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
 		day = addZero(day);
-		String month = Integer.toString(c.get(Calendar.MONTH));
+		String month = Integer.toString(c.get(Calendar.MONTH) + 1);
 		month = addZero(month);
 		String year = Integer.toString(c.get(Calendar.YEAR));
 		year = addZero(year);
@@ -137,19 +284,5 @@ public class ExceptionLogListItem {
 			value = "0" + value;
 		}
 		return value;
-	}
-	
-	/**
-	 * @return the user
-	 */
-	public String getUser() {
-		return user;
-	}
-	
-	/**
-	 * @param user the user to set
-	 */
-	public void setUser(String user) {
-		this.user = user;
 	}
 }

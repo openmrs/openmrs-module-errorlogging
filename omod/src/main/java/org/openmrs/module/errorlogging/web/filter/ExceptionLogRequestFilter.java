@@ -31,8 +31,12 @@ public class ExceptionLogRequestFilter extends RequestContextFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 	    throws ServletException, IOException {
 		requests.set(request);
-		super.doFilterInternal(request, response, filterChain);
-		requests.remove();
+		try {
+			super.doFilterInternal(request, response, filterChain);
+		}
+		finally {
+			requests.remove();
+		}
 	}
 	
 	/**

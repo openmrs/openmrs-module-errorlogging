@@ -3,7 +3,7 @@
 
 <%@ include file="template/localHeader.jsp"%>
 
-<openmrs:htmlInclude file="/scripts/calendar/calendar.js" />
+<openmrs:htmlInclude file="/scripts/timepicker/timepicker.js" />
 <openmrs:htmlInclude file="/dwr/util.js" />
 <openmrs:htmlInclude file="/moduleResources/errorlogging/viewErrors.css"/>
 
@@ -14,21 +14,21 @@
     <form name="querytools">
         <table>
             <tr>
-                <td>Class:</td>
+                <td><spring:message code="errorlogging.querytools.class" />:</td>
                 <td>
                     <input type="text" id="exceptionLogClass" name="exceptionLogClass"/>
                 </td>
             </tr>
             <tr>
-                <td>Date:<br/><i style="font-weight: normal; font-size: 0.8em;">(<spring:message code="general.format"/>: <openmrs:datePattern />)</i></td>
+                <td><spring:message code="errorlogging.querytools.since" />:<br/><i style="font-weight: normal; font-size: 0.8em;">(<spring:message code="general.format"/>: <spring:message code="errorlogging.dateTimeFormat" />)</i></td>
                 <td valign="top">
-                    <input type="text" id="exceptionLogDate" name="exceptionLogDate" onfocus="showCalendar(this,60)" />            
+                    <input type="text" id="exceptionLogStartDateTime" name="exceptionLogStartDateTime" onfocus="showDateTimePicker(this)" />            
                 </td>
             </tr>
             <tr>
-                <td>Time:<br/><i style="font-weight: normal; font-size: 0.8em;">(<spring:message code="general.format"/>: hh:mm:ss)</i></td>
+                <td><spring:message code="errorlogging.querytools.to" />:<br/><i style="font-weight: normal; font-size: 0.8em;">(<spring:message code="general.format"/>: <spring:message code="errorlogging.dateTimeFormat" />)</i></td>
                 <td valign="top">
-                    <input type="text" id="exceptionLogTime" name="exceptionLogTime" />  
+                    <input type="text" id="exceptionLogEndDateTime" name="exceptionLogEndDateTime" onfocus="showDateTimePicker(this)"/>  
                 </td>
             </tr>    
         </table>       
@@ -36,25 +36,25 @@
 </div>
 
 <div>
-    <input type="button" value="Show"  style="margin-left: auto; margin-top: 10px;"onclick="fillTable('show')"/>
+    <input type="button" value="<spring:message code="errorlogging.show" />"  style="margin-left: auto; margin-top: 10px;" onclick="fillTable('show')"/>
 </div>
 
 <div id="tablenav" style="margin-top: 15px; margin-bottom: 5px;">
     <form name="tablenavigation">
         <div>
-            <label for="onPage">On page:</label>
-            <input type="text" id="onPage"  style="width: 25px;" name="onPage" value="5"/>
+            <label for="onPage"><spring:message code="errorlogging.tableNavigation.onPage" />:</label>
+            <input type="text" id="onPage"  style="width: 25px;" name="onPage" value="10"/>
 
-            <input type="button" id="beginExceptionlog" value="<<" title="Begin" disabled="true" onclick="fillTable('begin')"/>
-            <input type="button" id="prevExceptionlog" value="<" title="Previous" disabled="true" onclick="fillTable('prev')"/>
+            <input type="button" id="beginExceptionlog" value="<<" title="<spring:message code="errorlogging.tableNavigation.begin" />" disabled="true" onclick="fillTable('begin')"/>
+            <input type="button" id="prevExceptionlog" value="<" title="<spring:message code="errorlogging.tableNavigation.end" />" disabled="true" onclick="fillTable('prev')"/>
 
-            <label for="pageNum">Page:</label>
+            <label for="pageNum"><spring:message code="errorlogging.tableNavigation.page" />:</label>
             <select id="pageNum" name="pageNum" style="width : 45px;" disabled="true" onclick="fillTable('page')">
             </select>
 
-            <input type="button" id="nextExceptionlog" value=">" title="Next" disabled="true" onclick="fillTable('next')"/>
-            <input type="button" id="endExceptionlog" value=">>" title="End" disabled="true" onclick="fillTable('end')"/>
-            <input type="button" id="removeExcLogs" value="Remove selected" disabled="true" style="float: right; margin-right: auto;" onclick="removeSelectedExcLogs()"/>
+            <input type="button" id="nextExceptionlog" value=">" title="<spring:message code="errorlogging.tableNavigation.next" />" disabled="true" onclick="fillTable('next')"/>
+            <input type="button" id="endExceptionlog" value=">>" title="<spring:message code="errorlogging.tableNavigation.end" />" disabled="true" onclick="fillTable('end')"/>
+            <input type="button" id="removeExcLogs" value="<spring:message code="errorlogging.tableNavigation.removeSelected" />" disabled="true" style="float: right; margin-right: auto;" onclick="removeSelectedExcLogs()"/>
         </div>	
     </form>
 </div>
@@ -66,14 +66,14 @@
             <thead>
                 <tr class="top">
                     <th><input type="checkbox" id="selectAllExcLogs" name="selectAllExcLogs"></th>
-                    <th>Exception Class</th>
-                    <th>Exception Message</th>
-                    <th>OpenMRS<br/>Version</th>
-                    <th>Date/Time</th>
-                    <th>User</th>
-                    <th>Detail</th>
-                    <th>Root<br/>Cause</th>
-                    <th>Report</th>
+                    <th><spring:message code="errorlogging.exceptionLogTable.class" /></th>
+                    <th><spring:message code="errorlogging.exceptionLogTable.message" /></th>
+                    <th><spring:message code="errorlogging.exceptionLogTable.openMRSVersion" htmlEscape="false" /></th>
+                    <th><spring:message code="errorlogging.exceptionLogTable.dateTime" /></th>
+                    <th><spring:message code="errorlogging.exceptionLogTable.user" /></th>
+                    <th><spring:message code="errorlogging.detailLink" /></th>
+                    <th><spring:message code="errorlogging.exceptionLogTable.rootCause" htmlEscape="false" /></th>
+                    <th><spring:message code="errorlogging.exceptionLogTable.report" /></th>
                 </tr>
             </thead>
             <tbody id="elbody">
@@ -84,9 +84,9 @@
                     <td><span id="tableExceptionLogOpenMRSVersion">OpenMRS Version</span></td>
                     <td><span id="tableExceptionLogDateTime">Date/Time</span></td>  
                     <td><span id="tableExceptionUser">User</span></td>
-                    <td><span id="tableExceptionDetail" class="viewLink" onclick="showExcLogDetail(this.id)">View</span></td>
-                    <td><span id="tableExceptionRootCause" class="viewLink" onclick="showExcRootCause(this.id)">View</span></td>
-                    <td><input type="button" id="tableExceptionLogReportBtn" value="Report"/></td>
+                    <td><span id="tableExceptionDetail" class="viewLink" onclick="showExcLogDetail(this.id)"><spring:message code="errorlogging.viewLink" /></span></td>
+                    <td><span id="tableExceptionRootCause" class="viewLink" onclick="showExcRootCause(this.id)"><spring:message code="errorlogging.viewLink" /></span></td>
+                    <td><input type="button" id="tableExceptionLogReportBtn" value="<spring:message code="errorlogging.exceptionLogTable.report" />"/></td>
                 </tr>
             </tbody>
         </table>
@@ -99,9 +99,9 @@
         <table id="exceptionLogDetailTable" cellpadding="0" cellspacing="0" width="100%">
             <thead>
                 <tr class="trTdExcLogClass trTop">
-                    <th>Class Name</th>
-                    <th>Method Name</th>
-                    <th>Line Number</th>
+                    <th><spring:message code="errorlogging.detailTables.class" /></th>
+                    <th><spring:message code="errorlogging.detailTables.method" /></th>
+                    <th><spring:message code="errorlogging.detailTables.lineNumber" /></th>
                 </tr>
             </thead>
             <tbody id="eldbody">
@@ -121,16 +121,16 @@
         <table id="exceptionRootCauseTable" cellpadding="0" cellspacing="0" width="100%">
             <thead>
                 <tr class="trTdExcLogClass trTop">
-                    <th>Root Cause Class</th>
-                    <th>Root Cause Message</th>
-                    <th>Detail</th>
+                    <th><spring:message code="errorlogging.exceptionRootCauseTable.class" /></th>
+                    <th><spring:message code="errorlogging.exceptionRootCauseTable.message" /></th>
+                    <th><spring:message code="errorlogging.detailLink" /></th>
                 </tr>
             </thead>
             <tbody id="ercbody">
                 <tr id="ercpattern" class="trTdExcLogClass" style="display:none;">
                     <td><span id="tableExceptionRCClass">Root Cause Class</span></td>
                     <td><span id="tableExceptionRCMessage">Root Cause Message</span></td>
-                    <td><span id="tableExceptionRCDetail" class="viewLink" onclick="showExcRCDetail(this.id)">View</span></td>           
+                    <td><span id="tableExceptionRCDetail" class="viewLink" onclick="showExcRCDetail(this.id)"><spring:message code="errorlogging.viewLink" /></span></td>           
                 </tr>
             </tbody>
         </table>
@@ -143,9 +143,9 @@
         <table id="exceptionRootCauseDetailTable" cellpadding="0" cellspacing="0" width="100%">
             <thead>
                 <tr class="trTdExcLogClass trTop">
-                    <th>Class Name</th>
-                    <th>Method Name</th>
-                    <th>Line Number</th>
+                    <th><spring:message code="errorlogging.detailTables.class" /></th>
+                    <th><spring:message code="errorlogging.detailTables.method" /></th>
+                    <th><spring:message code="errorlogging.detailTables.lineNumber" /></th>
                 </tr>
             </thead>
             <tbody id="ercdbody">
@@ -175,11 +175,11 @@
             document.forms['tablenavigation'].elements['onPage'].value = onPage;
         }
         if(isNaN(onPage)){
-            alert("Please, enter correct value to \"On page:\" input field");
+            alert("<spring:message code="errorlogging.tableNavigation.onPage.wrongValueMessage" />");
             return;
         }
-        var dateString = form.elements['exceptionLogDate'].value;
-        var timeString = form.elements['exceptionLogTime'].value;   
+        var startDateTimeString = form.elements['exceptionLogStartDateTime'].value;
+        var endDateTimeString = form.elements['exceptionLogEndDateTime'].value;   
         
         prevExcLogDetail = undefined;
         prevExcRootCause = undefined;
@@ -217,9 +217,9 @@
         }    
         
         dwr.engine.beginBatch();
-        getCount(excClass, dateString, timeString);
+        getCount(excClass, startDateTimeString, endDateTimeString);
 
-        DWRExceptionLogService.getExceptionLogs(excClass, dateString, timeString, start, onPage, function(exceptionLogs) {
+        DWRExceptionLogService.getExceptionLogs(excClass, startDateTimeString, endDateTimeString, start, onPage, function(exceptionLogs) {
             var isEmpty;
             // Delete all the rows except for the "pattern" row
             dwr.util.removeAllRows("elbody", { filter:function(tr) {return (tr.id != "elpattern");}});
@@ -228,7 +228,7 @@
             if(exceptionLogs.length > 0){
                 for (var i = 0; i < exceptionLogs.length; i++) {
                     exceptionLog = exceptionLogs[i];
-                    exceptionLogId = exceptionLog.exceptionLogId;
+                    exceptionLogId = exceptionLog.id;
                     dwr.util.cloneNode("elpattern", { idSuffix:exceptionLogId });
                     dwr.util.setValue("tableExceptionLogClass" + exceptionLogId, exceptionLog.exceptionClass);
                     dwr.util.setValue("tableExceptionLogMessage" + exceptionLogId, exceptionLog.exceptionMessage);
@@ -293,8 +293,8 @@
         dwr.engine.endBatch();
     }
     
-    function getCount(excClass, dateString, timeString){
-        DWRExceptionLogService.getCountOfExceptionLogs(excClass, dateString, timeString, function(countOfExcLogs){
+    function getCount(excClass, startDateTimeString, endDateTimeString){
+        DWRExceptionLogService.getCountOfExceptionLogs(excClass, startDateTimeString, endDateTimeString, function(countOfExcLogs){
             count = countOfExcLogs;
         });
     }
@@ -402,7 +402,7 @@
         if(chklength == 0){
             return;
         }
-        var agree = confirm("Are you sure you want to remove?");
+        var agree = confirm("<spring:message code="errorlogging.tableNavigation.removeSelected.confirmMessage" />");
         if (!agree){
             return;
         }

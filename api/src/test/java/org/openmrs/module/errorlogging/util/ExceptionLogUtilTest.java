@@ -91,9 +91,9 @@ public class ExceptionLogUtilTest extends BaseModuleContextSensitiveTest {
 	
 	@Test
 	public void parseIgnoredException_shouldReturnArrayOfExceptionClasses() {
-		String str = "  org.openmrs.api.APIAuthenticationException, ContextAuthenticationException,DAOException ";
+		String str = "  org.openmrs.api.APIAuthenticationException, org.openmrs.api.context.ContextAuthenticationException,org.openmrs.api.db.DAOException ";
 		String[] expectedResult = new String[] { "org.openmrs.api.APIAuthenticationException",
-		        "ContextAuthenticationException", "DAOException" };
+		        "org.openmrs.api.context.ContextAuthenticationException", "org.openmrs.api.db.DAOException" };
 		String[] result = ExceptionLogUtil.parseIgnoredException(str);
 		assertArrayEquals(expectedResult, result);
 	}
@@ -101,7 +101,10 @@ public class ExceptionLogUtilTest extends BaseModuleContextSensitiveTest {
 	@Test
 	public void isIgnoredException_shouldReturnTrueIfExceptionIsIgnored() throws Exception {
 		executeDataSet("moduleTestData.xml");
-		APIAuthenticationException exception = new APIAuthenticationException("APIAuthenticationException");
-		assertTrue("APIAuthenticationException should be ignored", ExceptionLogUtil.isIgnoredException(exception));
+		APIAuthenticationException apiException = new APIAuthenticationException("DAOException");
+		DAOException daoException = new DAOException("DAOException");
+		assertTrue("APIAuthenticationException should be ignored as default", ExceptionLogUtil
+		        .isIgnoredException(apiException));
+		assertTrue("DAOException should be ignored", ExceptionLogUtil.isIgnoredException(daoException));
 	}
 }

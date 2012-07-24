@@ -51,12 +51,12 @@
         var ignoredErrors = document.getElementById("errors").value;
         DWRExceptionLogService.saveIgnoredErrors(ignoredErrors, function(success){
             if(success == true){
-                $j("#successOrErrorSave").replaceWith('<div id ="successOrErrorSave"><p>Ignored exceptions has been successfully saved!</p> </div>');
+                $j("#successOrErrorSave").replaceWith('<div id ="successOrErrorSave"><p><spring:message code="errorlogging.ignredExceptions.successSaveMessage" /></p> </div>');
                 $j("#successOrErrorSave").addClass("successSave");
                 
                
             } else{
-                $j("#successOrErrorSave").replaceWith('<div id ="successOrErrorSave"><p>Error while saving ignored exceptions!</p> </div>');
+                $j("#successOrErrorSave").replaceWith('<div id ="successOrErrorSave"><p><spring:message code="errorlogging.ignredExceptions.errorSaveMessage" /></p> </div>');
                 $j("#successOrErrorSave").addClass("errorSave");
             }
             $j("#successOrErrorSave").fadeIn(2000);

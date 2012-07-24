@@ -36,13 +36,13 @@ public interface ExceptionLogDAO {
 	public ExceptionLog getExceptionLog(Integer exceptionLogId);
 	
 	/**
-	 * @see {@link ExceptionLogService#getExceptionLogs(String, Date, Integer, Integer)}
+	 * @see {@link ExceptionLogService#getExceptionLogs(String, Date, Date, Integer, Integer)}
 	 */
-	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date minExceptionDateTime, Integer start,
-	                                           Integer length);
+	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date startExceptionDateTime,
+	                                           Date endExceptionDateTime, Integer start, Integer length);
 	
 	/**
-	 * @see {@link ExceptionLogService#getCountOfExceptionLogs(String, Date)}
+	 * @see {@link ExceptionLogService#getCountOfExceptionLogs(String, Date, Date)}
 	 */
-	public Integer getCountOfExceptionLogs(String exceptionClass, Date minExceptionDateTime);
+	public Integer getCountOfExceptionLogs(String exceptionClass, Date startExceptionDateTime, Date endExceptionDateTime);
 }
