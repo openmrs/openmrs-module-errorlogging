@@ -24,6 +24,8 @@ public class ExceptionRootCauseDetail extends BaseOpenmrsObject implements Seria
 	
 	private Integer exceptionRootCauseDetailId;
 	
+	private String fileName;
+	
 	private String className;
 	
 	private String methodName;
@@ -45,7 +47,8 @@ public class ExceptionRootCauseDetail extends BaseOpenmrsObject implements Seria
 	 * @param methodName name of method which thrown an exception
 	 * @param lineNumber number of line where exception was thrown
 	 */
-	public ExceptionRootCauseDetail(String className, String methodName, Integer lineNumber) {
+	public ExceptionRootCauseDetail(String fileName, String className, String methodName, Integer lineNumber) {
+		this.fileName = fileName;
 		this.className = className;
 		this.methodName = methodName;
 		this.lineNumber = lineNumber;
@@ -73,6 +76,20 @@ public class ExceptionRootCauseDetail extends BaseOpenmrsObject implements Seria
 	 */
 	public void setExceptionRootCauseDetailId(Integer exceptionRootCauseDetailId) {
 		this.exceptionRootCauseDetailId = exceptionRootCauseDetailId;
+	}
+	
+	/**
+	 * @return the fileName
+	 */
+	public String getFileName() {
+		return fileName;
+	}
+	
+	/**
+	 * @param fileName the fileName to set
+	 */
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 	
 	/**

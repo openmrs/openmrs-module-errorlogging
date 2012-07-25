@@ -39,8 +39,8 @@ public class ExceptionLogUtil {
 		
 		StackTraceElement[] stTrElements = exception.getStackTrace();
 		if (stTrElements != null) {
-			ExceptionLogDetail excLogDetail = new ExceptionLogDetail(stTrElements[0].getClassName(), stTrElements[0]
-			        .getMethodName(), stTrElements[0].getLineNumber());
+			ExceptionLogDetail excLogDetail = new ExceptionLogDetail(stTrElements[0].getFileName(), stTrElements[0]
+			        .getClassName(), stTrElements[0].getMethodName(), stTrElements[0].getLineNumber());
 			excLog.setExceptionLogDetail(excLogDetail);
 		}
 		
@@ -52,7 +52,8 @@ public class ExceptionLogUtil {
 			StackTraceElement[] stTrRootCauseElements = rootCause.getStackTrace();
 			if (stTrRootCauseElements != null) {
 				ExceptionRootCauseDetail excRootCauseDetail = new ExceptionRootCauseDetail(stTrRootCauseElements[0]
-				        .getClassName(), stTrRootCauseElements[0].getMethodName(), stTrRootCauseElements[0].getLineNumber());
+				        .getFileName(), stTrRootCauseElements[0].getClassName(), stTrRootCauseElements[0].getMethodName(),
+				        stTrRootCauseElements[0].getLineNumber());
 				excRootCause.setExceptionRootCauseDetail(excRootCauseDetail);
 			}
 		}

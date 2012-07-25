@@ -40,12 +40,23 @@ public class ExceptionLogListItem {
 	
 	private String user;
 	
+	private boolean hasRootCause;
+	
+	private boolean hasExceptionLogDetail;
+	
 	//For ExceptionLogDetail and ExceptionRootCauseDetail
+	
+	private String fileName;
+	
 	private String className;
 	
 	private String methodName;
 	
 	private Integer lineNumber;
+	
+	//For ExceptionRootCause
+	
+	private boolean hasRootCauseDetail;
 	
 	/**
 	 * Constructor for ExceptionLog
@@ -60,6 +71,12 @@ public class ExceptionLogListItem {
 		setExceptionDateTime(exceptionLog.getExceptionDateTime());
 		this.openmrsVersion = exceptionLog.getOpenmrsVersion();
 		this.user = exceptionLog.getUser().getUsername();
+		if (exceptionLog.getExceptionLogDetail() != null) {
+			this.hasExceptionLogDetail = true;
+		}
+		if (exceptionLog.getExceptionRootCause() != null) {
+			this.hasRootCause = true;
+		}
 	}
 	
 	/**
@@ -72,6 +89,9 @@ public class ExceptionLogListItem {
 		this.uuid = excRootCause.getUuid();
 		this.exceptionClass = excRootCause.getExceptionClass();
 		this.exceptionMessage = excRootCause.getExceptionMessage();
+		if (excRootCause.getExceptionRootCauseDetail() != null) {
+			hasRootCauseDetail = true;
+		}
 	}
 	
 	/**
@@ -82,6 +102,7 @@ public class ExceptionLogListItem {
 	public ExceptionLogListItem(ExceptionLogDetail excLogDetail) {
 		this.id = excLogDetail.getExceptionLogDetailId();
 		this.uuid = excLogDetail.getUuid();
+		this.fileName = excLogDetail.getFileName();
 		this.className = excLogDetail.getClassName();
 		this.methodName = excLogDetail.getMethodName();
 		this.lineNumber = excLogDetail.getLineNumber();
@@ -95,6 +116,7 @@ public class ExceptionLogListItem {
 	public ExceptionLogListItem(ExceptionRootCauseDetail excRootCaouseDetail) {
 		this.id = excRootCaouseDetail.getExceptionRootCauseDetailId();
 		this.uuid = excRootCaouseDetail.getUuid();
+		this.fileName = excRootCaouseDetail.getFileName();
 		this.className = excRootCaouseDetail.getClassName();
 		this.methodName = excRootCaouseDetail.getMethodName();
 		this.lineNumber = excRootCaouseDetail.getLineNumber();
@@ -192,6 +214,20 @@ public class ExceptionLogListItem {
 	}
 	
 	/**
+	 * @return the fileName
+	 */
+	public String getFileName() {
+		return fileName;
+	}
+	
+	/**
+	 * @param fileName the fileName to set
+	 */
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	
+	/**
 	 * @return the className
 	 */
 	public String getClassName() {
@@ -231,6 +267,48 @@ public class ExceptionLogListItem {
 	 */
 	public void setLineNumber(Integer lineNumber) {
 		this.lineNumber = lineNumber;
+	}
+	
+	/**
+	 * @return the hasRootCause
+	 */
+	public boolean isHasRootCause() {
+		return hasRootCause;
+	}
+	
+	/**
+	 * @param hasRootCause the hasRootCause to set
+	 */
+	public void setHasRootCause(boolean hasRootCause) {
+		this.hasRootCause = hasRootCause;
+	}
+	
+	/**
+	 * @return the hasExceptionLogDetail
+	 */
+	public boolean isHasExceptionLogDetail() {
+		return hasExceptionLogDetail;
+	}
+	
+	/**
+	 * @param hasExceptionLogDetail the hasExceptionLogDetail to set
+	 */
+	public void setHasExceptionLogDetail(boolean hasExceptionLogDetail) {
+		this.hasExceptionLogDetail = hasExceptionLogDetail;
+	}
+	
+	/**
+	 * @return the hasRootCauseDetail
+	 */
+	public boolean isHasRootCauseDetail() {
+		return hasRootCauseDetail;
+	}
+	
+	/**
+	 * @param hasRootCauseDetail the hasRootCauseDetail to set
+	 */
+	public void setHasRootCauseDetail(boolean hasRootCauseDetail) {
+		this.hasRootCauseDetail = hasRootCauseDetail;
 	}
 	
 	@Override

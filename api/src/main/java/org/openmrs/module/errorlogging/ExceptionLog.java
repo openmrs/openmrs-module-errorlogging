@@ -13,12 +13,15 @@ package org.openmrs.module.errorlogging;
 
 import java.io.Serializable;
 import java.util.Date;
-import org.openmrs.*;
+import org.openmrs.Auditable;
+import org.openmrs.BaseOpenmrsMetadata;
+import org.openmrs.BaseOpenmrsObject;
+import org.openmrs.User;
 
 /**
  * It is a model class. It should extend either {@link BaseOpenmrsObject} or {@link BaseOpenmrsMetadata}.
  */
-public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Retireable, Serializable {
+public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -37,14 +40,6 @@ public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Retire
 	private User changedBy;
 	
 	private Date dateChanged;
-	
-	private Boolean retired = false;
-	
-	private User retiredBy;
-	
-	private Date dateRetired;
-	
-	private String retireReason;
 	
 	private ExceptionLogDetail exceptionLogDetail;
 	
@@ -259,70 +254,6 @@ public class ExceptionLog extends BaseOpenmrsObject implements Auditable, Retire
 	@Override
 	public void setDateChanged(Date dateChanged) {
 		this.dateChanged = dateChanged;
-	}
-	
-	/**
-	 * @return the retired
-	 */
-	@Override
-	public Boolean isRetired() {
-		return retired;
-	}
-	
-	/**
-	 * @param retired the retired to set
-	 */
-	@Override
-	public void setRetired(Boolean retired) {
-		this.retired = retired;
-	}
-	
-	/**
-	 * @return the retiredBy
-	 */
-	@Override
-	public User getRetiredBy() {
-		return retiredBy;
-	}
-	
-	/**
-	 * @param retiredBy the retiredBy to set
-	 */
-	@Override
-	public void setRetiredBy(User retiredBy) {
-		this.retiredBy = retiredBy;
-	}
-	
-	/**
-	 * @return the dateRetired
-	 */
-	@Override
-	public Date getDateRetired() {
-		return dateRetired;
-	}
-	
-	/**
-	 * @param dateRetired the dateRetired to set
-	 */
-	@Override
-	public void setDateRetired(Date dateRetired) {
-		this.dateRetired = dateRetired;
-	}
-	
-	/**
-	 * @return the retireReason
-	 */
-	@Override
-	public String getRetireReason() {
-		return retireReason;
-	}
-	
-	/**
-	 * @param retireReason the retireReason to set
-	 */
-	@Override
-	public void setRetireReason(String retireReason) {
-		this.retireReason = retireReason;
 	}
 	
 	@Override

@@ -24,6 +24,8 @@ public class ExceptionLogDetail extends BaseOpenmrsObject implements Serializabl
 	
 	private Integer exceptionLogDetailId;
 	
+	private String fileName;
+	
 	private String className;
 	
 	private String methodName;
@@ -45,7 +47,8 @@ public class ExceptionLogDetail extends BaseOpenmrsObject implements Serializabl
 	 * @param methodName name of method which thrown an exception
 	 * @param lineNumber number of line where exception was thrown
 	 */
-	public ExceptionLogDetail(String className, String methodName, Integer lineNumber) {
+	public ExceptionLogDetail(String fileName, String className, String methodName, Integer lineNumber) {
+		this.fileName = fileName;
 		this.className = className;
 		this.methodName = methodName;
 		this.lineNumber = lineNumber;
@@ -73,6 +76,20 @@ public class ExceptionLogDetail extends BaseOpenmrsObject implements Serializabl
 	 */
 	public void setExceptionLogDetailId(Integer exceptionLogDetailId) {
 		this.exceptionLogDetailId = exceptionLogDetailId;
+	}
+	
+	/**
+	 * @return the fileName
+	 */
+	public String getFileName() {
+		return fileName;
+	}
+	
+	/**
+	 * @param fileName the fileName to set
+	 */
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 	
 	/**

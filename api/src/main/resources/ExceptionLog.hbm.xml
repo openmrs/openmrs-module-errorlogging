@@ -5,7 +5,7 @@
 
 <hibernate-mapping package="org.openmrs.module.errorlogging">
 
-    <class name="ExceptionLog" table="exception_log">
+    <class name="ExceptionLog" table="error_logging_exception_log">
         <id name="exceptionLogId" type="int" unsaved-value="0">
             <column name="exception_log_id" />
             <generator class="native" >
@@ -20,20 +20,11 @@
         <property name="exceptionMessage" type="java.lang.String" column="exception_message"
                   length="512" />
         <property name="openmrsVersion" type="java.lang.String" column="openmrs_version"
-                  length="30" not-null="true" />
-        <property name="retired" type="java.lang.Boolean"
-                  column="retired" length="1" not-null="true"/>
+                  length="30" not-null="true" />       
         <property name="dateCreated" type="java.util.Date"
                   column="exception_datetime" length="19" not-null="true" />
         <property name="dateChanged" type="java.util.Date"
-                  column="date_changed" length="19" />			
-        <property name="retireReason" type="java.lang.String"
-                  column="retire_reason" length="255" /> 		
-        <property name="dateRetired" type="java.util.Date"
-                  column="date_retired" length="19" />		
-        <many-to-one name="retiredBy" class="org.openmrs.User">
-            <column name="retired_by" />
-        </many-to-one>
+                  column="date_changed" length="19" />			       
         <many-to-one name="changedBy" class="org.openmrs.User">
             <column name="changed_by" />
         </many-to-one>		

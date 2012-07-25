@@ -84,8 +84,8 @@
                     <td><span id="tableExceptionLogOpenMRSVersion">OpenMRS Version</span></td>
                     <td><span id="tableExceptionLogDateTime">Date/Time</span></td>  
                     <td><span id="tableExceptionUser">User</span></td>
-                    <td><span id="tableExceptionDetail" class="viewLink" onclick="showExcLogDetail(this.id)"><spring:message code="errorlogging.viewLink" /></span></td>
-                    <td><span id="tableExceptionRootCause" class="viewLink" onclick="showExcRootCause(this.id)"><spring:message code="errorlogging.viewLink" /></span></td>
+                    <td><span id="tableExceptionDetail" class="viewLink" style="display: none;" onclick="showExcLogDetail(this.id)"><spring:message code="errorlogging.viewLink" /></span></td>
+                    <td><span id="tableExceptionRootCause" class="viewLink" style="display: none;" onclick="showExcRootCause(this.id)"><spring:message code="errorlogging.viewLink" /></span></td>
                     <td><input type="button" id="tableExceptionLogReportBtn" value="<spring:message code="errorlogging.exceptionLogTable.report" />"/></td>
                 </tr>
             </tbody>
@@ -99,6 +99,7 @@
         <table id="exceptionLogDetailTable" cellpadding="0" cellspacing="0" width="100%">
             <thead>
                 <tr class="trTdExcLogClass trTop">
+                    <th><spring:message code="errorlogging.detailTables.file" /></th>
                     <th><spring:message code="errorlogging.detailTables.class" /></th>
                     <th><spring:message code="errorlogging.detailTables.method" /></th>
                     <th><spring:message code="errorlogging.detailTables.lineNumber" /></th>
@@ -106,6 +107,7 @@
             </thead>
             <tbody id="eldbody">
                 <tr id="eldpattern" class="trTdExcLogClass" style="display:none;">
+                    <td><span id="tableExceptionLogFileName">File Name</span></td>
                     <td><span id="tableExceptionLogClassName">Class Name</span></td>
                     <td><span id="tableExceptionLogMethodName">Method Name</span></td>
                     <td><span id="tableExceptionLogLineNumber">Line Number</span></td>              
@@ -130,7 +132,7 @@
                 <tr id="ercpattern" class="trTdExcLogClass" style="display:none;">
                     <td><span id="tableExceptionRCClass">Root Cause Class</span></td>
                     <td><span id="tableExceptionRCMessage">Root Cause Message</span></td>
-                    <td><span id="tableExceptionRCDetail" class="viewLink" onclick="showExcRCDetail(this.id)"><spring:message code="errorlogging.viewLink" /></span></td>           
+                    <td><span id="tableExceptionRCDetail" class="viewLink" style="display: none;" onclick="showExcRCDetail(this.id)"><spring:message code="errorlogging.viewLink" /></span></td>           
                 </tr>
             </tbody>
         </table>
@@ -143,6 +145,7 @@
         <table id="exceptionRootCauseDetailTable" cellpadding="0" cellspacing="0" width="100%">
             <thead>
                 <tr class="trTdExcLogClass trTop">
+                    <th><spring:message code="errorlogging.detailTables.file" /></th>
                     <th><spring:message code="errorlogging.detailTables.class" /></th>
                     <th><spring:message code="errorlogging.detailTables.method" /></th>
                     <th><spring:message code="errorlogging.detailTables.lineNumber" /></th>
@@ -150,6 +153,7 @@
             </thead>
             <tbody id="ercdbody">
                 <tr id="ercdpattern" class="trTdExcLogClass" style="display:none;">
+                    <td><span id="tableExceptionRCDetailFileName">File Name</span></td>
                     <td><span id="tableExceptionRCDetailClassName">Class Name</span></td>
                     <td><span id="tableExceptionRCDetailMethodName">Method Name</span></td>
                     <td><span id="tableExceptionRCDetailLineNumber">Line Number</span></td>              
@@ -237,6 +241,12 @@
                     dwr.util.setValue("tableExceptionUser" + exceptionLogId, exceptionLog.user);
                     $("tableExceptionLogSelect" + exceptionLogId).name = exceptionLogId;
                     $("elpattern" + exceptionLogId).style.display = "table-row";
+                    if(exceptionLog.hasExceptionLogDetail == true){
+                        $("tableExceptionDetail" + exceptionLogId).style.display = "block"; 
+                    }
+                    if(exceptionLog.hasRootCause){
+                        $("tableExceptionRootCause" + exceptionLogId).style.display = "block"; 
+                    }
                     if(i % 2 == 0){
                         $("elpattern" + exceptionLogId).className = "even";
                     }else{
@@ -312,6 +322,7 @@
             }else{
                 if(excLogDetail != null){           
                     dwr.util.cloneNode("eldpattern", { idSuffix:id });
+                    dwr.util.setValue("tableExceptionLogFileName" + id, excLogDetail.fileName);
                     dwr.util.setValue("tableExceptionLogClassName" + id, excLogDetail.className);
                     dwr.util.setValue("tableExceptionLogMethodName" + id, excLogDetail.methodName);
                     dwr.util.setValue("tableExceptionLogLineNumber" + id, excLogDetail.lineNumber);          
@@ -346,6 +357,9 @@
                     $("ercpattern" + id).style.display = "table-row";
                     $("exceptionRootCause").style.display = "block";
                     $("tableExceptionRootCause"+id).setAttribute("class", "viewLinkClick");
+                    if(excRootCause.hasRootCauseDetail){
+                        $("tableExceptionRCDetail" +id).style.display = "block";
+                    }
                     if(prevExcRootCause != excLogId && prevExcRootCause != undefined){
                         $(prevExcRootCause).setAttribute("class", "viewLink");                  
                     }
@@ -368,6 +382,7 @@
             }else{
                 if(excRootCauseDetail != null){           
                     dwr.util.cloneNode("ercdpattern", { idSuffix:id });
+                    dwr.util.setValue("tableExceptionRCDetailFileName" + id, excRootCauseDetail.fileName);
                     dwr.util.setValue("tableExceptionRCDetailClassName" + id, excRootCauseDetail.className);
                     dwr.util.setValue("tableExceptionRCDetailMethodName" + id, excRootCauseDetail.methodName);
                     dwr.util.setValue("tableExceptionRCDetailLineNumber" + id, excRootCauseDetail.lineNumber);          

@@ -37,7 +37,7 @@
 <div id="successOrErrorSave"></div>
 
 <div style="clear: both;">
-    <input type="button" id="saveIgnoredErrors" style="margin-left: auto; margin-top: 10px;" value="Save" onclick="saveIgnoredErrors()"/>
+    <input type="button" id="saveIgnoredErrors" style="margin-left: auto; margin-top: 10px;" value="<spring:message code="errorlogging.ignredExceptions.save" />" onclick="saveIgnoredErrors()"/>
 </div>
 
 <script type="text/javascript">
