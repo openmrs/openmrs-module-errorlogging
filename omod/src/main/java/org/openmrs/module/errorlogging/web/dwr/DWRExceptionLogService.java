@@ -27,8 +27,7 @@ import org.openmrs.module.errorlogging.ExceptionLog;
 import org.openmrs.module.errorlogging.api.ExceptionLogService;
 
 /**
- * This class exposes some of the methods in {@link ExceptionLogService} via the
- * dwr package
+ * This class exposes some of the methods in {@link ExceptionLogService} via the dwr package.
  */
 public class DWRExceptionLogService {
 	
@@ -41,27 +40,34 @@ public class DWRExceptionLogService {
 	}
 	
 	/**
-	 * Get the list of exception logs by class name that thrown since
-	 * minExceptionDate and minExceptionTime
+	 * Get the list of exception logs by input parameters
 	 *
+	 * @param username user who experienced the exception
 	 * @param exceptionClass class name of the exception
-	 * @param startExceptionDateTime date/time since which exceptions thrown
-	 * @param endExceptionDateTime date/time to which exceptions thrownn
+	 * @param exceptionMessage message on the exception
+	 * @param openmrsVersion version of the OpenMRS
+	 * @param fileName file name where the exception occurred
+	 * @param lineNum line number of the file where the exception occurred
+	 * @param startExceptionDateTime date since which exceptions thrown
+	 * @param endExceptionDateTime date to which exceptions thrown
 	 * @param start starting from the "start" record
 	 * @param length retrieve the next "length" records from database
 	 * @return list of exception logs
 	 */
-	public List<ExceptionLogListItem> getExceptionLogs(String exceptionClass, String startExceptionDateTime,
+	public List<ExceptionLogListItem> getExceptionLogs(String username, String exceptionClass, String exceptionMessage,
+	                                                   String openmrsVersion, String fileName, String methodName,
+	                                                   Integer lineNum, String startExceptionDateTime,
 	                                                   String endExceptionDateTime, Integer start, Integer length) {
-		if (StringUtils.isBlank(exceptionClass)) {
-			exceptionClass = null;
-		} else {
-			exceptionClass = exceptionClass.trim();
-		}
+		username = processString(username);
+		exceptionClass = processString(exceptionClass);
+		exceptionMessage = processString(exceptionMessage);
+		openmrsVersion = processString(openmrsVersion);
+		fileName = processString(fileName);
+		methodName = processString(methodName);
 		Date startDateTime = getDateTime(startExceptionDateTime);
 		Date endDateTime = getDateTime(endExceptionDateTime);
-		List<ExceptionLog> exceptionLogs = exceptionLogService.getExceptionLogs(exceptionClass, startDateTime, endDateTime,
-		    start, length);
+		List<ExceptionLog> exceptionLogs = exceptionLogService.getExceptionLogs(username, exceptionClass, exceptionMessage,
+		    openmrsVersion, fileName, methodName, lineNum, startDateTime, endDateTime, start, length);
 		List<ExceptionLogListItem> exceptionLogItems = new Vector<ExceptionLogListItem>();
 		for (ExceptionLog exLog : exceptionLogs) {
 			exceptionLogItems.add(new ExceptionLogListItem(exLog));
@@ -73,20 +79,29 @@ public class DWRExceptionLogService {
 	 * Get the number of exception logs matching a search class name, the
 	 * minExceptionDate and the minExceptionTime
 	 *
+	 * @param username user who experienced the exception
 	 * @param exceptionClass class name of the exception
-	 * @param startExceptionDateTime date/time since which exceptions thrown
-	 * @param endExceptionDateTime date/time to which exceptions thrown
+	 * @param exceptionMessage message on the exception
+	 * @param openmrsVersion version of the OpenMRS
+	 * @param fileName file name where the exception occurred
+	 * @param lineNum line number of the file where the exception occurred
+	 * @param startExceptionDateTime date since which exceptions thrown
+	 * @param endExceptionDateTime date to which exceptions thrown
 	 * @return number of exception logs
 	 */
-	public Integer getCountOfExceptionLogs(String exceptionClass, String startExceptionDateTime, String endExceptionDateTime) {
-		if (StringUtils.isBlank(exceptionClass)) {
-			exceptionClass = null;
-		} else {
-			exceptionClass = exceptionClass.trim();
-		}
+	public Integer getCountOfExceptionLogs(String username, String exceptionClass, String exceptionMessage,
+	                                       String openmrsVersion, String fileName, String methodName, Integer lineNum,
+	                                       String startExceptionDateTime, String endExceptionDateTime) {
+		username = processString(username);
+		exceptionClass = processString(exceptionClass);
+		exceptionMessage = processString(exceptionMessage);
+		openmrsVersion = processString(openmrsVersion);
+		fileName = processString(fileName);
+		methodName = processString(methodName);
 		Date startDateTime = getDateTime(startExceptionDateTime);
 		Date endDateTime = getDateTime(endExceptionDateTime);
-		return exceptionLogService.getCountOfExceptionLogs(exceptionClass, startDateTime, endDateTime);
+		return exceptionLogService.getCountOfExceptionLogs(username, exceptionClass, exceptionMessage, openmrsVersion,
+		    fileName, methodName, lineNum, startDateTime, endDateTime);
 	}
 	
 	/**
@@ -141,39 +156,6 @@ public class DWRExceptionLogService {
 	}
 	
 	/**
-	 * Save errors that have to be ignored
-	 *
-	 * @param errors that have to be ignored
-	 * @return true in the case of a successful saving, otherwise - false
-	 */
-	public boolean saveIgnoredErrors(String errors) {
-		GlobalProperty glProp = Context.getAdministrationService().getGlobalPropertyObject(
-		    ErrorLoggingConstants.ERRROR_LOGGING_GP_IGNORED_EXCEPTION);
-		if (glProp != null) {
-			glProp.setPropertyValue(errors);
-			GlobalProperty saved = Context.getAdministrationService().saveGlobalProperty(glProp);
-			if (saved != null && saved.getPropertyValue().equals(errors)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Get ignored errors
-	 *
-	 * @return string which include ignored errors
-	 */
-	public String getIgnoredErrors() {
-		GlobalProperty glProp = Context.getAdministrationService().getGlobalPropertyObject(
-		    ErrorLoggingConstants.ERRROR_LOGGING_GP_IGNORED_EXCEPTION);
-		if (glProp != null) {
-			return glProp.getPropertyValue();
-		}
-		return null;
-	}
-	
-	/**
 	 * Delete exception logs
 	 *
 	 * @param ids ids of exception logs
@@ -211,5 +193,13 @@ public class DWRExceptionLogService {
 			}
 		}
 		return stExceptionDateTime;
+	}
+	
+	private String processString(String str) {
+		String resultStr = null;
+		if (StringUtils.isNotBlank(str)) {
+			resultStr = str.trim();
+		}
+		return resultStr;
 	}
 }

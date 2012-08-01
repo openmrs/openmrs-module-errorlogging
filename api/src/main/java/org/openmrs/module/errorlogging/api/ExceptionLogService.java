@@ -61,25 +61,39 @@ public interface ExceptionLogService extends OpenmrsService {
 	public ExceptionLog getExceptionLog(Integer exceptionLogId);
 	
 	/**
-	 * Get the list of exception logs by class name that thrown since minExceptionDateTime
+	 * Get the list of exception logs by input parameters
 	 * 
+	 * @param username user who experienced the exception
 	 * @param exceptionClass class name of the exception
+	 * @param exceptionMessage message on the exception
+	 * @param openmrsVersion version of the OpenMRS
+	 * @param fileName file name where the exception occurred
+	 * @param lineNum line number of the file where the exception occurred
 	 * @param startExceptionDateTime date since which exceptions thrown
 	 * @param endExceptionDateTime date to which exceptions thrown
 	 * @param start starting from the "start" record
 	 * @param length retrieve the next "length" records from database
 	 * @return list of exception logs
 	 */
-	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date startExceptionDateTime,
-	                                           Date endExceptionDateTime, Integer start, Integer length);
+	public List<ExceptionLog> getExceptionLogs(String username, String exceptionClass, String exceptionMessage,
+	                                           String openmrsVersion, String fileName, String methodName, Integer lineNum,
+	                                           Date startExceptionDateTime, Date endExceptionDateTime, Integer start,
+	                                           Integer length);
 	
 	/**
-	 * Return the number of exception logs matching a search class name and the minExceptionDateTime
+	 * Return the number of exception logs by input parameters
 	 * 
+	 * @param username user who experienced the exception
 	 * @param exceptionClass class name of the exception
+	 * @param exceptionMessage message on the exception
+	 * @param openmrsVersion version of the OpenMRS
+	 * @param fileName file name where the exception occurred
+	 * @param lineNum line number of the file where the exception occurred
 	 * @param startExceptionDateTime date since which exceptions thrown
 	 * @param endExceptionDateTime date to which exceptions thrown
 	 * @return the number of exception logs matching the search arguments
 	 */
-	public Integer getCountOfExceptionLogs(String exceptionClass, Date startExceptionDateTime, Date endExceptionDateTime);
+	public Integer getCountOfExceptionLogs(String username, String exceptionClass, String exceptionMessage,
+	                                       String openmrsVersion, String fileName, String methodName, Integer lineNum,
+	                                       Date startExceptionDateTime, Date endExceptionDateTime);
 }

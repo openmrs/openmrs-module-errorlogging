@@ -36,13 +36,17 @@ public interface ExceptionLogDAO {
 	public ExceptionLog getExceptionLog(Integer exceptionLogId);
 	
 	/**
-	 * @see {@link ExceptionLogService#getExceptionLogs(String, Date, Date, Integer, Integer)}
+	 * @see {@link ExceptionLogService#getExceptionLogs(String, String, String, String, String, String, Integer, Date, Date, Integer, Integer)}
 	 */
-	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date startExceptionDateTime,
-	                                           Date endExceptionDateTime, Integer start, Integer length);
+	public List<ExceptionLog> getExceptionLogs(String username, String exceptionClass, String exceptionMessage,
+	                                           String openmrsVersion, String fileName, String methodName, Integer lineNum,
+	                                           Date startExceptionDateTime, Date endExceptionDateTime, Integer start,
+	                                           Integer length);
 	
 	/**
-	 * @see {@link ExceptionLogService#getCountOfExceptionLogs(String, Date, Date)}
+	 * @see {@link ExceptionLogService#getCountOfExceptionLogs(String, String, String, String, String, String, Integer, Date, Date)}
 	 */
-	public Integer getCountOfExceptionLogs(String exceptionClass, Date startExceptionDateTime, Date endExceptionDateTime);
+	public Integer getCountOfExceptionLogs(String username, String exceptionClass, String exceptionMessage,
+	                                       String openmrsVersion, String fileName, String methodName, Integer lineNum,
+	                                       Date startExceptionDateTime, Date endExceptionDateTime);
 }

@@ -17,10 +17,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
+import org.openmrs.User;
 import org.openmrs.module.errorlogging.ExceptionLog;
+import org.openmrs.module.errorlogging.ExceptionLogDetail;
 import org.openmrs.module.errorlogging.api.db.ExceptionLogDAO;
 import org.openmrs.module.errorlogging.util.ExceptionLogUtil;
 
@@ -73,21 +73,15 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 	}
 	
 	/**
-	 * @see {@link ExceptionLogDAO#getExceptionLogs(String, Date, Date, Integer, Integer)}
+	 * @see {@link ExceptionLogDAO#getExceptionLogs(String, String, String, String, Integer, Date, Date, Integer, Integer)}
 	 */
 	@Override
-	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date startExceptionDateTime,
-	                                           Date endExceptionDateTime, Integer start, Integer length) {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExceptionLog.class);
-		if (exceptionClass != null) {
-			criteria.add(Restrictions.eq("exceptionClass", exceptionClass));
-		}
-		if (startExceptionDateTime != null) {
-			criteria.add(Restrictions.ge("dateCreated", startExceptionDateTime));
-		}
-		if (endExceptionDateTime != null) {
-			criteria.add(Restrictions.le("dateCreated", endExceptionDateTime));
-		}
+	public List<ExceptionLog> getExceptionLogs(String username, String exceptionClass, String exceptionMessage,
+	                                           String openmrsVersion, String fileName, String methodName, Integer lineNum,
+	                                           Date startExceptionDateTime, Date endExceptionDateTime, Integer start,
+	                                           Integer length) {
+		Criteria criteria = createExceptionLogSearchCriteria(username, exceptionClass, exceptionMessage, openmrsVersion,
+		    fileName, methodName, lineNum, startExceptionDateTime, endExceptionDateTime);
 		criteria.addOrder(Order.desc("dateCreated"));
 		if (start != null && start >= 0) {
 			criteria.setFirstResult(start);
@@ -99,20 +93,14 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 	}
 	
 	/**
-	 * @see {@link ExceptionLogDAO#getCountOfExceptionLogs(String, Date, Date)}
+	 * @see {@link ExceptionLogDAO#getCountOfExceptionLogs(String, String, String, String, String, Integer, Date, Date)}
 	 */
 	@Override
-	public Integer getCountOfExceptionLogs(String exceptionClass, Date startExceptionDateTime, Date endExceptionDateTime) {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExceptionLog.class);
-		if (exceptionClass != null) {
-			criteria.add(Restrictions.eq("exceptionClass", exceptionClass));
-		}
-		if (startExceptionDateTime != null) {
-			criteria.add(Restrictions.ge("dateCreated", startExceptionDateTime));
-		}
-		if (endExceptionDateTime != null) {
-			criteria.add(Restrictions.le("dateCreated", endExceptionDateTime));
-		}
+	public Integer getCountOfExceptionLogs(String username, String exceptionClass, String exceptionMessage,
+	                                       String openmrsVersion, String fileName, String methodName, Integer lineNum,
+	                                       Date startExceptionDateTime, Date endExceptionDateTime) {
+		Criteria criteria = createExceptionLogSearchCriteria(username, exceptionClass, exceptionMessage, openmrsVersion,
+		    fileName, methodName, lineNum, startExceptionDateTime, endExceptionDateTime);
 		criteria.setProjection(Projections.rowCount());
 		Object count = criteria.uniqueResult();
 		if (count instanceof Integer) {
@@ -120,5 +108,70 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 		} else {
 			return ExceptionLogUtil.convertToInteger((Long) count);
 		}
+	}
+	
+	/**
+	 * Utility method that returns a criteria for searching for exception logs
+	 * that match the specified search phrase and arguments
+	 *
+	 * @param username user who experienced the exception
+	 * @param exceptionClass class name of the exception
+	 * @param exceptionMessage message on the exception
+	 * @param openmrsVersion version of the OpenMRS
+	 * @param fileName file name where the exception occurred
+	 * @param lineNum line number of the file where the exception occurred
+	 * @param startExceptionDateTime date since which exceptions thrown
+	 * @param endExceptionDateTime date to which exceptions thrown
+	 * @param start starting from the "start" record
+	 * @param length retrieve the next "length" records from database
+	 * @return the generated criteria object
+	 */
+	private Criteria createExceptionLogSearchCriteria(String username, String exceptionClass, String exceptionMessage,
+	                                                  String openmrsVersion, String fileName, String methodName,
+	                                                  Integer lineNum, Date startExceptionDateTime, Date endExceptionDateTime) {
+		
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ExceptionLog.class);
+		Conjunction junction = Restrictions.conjunction();
+		if (username != null) {
+			DetachedCriteria subCriteria = DetachedCriteria.forClass(User.class);
+			subCriteria.add(Restrictions.like("username", username));
+			subCriteria.setProjection(Projections.property("userId"));
+			junction.add(Subqueries.propertyEq("creator.userId", subCriteria));
+		}
+		if (exceptionClass != null) {
+			criteria.add(Restrictions.like("exceptionClass", exceptionClass));
+		}
+		if (exceptionMessage != null) {
+			criteria.add(Restrictions.like("exceptionMessage", exceptionMessage, MatchMode.ANYWHERE));
+		}
+		if (openmrsVersion != null) {
+			criteria.add(Restrictions.like("openmrsVersion", openmrsVersion));
+		}
+		if (fileName != null) {
+			DetachedCriteria subCriteria = DetachedCriteria.forClass(ExceptionLogDetail.class);
+			subCriteria.add(Restrictions.like("fileName", fileName));
+			subCriteria.setProjection(Projections.property("exceptionLogDetailId"));
+			junction.add(Subqueries.propertyIn("exceptionLogId", subCriteria));
+		}
+		if (methodName != null) {
+			DetachedCriteria subCriteria = DetachedCriteria.forClass(ExceptionLogDetail.class);
+			subCriteria.add(Restrictions.like("methodName", methodName));
+			subCriteria.setProjection(Projections.property("exceptionLogDetailId"));
+			junction.add(Subqueries.propertyIn("exceptionLogId", subCriteria));
+		}
+		if (lineNum != null) {
+			DetachedCriteria subCriteria = DetachedCriteria.forClass(ExceptionLogDetail.class);
+			subCriteria.add(Restrictions.eq("lineNumber", lineNum));
+			subCriteria.setProjection(Projections.property("exceptionLogDetailId"));
+			junction.add(Subqueries.propertyIn("exceptionLogId", subCriteria));
+		}
+		if (startExceptionDateTime != null) {
+			criteria.add(Restrictions.ge("dateCreated", startExceptionDateTime));
+		}
+		if (endExceptionDateTime != null) {
+			criteria.add(Restrictions.le("dateCreated", endExceptionDateTime));
+		}
+		criteria.add(junction);
+		return criteria;
 	}
 }

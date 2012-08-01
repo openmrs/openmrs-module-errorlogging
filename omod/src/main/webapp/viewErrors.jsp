@@ -12,25 +12,85 @@
 <b class="boxHeader"><spring:message code="errorlogging.querytools.title" /></b>
 <div class="box" id="querytoolsbox">
     <form name="querytools">
-        <table>
+        <table class="querytable" cellspacing="5">            
             <tr>
-                <td><spring:message code="errorlogging.querytools.class" />:</td>
                 <td>
-                    <input type="text" id="exceptionLogClass" name="exceptionLogClass"/>
+                    <div class="title">
+                        <spring:message code="errorlogging.querytools.username" />:
+                    </div>
+                    <div>
+                        <input type="text" id="exceptionLogUser" name="exceptionLogUser"/>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <spring:message code="errorlogging.querytools.class" />:
+                    </div>
+                    <div>
+                        <input type="text" id="exceptionLogClass" name="exceptionLogClass" style="width: 250px;"/>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <spring:message code="errorlogging.querytools.message" />:
+                    </div>
+                    <div>
+                        <input type="text" id="exceptionLogMessage" name="exceptionLogMessage" style="width: 250px;"/>
+                    </div>
+                </td>
+                <td>
+                    <div class="title">
+                        <spring:message code="errorlogging.querytools.openmrsVersion" />:
+                    </div>
+                    <div>
+                        <input type="text" id="exceptionLogOpenMRSVersion" name="exceptionLogOpenMRSVersion"/>
+                    </div>
+                </td>
+                <td>
+                    <div class="title">
+                        <spring:message code="errorlogging.querytools.since" />:
+                    </div>
+                    <div>
+                        <input type="text" id="exceptionLogStartDateTime" name="exceptionLogStartDateTime" onfocus="showDateTimePicker(this)" /> 
+                    </div>
+                </td> 
+                <td>
+                    <div class="title">
+                        <spring:message code="errorlogging.querytools.to" />:
+                    </div>
+                    <div>
+                        <input type="text" id="exceptionLogEndDateTime" name="exceptionLogEndDateTime" onfocus="showDateTimePicker(this)"/> 
+                    </div>
                 </td>
             </tr>
+        </table>
+        <table class="querytable" cellspacing="5">
             <tr>
-                <td><spring:message code="errorlogging.querytools.since" />:<br/><i style="font-weight: normal; font-size: 0.8em;">(<spring:message code="general.format"/>: <spring:message code="errorlogging.dateTimeFormat" />)</i></td>
-                <td valign="top">
-                    <input type="text" id="exceptionLogStartDateTime" name="exceptionLogStartDateTime" onfocus="showDateTimePicker(this)" />            
+                <td>
+                    <div class="title">
+                        <spring:message code="errorlogging.querytools.fileName" />:
+                    </div>
+                    <div>
+                        <input type="text" id="exceptionLogFileName" name="exceptionLogFileName"/>
+                    </div>
                 </td>
-            </tr>
-            <tr>
-                <td><spring:message code="errorlogging.querytools.to" />:<br/><i style="font-weight: normal; font-size: 0.8em;">(<spring:message code="general.format"/>: <spring:message code="errorlogging.dateTimeFormat" />)</i></td>
-                <td valign="top">
-                    <input type="text" id="exceptionLogEndDateTime" name="exceptionLogEndDateTime" onfocus="showDateTimePicker(this)"/>  
+                <td>
+                    <div class="title">
+                        <spring:message code="errorlogging.querytools.methodName" />:
+                    </div>
+                    <div>
+                        <input type="text" id="exceptionLogMethodName" name="exceptionLogMethodName"/>
+                    </div>
                 </td>
-            </tr>    
+                <td>
+                    <div>
+                        <spring:message code="errorlogging.querytools.lineNum" />:
+                    </div>
+                    <div>
+                        <input type="text" id="exceptionLogLineNum" name="exceptionLogLineNum" style="width: 50px;"/>
+                    </div>
+                </td>
+            </tr> 
         </table>       
     </form>
 </div>
@@ -172,7 +232,13 @@
     function fillTable(prevOrNext) {
         var start;        
         var form = document.forms['querytools'];
+        var username = form.elements['exceptionLogUser'].value;
         var excClass = form.elements['exceptionLogClass'].value;
+        var excMessage = form.elements['exceptionLogMessage'].value;
+        var excFileName = form.elements['exceptionLogFileName'].value;
+        var excMethodName = form.elements['exceptionLogMethodName'].value;
+        var excLineNum = form.elements['exceptionLogLineNum'].value;
+        var excOpenMRSVersion = form.elements['exceptionLogOpenMRSVersion'].value;
         var onPage = parseInt(document.forms['tablenavigation'].elements['onPage'].value, 10);
         if( prevonPage != undefined && prevonPage != onPage && prevOrNext != "show"){
             onPage = prevonPage;
@@ -181,6 +247,13 @@
         if(isNaN(onPage)){
             alert("<spring:message code="errorlogging.tableNavigation.onPage.wrongValueMessage" />");
             return;
+        }
+        if(excLineNum != null && excLineNum != ''){      
+            excLineNum = parseInt(excLineNum, 10);
+            if(isNaN(excLineNum)){
+                alert("<spring:message code="errorlogging.querytools.lineNum.wrongValueMessage" />");
+                return;
+            }
         }
         var startDateTimeString = form.elements['exceptionLogStartDateTime'].value;
         var endDateTimeString = form.elements['exceptionLogEndDateTime'].value;   
@@ -221,9 +294,9 @@
         }    
         
         dwr.engine.beginBatch();
-        getCount(excClass, startDateTimeString, endDateTimeString);
+        getCount(username, excClass, excMessage, excOpenMRSVersion, excFileName, excMethodName, excLineNum, startDateTimeString, endDateTimeString);
 
-        DWRExceptionLogService.getExceptionLogs(excClass, startDateTimeString, endDateTimeString, start, onPage, function(exceptionLogs) {
+        DWRExceptionLogService.getExceptionLogs(username, excClass, excMessage, excOpenMRSVersion, excFileName, excMethodName, excLineNum, startDateTimeString, endDateTimeString, start, onPage, function(exceptionLogs) {
             var isEmpty;
             // Delete all the rows except for the "pattern" row
             dwr.util.removeAllRows("elbody", { filter:function(tr) {return (tr.id != "elpattern");}});
@@ -303,8 +376,8 @@
         dwr.engine.endBatch();
     }
     
-    function getCount(excClass, startDateTimeString, endDateTimeString){
-        DWRExceptionLogService.getCountOfExceptionLogs(excClass, startDateTimeString, endDateTimeString, function(countOfExcLogs){
+    function getCount(username, excClass, excMessage, excOpenMRSVersion, excFileName, excMethodName, excLineNum, startDateTimeString, endDateTimeString){
+        DWRExceptionLogService.getCountOfExceptionLogs(username, excClass, excMessage, excOpenMRSVersion, excFileName, excMethodName, excLineNum, startDateTimeString, endDateTimeString, function(countOfExcLogs){
             count = countOfExcLogs;
         });
     }
@@ -430,7 +503,7 @@
             }
             res[i] = id;
         }
-        if(res.length > 0){
+        if(res.length > 0){            
             dwr.engine.beginBatch();
             DWRExceptionLogService.purgeExceptionLogs(res, function(result){
                 if(result){

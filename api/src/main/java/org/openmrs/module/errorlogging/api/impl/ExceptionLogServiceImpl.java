@@ -68,19 +68,25 @@ public class ExceptionLogServiceImpl extends BaseOpenmrsService implements Excep
 	}
 	
 	/**
-	 * @see {@link ExceptionLogService#getExceptionLogs(String, Date, Date, Integer, Integer)}
+	 * @see {@link ExceptionLogService#getExceptionLogs(String, String, String, String, String, String, Integer, Date, Date, Integer, Integer)}
 	 */
 	@Override
-	public List<ExceptionLog> getExceptionLogs(String exceptionClass, Date startExceptionDateTime,
-	                                           Date endExceptionDateTime, Integer start, Integer length) {
-		return dao.getExceptionLogs(exceptionClass, startExceptionDateTime, endExceptionDateTime, start, length);
+	public List<ExceptionLog> getExceptionLogs(String username, String exceptionClass, String exceptionMessage,
+	                                           String openmrsVersion, String fileName, String methodName, Integer lineNum,
+	                                           Date startExceptionDateTime, Date endExceptionDateTime, Integer start,
+	                                           Integer length) {
+		return dao.getExceptionLogs(username, exceptionClass, exceptionMessage, openmrsVersion, fileName, methodName,
+		    lineNum, startExceptionDateTime, endExceptionDateTime, start, length);
 	}
 	
 	/**
-	 * @see {@link ExceptionLogService#getCountOfExceptionLogs(String, Date, Date)}
+	 * @see {@link ExceptionLogService#getCountOfExceptionLogs(String, String, String, String, String, String, Integer, Date, Date)}
 	 */
 	@Override
-	public Integer getCountOfExceptionLogs(String exceptionClass, Date startExceptionDateTime, Date endExceptionDateTime) {
-		return dao.getCountOfExceptionLogs(exceptionClass, startExceptionDateTime, endExceptionDateTime);
+	public Integer getCountOfExceptionLogs(String username, String exceptionClass, String exceptionMessage,
+	                                       String openmrsVersion, String fileName, String methodName, Integer lineNum,
+	                                       Date startExceptionDateTime, Date endExceptionDateTime) {
+		return dao.getCountOfExceptionLogs(username, exceptionClass, exceptionMessage, openmrsVersion, fileName, methodName,
+		    lineNum, startExceptionDateTime, endExceptionDateTime);
 	}
 }

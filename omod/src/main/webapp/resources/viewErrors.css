@@ -42,3 +42,12 @@
 .trHover{
     background-color: #f0e68c;
 }
+
+.querytable tr{
+    text-align: left; 
+    vertical-align: top; 
+}
+
+.querytable .title{
+    margin-left: 2px;
+}
