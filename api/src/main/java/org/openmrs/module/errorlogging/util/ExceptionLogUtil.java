@@ -38,7 +38,7 @@ public class ExceptionLogUtil {
 		        OpenmrsConstants.OPENMRS_VERSION_SHORT);
 		
 		StackTraceElement[] stTrElements = exception.getStackTrace();
-		if (stTrElements != null) {
+		if (stTrElements != null && stTrElements.length > 0) {
 			ExceptionLogDetail excLogDetail = new ExceptionLogDetail(stTrElements[0].getFileName(), stTrElements[0]
 			        .getClassName(), stTrElements[0].getMethodName(), stTrElements[0].getLineNumber());
 			excLog.setExceptionLogDetail(excLogDetail);
@@ -50,7 +50,7 @@ public class ExceptionLogUtil {
 			excLog.setExceptionRootCause(excRootCause);
 			
 			StackTraceElement[] stTrRootCauseElements = rootCause.getStackTrace();
-			if (stTrRootCauseElements != null) {
+			if (stTrRootCauseElements != null && stTrRootCauseElements.length > 0) {
 				ExceptionRootCauseDetail excRootCauseDetail = new ExceptionRootCauseDetail(stTrRootCauseElements[0]
 				        .getFileName(), stTrRootCauseElements[0].getClassName(), stTrRootCauseElements[0].getMethodName(),
 				        stTrRootCauseElements[0].getLineNumber());
