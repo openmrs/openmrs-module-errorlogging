@@ -14,22 +14,6 @@
     background-color: #FFFFFF;
     cursor: default;
 }
-.viewLink{
-    color: #31587a;
-    text-decoration:underline;
-    cursor:pointer;
-    cursor:hand;
-}
-.viewLinkClick{
-    color: #31587a;
-    text-decoration:none;
-    font-weight: bold;
-    cursor:pointer;
-    cursor:hand;
-}
-.viewLink:hover {
-    text-decoration: none;
-}
 .trTop{ 
     background-color: #E7E7E7;
 }
@@ -38,16 +22,32 @@
     vertical-align: top; 
     padding: 5px;
 }
-
 .trHover{
     background-color: #f0e68c;
 }
-
 .querytable tr{
     text-align: left; 
     vertical-align: top; 
 }
-
 .querytable .title{
     margin-left: 2px;
+}
+tr .eldetail{
+    border: 1px solid #1aac9b;
+    background-color: #d9d5d5;
+}
+.tableTop{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+}
+.tableBottom {
+    padding: 10px;
+}
+.removExcLogButton{
+    float: right;
+}
+div#exceptionLogTable_length{
+    text-align: left;
+    float: left;
 }

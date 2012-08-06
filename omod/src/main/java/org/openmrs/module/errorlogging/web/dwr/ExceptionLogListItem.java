@@ -11,11 +11,8 @@
  */
 package org.openmrs.module.errorlogging.web.dwr;
 
-import java.util.Calendar;
-import java.util.Date;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.module.errorlogging.ExceptionLog;
 import org.openmrs.module.errorlogging.ExceptionLogDetail;
 import org.openmrs.module.errorlogging.ExceptionRootCause;
 import org.openmrs.module.errorlogging.ExceptionRootCauseDetail;
@@ -28,21 +25,12 @@ public class ExceptionLogListItem {
 	
 	private String uuid;
 	
-	//For ExceptionLog and ExceptionRootCause
+	//For ExceptionRootCause
 	private String exceptionClass;
 	
 	private String exceptionMessage;
 	
-	//For ExceptionLog
-	private String openmrsVersion;
-	
-	private String exceptionDateTime;
-	
-	private String user;
-	
-	private boolean hasRootCause;
-	
-	private boolean hasExceptionLogDetail;
+	private boolean hasRootCauseDetail;
 	
 	//For ExceptionLogDetail and ExceptionRootCauseDetail
 	
@@ -53,31 +41,6 @@ public class ExceptionLogListItem {
 	private String methodName;
 	
 	private Integer lineNumber;
-	
-	//For ExceptionRootCause
-	
-	private boolean hasRootCauseDetail;
-	
-	/**
-	 * Constructor for ExceptionLog
-	 * 
-	 * @param exceptionLog 
-	 */
-	public ExceptionLogListItem(ExceptionLog exceptionLog) {
-		this.id = exceptionLog.getExceptionLogId();
-		this.uuid = exceptionLog.getUuid();
-		this.exceptionClass = exceptionLog.getExceptionClass();
-		this.exceptionMessage = exceptionLog.getExceptionMessage();
-		setExceptionDateTime(exceptionLog.getExceptionDateTime());
-		this.openmrsVersion = exceptionLog.getOpenmrsVersion();
-		this.user = exceptionLog.getUser().getUsername();
-		if (exceptionLog.getExceptionLogDetail() != null) {
-			this.hasExceptionLogDetail = true;
-		}
-		if (exceptionLog.getExceptionRootCause() != null) {
-			this.hasRootCause = true;
-		}
-	}
 	
 	/**
 	 * Constructor for ExceptionRootCause
@@ -179,41 +142,6 @@ public class ExceptionLogListItem {
 	}
 	
 	/**
-	 * @return the openmrsVersion
-	 */
-	public String getOpenmrsVersion() {
-		return openmrsVersion;
-	}
-	
-	/**
-	 * @param openmrsVersion the openmrsVersion to set
-	 */
-	public void setOpenmrsVersion(String openmrsVersion) {
-		this.openmrsVersion = openmrsVersion;
-	}
-	
-	/**
-	 * @return the exceptionDateTime
-	 */
-	public String getExceptionDateTime() {
-		return exceptionDateTime;
-	}
-	
-	/**
-	 * @return the user
-	 */
-	public String getUser() {
-		return user;
-	}
-	
-	/**
-	 * @param user the user to set
-	 */
-	public void setUser(String user) {
-		this.user = user;
-	}
-	
-	/**
 	 * @return the fileName
 	 */
 	public String getFileName() {
@@ -270,34 +198,6 @@ public class ExceptionLogListItem {
 	}
 	
 	/**
-	 * @return the hasRootCause
-	 */
-	public boolean isHasRootCause() {
-		return hasRootCause;
-	}
-	
-	/**
-	 * @param hasRootCause the hasRootCause to set
-	 */
-	public void setHasRootCause(boolean hasRootCause) {
-		this.hasRootCause = hasRootCause;
-	}
-	
-	/**
-	 * @return the hasExceptionLogDetail
-	 */
-	public boolean isHasExceptionLogDetail() {
-		return hasExceptionLogDetail;
-	}
-	
-	/**
-	 * @param hasExceptionLogDetail the hasExceptionLogDetail to set
-	 */
-	public void setHasExceptionLogDetail(boolean hasExceptionLogDetail) {
-		this.hasExceptionLogDetail = hasExceptionLogDetail;
-	}
-	
-	/**
 	 * @return the hasRootCauseDetail
 	 */
 	public boolean isHasRootCauseDetail() {
@@ -328,39 +228,5 @@ public class ExceptionLogListItem {
 			return false;
 		}
 		return getUuid().equals(other.getUuid());
-	}
-	
-	/**
-	 * @param exceptionDateTime the exceptionDateTime to set
-	 */
-	public void setExceptionDateTime(Date exceptionDateTime) {
-		Calendar c = Calendar.getInstance();
-		c.setTime(exceptionDateTime);
-		String day = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
-		day = addZero(day);
-		String month = Integer.toString(c.get(Calendar.MONTH) + 1);
-		month = addZero(month);
-		String year = Integer.toString(c.get(Calendar.YEAR));
-		year = addZero(year);
-		String hour = Integer.toString(c.get(Calendar.HOUR_OF_DAY));
-		hour = addZero(hour);
-		String minute = Integer.toString(c.get(Calendar.MINUTE));
-		minute = addZero(minute);
-		String second = Integer.toString(c.get(Calendar.SECOND));
-		second = addZero(second);
-		
-		this.exceptionDateTime = day + "/" + month + "/" + year + " " + hour + ":" + minute + ":" + second;
-	}
-	
-	/**
-	 * 
-	 * @param value
-	 * @return 
-	 */
-	private String addZero(String value) {
-		if (value.length() == 1) {
-			value = "0" + value;
-		}
-		return value;
 	}
 }

@@ -11,18 +11,9 @@
  */
 package org.openmrs.module.errorlogging.web.dwr;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Vector;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.GlobalProperty;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.errorlogging.ErrorLoggingConstants;
 import org.openmrs.module.errorlogging.ExceptionLog;
 import org.openmrs.module.errorlogging.api.ExceptionLogService;
 
@@ -37,71 +28,6 @@ public class DWRExceptionLogService {
 	
 	public DWRExceptionLogService() {
 		exceptionLogService = Context.getService(ExceptionLogService.class);
-	}
-	
-	/**
-	 * Get the list of exception logs by input parameters
-	 *
-	 * @param username user who experienced the exception
-	 * @param exceptionClass class name of the exception
-	 * @param exceptionMessage message on the exception
-	 * @param openmrsVersion version of the OpenMRS
-	 * @param fileName file name where the exception occurred
-	 * @param lineNum line number of the file where the exception occurred
-	 * @param startExceptionDateTime date since which exceptions thrown
-	 * @param endExceptionDateTime date to which exceptions thrown
-	 * @param start starting from the "start" record
-	 * @param length retrieve the next "length" records from database
-	 * @return list of exception logs
-	 */
-	public List<ExceptionLogListItem> getExceptionLogs(String username, String exceptionClass, String exceptionMessage,
-	                                                   String openmrsVersion, String fileName, String methodName,
-	                                                   Integer lineNum, String startExceptionDateTime,
-	                                                   String endExceptionDateTime, Integer start, Integer length) {
-		username = processString(username);
-		exceptionClass = processString(exceptionClass);
-		exceptionMessage = processString(exceptionMessage);
-		openmrsVersion = processString(openmrsVersion);
-		fileName = processString(fileName);
-		methodName = processString(methodName);
-		Date startDateTime = getDateTime(startExceptionDateTime);
-		Date endDateTime = getDateTime(endExceptionDateTime);
-		List<ExceptionLog> exceptionLogs = exceptionLogService.getExceptionLogs(username, exceptionClass, exceptionMessage,
-		    openmrsVersion, fileName, methodName, lineNum, startDateTime, endDateTime, start, length);
-		List<ExceptionLogListItem> exceptionLogItems = new Vector<ExceptionLogListItem>();
-		for (ExceptionLog exLog : exceptionLogs) {
-			exceptionLogItems.add(new ExceptionLogListItem(exLog));
-		}
-		return exceptionLogItems;
-	}
-	
-	/**
-	 * Get the number of exception logs matching a search class name, the
-	 * minExceptionDate and the minExceptionTime
-	 *
-	 * @param username user who experienced the exception
-	 * @param exceptionClass class name of the exception
-	 * @param exceptionMessage message on the exception
-	 * @param openmrsVersion version of the OpenMRS
-	 * @param fileName file name where the exception occurred
-	 * @param lineNum line number of the file where the exception occurred
-	 * @param startExceptionDateTime date since which exceptions thrown
-	 * @param endExceptionDateTime date to which exceptions thrown
-	 * @return number of exception logs
-	 */
-	public Integer getCountOfExceptionLogs(String username, String exceptionClass, String exceptionMessage,
-	                                       String openmrsVersion, String fileName, String methodName, Integer lineNum,
-	                                       String startExceptionDateTime, String endExceptionDateTime) {
-		username = processString(username);
-		exceptionClass = processString(exceptionClass);
-		exceptionMessage = processString(exceptionMessage);
-		openmrsVersion = processString(openmrsVersion);
-		fileName = processString(fileName);
-		methodName = processString(methodName);
-		Date startDateTime = getDateTime(startExceptionDateTime);
-		Date endDateTime = getDateTime(endExceptionDateTime);
-		return exceptionLogService.getCountOfExceptionLogs(username, exceptionClass, exceptionMessage, openmrsVersion,
-		    fileName, methodName, lineNum, startDateTime, endDateTime);
 	}
 	
 	/**
@@ -170,36 +96,5 @@ public class DWRExceptionLogService {
 			exceptionLogService.purgeExceptionLog(excLog);
 		}
 		return true;
-	}
-	
-	/**
-	 * Convert input string arguments to Date
-	 *
-	 * @param exceptionDateTime date string
-	 * @return converted date
-	 */
-	private Date getDateTime(String exceptionDateTime) {
-		Date stExceptionDateTime = null;
-		if (StringUtils.isNotBlank(exceptionDateTime)) {
-			exceptionDateTime = exceptionDateTime.trim();
-			
-			String dateTime = exceptionDateTime + ":00";
-			DateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-			try {
-				stExceptionDateTime = (Date) format.parse(dateTime);
-			}
-			catch (ParseException ex) {
-				log.error("Cannot parse date", ex);
-			}
-		}
-		return stExceptionDateTime;
-	}
-	
-	private String processString(String str) {
-		String resultStr = null;
-		if (StringUtils.isNotBlank(str)) {
-			resultStr = str.trim();
-		}
-		return resultStr;
 	}
 }
