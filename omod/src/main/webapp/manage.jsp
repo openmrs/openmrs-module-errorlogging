@@ -1,6 +1,8 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
-<%@ include file="/WEB-INF/template/header.jsp"%>
 
+<openmrs:require privilege="Manage Error Logging" otherwise="/login.htm" redirect="/module/errorlogging/manage.form" />
+
+<%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp"%>
 
 <style>

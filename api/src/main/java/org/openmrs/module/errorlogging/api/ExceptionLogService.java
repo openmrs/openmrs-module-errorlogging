@@ -13,11 +13,9 @@ package org.openmrs.module.errorlogging.api;
 
 import java.util.Date;
 import java.util.List;
+import org.openmrs.annotation.Authorized;
 import org.openmrs.api.OpenmrsService;
-import org.openmrs.module.errorlogging.ExceptionLog;
-import org.openmrs.module.errorlogging.ExceptionLogDetail;
-import org.openmrs.module.errorlogging.ExceptionRootCause;
-import org.openmrs.module.errorlogging.ExceptionRootCauseDetail;
+import org.openmrs.module.errorlogging.*;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -50,6 +48,7 @@ public interface ExceptionLogService extends OpenmrsService {
 	 * 
 	 * @param exceptionLog exception log to be deleted from the database
 	 */
+	@Authorized( { ErrorLoggingConstants.PRIV_VIEW_ERROR_LOGGING })
 	public void purgeExceptionLog(ExceptionLog exceptionLog);
 	
 	/**
@@ -58,6 +57,7 @@ public interface ExceptionLogService extends OpenmrsService {
 	 * @param exceptionLogId id of exception log
 	 * @return exception log
 	 */
+	@Authorized( { ErrorLoggingConstants.PRIV_VIEW_ERROR_LOGGING })
 	public ExceptionLog getExceptionLog(Integer exceptionLogId);
 	
 	/**
@@ -75,6 +75,7 @@ public interface ExceptionLogService extends OpenmrsService {
 	 * @param length retrieve the next "length" records from database
 	 * @return list of exception logs
 	 */
+	@Authorized( { ErrorLoggingConstants.PRIV_VIEW_ERROR_LOGGING })
 	public List<ExceptionLog> getExceptionLogs(String username, String exceptionClass, String exceptionMessage,
 	                                           String openmrsVersion, String fileName, String methodName, Integer lineNum,
 	                                           Date startExceptionDateTime, Date endExceptionDateTime, Integer start,
@@ -93,6 +94,7 @@ public interface ExceptionLogService extends OpenmrsService {
 	 * @param endExceptionDateTime date to which exceptions thrown
 	 * @return the number of exception logs matching the search arguments
 	 */
+	@Authorized( { ErrorLoggingConstants.PRIV_VIEW_ERROR_LOGGING })
 	public Integer getCountOfExceptionLogs(String username, String exceptionClass, String exceptionMessage,
 	                                       String openmrsVersion, String fileName, String methodName, Integer lineNum,
 	                                       Date startExceptionDateTime, Date endExceptionDateTime);

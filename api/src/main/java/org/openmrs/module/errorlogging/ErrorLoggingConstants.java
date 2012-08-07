@@ -17,4 +17,8 @@ public class ErrorLoggingConstants {
 	
 	public static final String[] ERRROR_LOGGING_DEDAULT_IGNORED_EXCEPTION = new String[] {
 	        "org.openmrs.api.APIAuthenticationException", "org.openmrs.api.context.ContextAuthenticationException" };
+	
+	public static final String PRIV_MANAGE_ERROR_LOGGING = "Manage Error Logging";
+	
+	public static final String PRIV_VIEW_ERROR_LOGGING = "View Error Logging";
 }

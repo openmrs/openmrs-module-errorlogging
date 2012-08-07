@@ -1,6 +1,8 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
-<%@ include file="/WEB-INF/template/header.jsp"%>
 
+<openmrs:require privilege="View Error Logging" otherwise="/login.htm" redirect="/module/errorlogging/viewErrors.form" />
+
+<%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp"%>
 
 <openmrs:htmlInclude file="/scripts/timepicker/timepicker.js" />
@@ -13,88 +15,86 @@
 
 <b class="boxHeader"><spring:message code="errorlogging.querytools.title" /></b>
 <div class="box" id="querytoolsbox">
-    <form name="querytools">
-        <table class="querytable" cellspacing="5">            
-            <tr>
-                <td>
-                    <div class="title">
-                        <spring:message code="errorlogging.querytools.username" />:
-                    </div>
-                    <div>
-                        <input type="text" id="exceptionLogUser" name="exceptionLogUser"/>
-                    </div>
-                </td>
-                <td>
-                    <div>
-                        <spring:message code="errorlogging.querytools.class" />:
-                    </div>
-                    <div>
-                        <input type="text" id="exceptionLogClass" name="exceptionLogClass" style="width: 250px;"/>
-                    </div>
-                </td>
-                <td>
-                    <div>
-                        <spring:message code="errorlogging.querytools.message" />:
-                    </div>
-                    <div>
-                        <input type="text" id="exceptionLogMessage" name="exceptionLogMessage" style="width: 250px;"/>
-                    </div>
-                </td>
-                <td>
-                    <div class="title">
-                        <spring:message code="errorlogging.querytools.openmrsVersion" />:
-                    </div>
-                    <div>
-                        <input type="text" id="exceptionLogOpenMRSVersion" name="exceptionLogOpenMRSVersion"/>
-                    </div>
-                </td>
-                <td>
-                    <div class="title">
-                        <spring:message code="errorlogging.querytools.since" />:
-                    </div>
-                    <div>
-                        <input type="text" id="exceptionLogStartDateTime" name="exceptionLogStartDateTime" onfocus="showDateTimePicker(this)" /> 
-                    </div>
-                </td> 
-                <td>
-                    <div class="title">
-                        <spring:message code="errorlogging.querytools.to" />:
-                    </div>
-                    <div>
-                        <input type="text" id="exceptionLogEndDateTime" name="exceptionLogEndDateTime" onfocus="showDateTimePicker(this)"/> 
-                    </div>
-                </td>
-            </tr>
-        </table>
-        <table class="querytable" cellspacing="5">
-            <tr>
-                <td>
-                    <div class="title">
-                        <spring:message code="errorlogging.querytools.fileName" />:
-                    </div>
-                    <div>
-                        <input type="text" id="exceptionLogFileName" name="exceptionLogFileName"/>
-                    </div>
-                </td>
-                <td>
-                    <div class="title">
-                        <spring:message code="errorlogging.querytools.methodName" />:
-                    </div>
-                    <div>
-                        <input type="text" id="exceptionLogMethodName" name="exceptionLogMethodName"/>
-                    </div>
-                </td>
-                <td>
-                    <div>
-                        <spring:message code="errorlogging.querytools.lineNum" />:
-                    </div>
-                    <div>
-                        <input type="text" id="exceptionLogLineNum" name="exceptionLogLineNum" style="width: 50px;"/>
-                    </div>
-                </td>
-            </tr> 
-        </table>       
-    </form>
+    <table class="querytable" cellspacing="5">            
+        <tr>
+            <td>
+                <div class="title">
+                    <spring:message code="errorlogging.querytools.username" />:
+                </div>
+                <div>
+                    <input type="text" id="exceptionLogUser" name="exceptionLogUser"/>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <spring:message code="errorlogging.querytools.class" />:
+                </div>
+                <div>
+                    <input type="text" id="exceptionLogClass" name="exceptionLogClass" style="width: 250px;"/>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <spring:message code="errorlogging.querytools.message" />:
+                </div>
+                <div>
+                    <input type="text" id="exceptionLogMessage" name="exceptionLogMessage" style="width: 250px;"/>
+                </div>
+            </td>
+            <td>
+                <div class="title">
+                    <spring:message code="errorlogging.querytools.openmrsVersion" />:
+                </div>
+                <div>
+                    <input type="text" id="exceptionLogOpenMRSVersion" name="exceptionLogOpenMRSVersion"/>
+                </div>
+            </td>
+            <td>
+                <div class="title">
+                    <spring:message code="errorlogging.querytools.since" />:
+                </div>
+                <div>
+                    <input type="text" id="exceptionLogStartDateTime" name="exceptionLogStartDateTime" onfocus="showDateTimePicker(this)" /> 
+                </div>
+            </td> 
+            <td>
+                <div class="title">
+                    <spring:message code="errorlogging.querytools.to" />:
+                </div>
+                <div>
+                    <input type="text" id="exceptionLogEndDateTime" name="exceptionLogEndDateTime" onfocus="showDateTimePicker(this)"/> 
+                </div>
+            </td>
+        </tr>
+    </table>
+    <table class="querytable" cellspacing="5">
+        <tr>
+            <td>
+                <div class="title">
+                    <spring:message code="errorlogging.querytools.fileName" />:
+                </div>
+                <div>
+                    <input type="text" id="exceptionLogFileName" name="exceptionLogFileName"/>
+                </div>
+            </td>
+            <td>
+                <div class="title">
+                    <spring:message code="errorlogging.querytools.methodName" />:
+                </div>
+                <div>
+                    <input type="text" id="exceptionLogMethodName" name="exceptionLogMethodName"/>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <spring:message code="errorlogging.querytools.lineNum" />:
+                </div>
+                <div>
+                    <input type="text" id="exceptionLogLineNum" name="exceptionLogLineNum" style="width: 50px;"/>
+                </div>
+            </td>
+        </tr> 
+    </table>       
 </div>
 
 <div>
@@ -146,16 +146,15 @@
         
         $j('#showExceptionLogs').click(function() {
             fnDraw = true;
-            var form = document.forms['querytools'];
-            username = form.elements['exceptionLogUser'].value;
-            excClass = form.elements['exceptionLogClass'].value;
-            excMessage = form.elements['exceptionLogMessage'].value;
-            excOpenMRSVersion = form.elements['exceptionLogOpenMRSVersion'].value;
-            excFileName = form.elements['exceptionLogFileName'].value;
-            excMethodName = form.elements['exceptionLogMethodName'].value;
-            excLineNum = form.elements['exceptionLogLineNum'].value;
-            startDateTimeString = form.elements['exceptionLogStartDateTime'].value;
-            endDateTimeString = form.elements['exceptionLogEndDateTime'].value; 
+            username = $j('#exceptionLogUser').val();
+            excClass = $j('#exceptionLogClass').val();
+            excMessage =$j('#exceptionLogMessage').val();
+            excOpenMRSVersion = $j('#exceptionLogOpenMRSVersion').val();
+            excFileName = $j('#exceptionLogFileName').val();
+            excMethodName = $j('#exceptionLogMethodName').val();
+            excLineNum = $j('#exceptionLogLineNum').val();
+            startDateTimeString = $j('#exceptionLogStartDateTime').val();
+            endDateTimeString = $j('#exceptionLogEndDateTime').val(); 
             if(excLineNum != null && excLineNum != ''){      
                 var intExcLineNum = parseInt(excLineNum, 10);
                 if(isNaN(intExcLineNum)){

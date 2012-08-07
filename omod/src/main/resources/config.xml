@@ -36,6 +36,16 @@
         <class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.ErrorHandlerExtension</class>
     </extension>
     
+    <privilege>
+        <name>Manage Error Logging</name>
+        <description>Able to manage and configure error logging module</description>
+    </privilege>
+    
+    <privilege>
+        <name>View Error Logging</name>
+        <description>Able to view and remove error logs</description>
+    </privilege>
+        
     <!-- Global Module Properties -->
     <globalProperty>
         <property>${project.parent.artifactId}.ignore.errors</property>
