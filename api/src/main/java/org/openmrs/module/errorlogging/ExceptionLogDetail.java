@@ -169,7 +169,7 @@ public class ExceptionLogDetail extends BaseOpenmrsObject implements Serializabl
 	
 	@Override
 	public String toString() {
-		return "ExceptionLogDetail[ exceptionLogDetailId=" + exceptionLogDetailId + "; className=" + className
-		        + "; methodName=" + methodName + "; lineNumber" + lineNumber + " ]";
+		return "ExceptionLogDetail[ exceptionLogDetailId=" + exceptionLogDetailId + "; fileName=" + fileName
+		        + "; className=" + className + "; methodName=" + methodName + "; lineNumber=" + lineNumber + " ]";
 	}
 }

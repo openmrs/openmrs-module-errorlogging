@@ -69,6 +69,7 @@ public interface ExceptionLogService extends OpenmrsService {
 	 * @param openmrsVersion version of the OpenMRS
 	 * @param fileName file name where the exception occurred
 	 * @param lineNum line number of the file where the exception occurred
+	 * @param frequency number of times when exceptions occurred
 	 * @param startExceptionDateTime date since which exceptions thrown
 	 * @param endExceptionDateTime date to which exceptions thrown
 	 * @param start starting from the "start" record
@@ -78,8 +79,8 @@ public interface ExceptionLogService extends OpenmrsService {
 	@Authorized( { ErrorLoggingConstants.PRIV_VIEW_ERROR_LOGGING })
 	public List<ExceptionLog> getExceptionLogs(String username, String exceptionClass, String exceptionMessage,
 	                                           String openmrsVersion, String fileName, String methodName, Integer lineNum,
-	                                           Date startExceptionDateTime, Date endExceptionDateTime, Integer start,
-	                                           Integer length);
+	                                           Integer frequency, Date startExceptionDateTime, Date endExceptionDateTime,
+	                                           Integer start, Integer length);
 	
 	/**
 	 * Return the number of exception logs by input parameters
@@ -90,6 +91,7 @@ public interface ExceptionLogService extends OpenmrsService {
 	 * @param openmrsVersion version of the OpenMRS
 	 * @param fileName file name where the exception occurred
 	 * @param lineNum line number of the file where the exception occurred
+	 * @param frequency number of times when exceptions occurred
 	 * @param startExceptionDateTime date since which exceptions thrown
 	 * @param endExceptionDateTime date to which exceptions thrown
 	 * @return the number of exception logs matching the search arguments
@@ -97,5 +99,5 @@ public interface ExceptionLogService extends OpenmrsService {
 	@Authorized( { ErrorLoggingConstants.PRIV_VIEW_ERROR_LOGGING })
 	public Integer getCountOfExceptionLogs(String username, String exceptionClass, String exceptionMessage,
 	                                       String openmrsVersion, String fileName, String methodName, Integer lineNum,
-	                                       Date startExceptionDateTime, Date endExceptionDateTime);
+	                                       Integer frequency, Date startExceptionDateTime, Date endExceptionDateTime);
 }

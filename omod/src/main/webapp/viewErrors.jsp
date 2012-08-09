@@ -93,6 +93,14 @@
                     <input type="text" id="exceptionLogLineNum" name="exceptionLogLineNum" style="width: 50px;"/>
                 </div>
             </td>
+            <td>
+                <div>
+                    <spring:message code="errorlogging.querytools.frequency" />:
+                </div>
+                <div>
+                    <input type="text" id="exceptionLogFrequency" name="exceptionLogFrequency" style="width: 50px;"/>
+                </div>
+            </td>
         </tr> 
     </table>       
 </div>
@@ -133,6 +141,7 @@
     var excFileName;
     var excMethodName;
     var excLineNum;
+    var excFrequency;
     var startDateTimeString;
     var endDateTimeString;
         
@@ -154,14 +163,25 @@
             excMethodName = $j('#exceptionLogMethodName').val();
             excLineNum = $j('#exceptionLogLineNum').val();
             startDateTimeString = $j('#exceptionLogStartDateTime').val();
-            endDateTimeString = $j('#exceptionLogEndDateTime').val(); 
+            endDateTimeString = $j('#exceptionLogEndDateTime').val();
+            excFrequency =  $j('#exceptionLogFrequency').val();
             if(excLineNum != null && excLineNum != ''){      
                 var intExcLineNum = parseInt(excLineNum, 10);
                 if(isNaN(intExcLineNum)){
                     alert("<spring:message code="errorlogging.querytools.lineNum.wrongValueMessage" />");
                     return;
                 }
-            }        
+            }
+            if(excFrequency != null && excFrequency != ''){      
+                var intexcFrequency = parseInt(excFrequency, 10);
+                if(isNaN(intexcFrequency)){
+                    alert("<spring:message code="errorlogging.querytools.frequency.wrongValueMessage" />");
+                    return;
+                }
+                if(intexcFrequency < 1){
+                    alert("<spring:message code="errorlogging.querytools.frequency.lessThanOneValueMessage" />");
+                }
+            }   
             if(oTable == undefined){
                 oTable = $j('#exceptionLogTable').dataTable({            
                     "bSort": false,
@@ -195,6 +215,7 @@
                         { "name": "excFileName", "value": excFileName },
                         { "name": "excMethodName", "value": excMethodName },
                         { "name": "excLineNum", "value": excLineNum },
+                        { "name": "excFrequency", "value": excFrequency },
                         { "name": "startDateTimeString", "value": startDateTimeString },
                         { "name": "endDateTimeString", "value": endDateTimeString });
                         $j.ajax( {
@@ -207,21 +228,35 @@
                     },
                     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {                
                         $j('td:eq(0)', nRow).html( '<input type="checkbox" id="tableExceptionLogSelect" class="tableExceptionLogSelect" name="check'+aData[0]+ '" value="'+aData[0]+ '" onclick="selectTableExcLogCheckBox()"/>' );
-                        if(aData[6] == "View"){
-                            $j('td:eq(6)', nRow).html('<img src="${pageContext.request.contextPath}/moduleResources/errorlogging/images/details_open.png" alt="View" name="'+aData[0]+ '" class="detailExLog">' );
+                        if(excFrequency != undefined && excFrequency != null && excFrequency != ''){
+                            oTable.fnSetColumnVis(4, false);
+                            oTable.fnSetColumnVis(5, false);
+                            if(aData[6] == "View"){
+                                $j('td:eq(4)', nRow).html('<img src="${pageContext.request.contextPath}/moduleResources/errorlogging/images/details_open.png" alt="View" name="'+aData[0]+ '" class="detailExLog">' );
+                            }
+                            if(aData[7] == "View"){
+                                $j('td:eq(5)', nRow).html('<img src="${pageContext.request.contextPath}/moduleResources/errorlogging/images/details_open.png" alt="View" name="'+aData[0]+ '" class="rootCause">' );                                
+                            }
+                            $j('td:eq(6)', nRow).html('<input type="button" id="tableExceptionLogReportBtn" value="<spring:message code="errorlogging.exceptionLogTable.report" />"/>');    
+                        }else{
+                            oTable.fnSetColumnVis(4, true);
+                            oTable.fnSetColumnVis(5, true);                        
+                            if(aData[6] == "View"){
+                                $j('td:eq(6)', nRow).html('<img src="${pageContext.request.contextPath}/moduleResources/errorlogging/images/details_open.png" alt="View" name="'+aData[0]+ '" class="detailExLog">' );
+                            }
+                            if(aData[7] == "View"){
+                                $j('td:eq(7)', nRow).html('<img src="${pageContext.request.contextPath}/moduleResources/errorlogging/images/details_open.png" alt="View" name="'+aData[0]+ '" class="rootCause">' );
+                            }
+                            $j('td:eq(8)', nRow).html('<input type="button" id="tableExceptionLogReportBtn" value="<spring:message code="errorlogging.exceptionLogTable.report" />"/>');
+                            $j('.removExcLogButton').html('<input type="button" id="removeExcLogs" value="<spring:message code="errorlogging.tableNavigation.removeSelected" />" style="display:none;" onclick="removeSelectedExcLogs()"/>');                        
                         }
-                        if(aData[7] == "View"){
-                            $j('td:eq(7)', nRow).html('<img src="${pageContext.request.contextPath}/moduleResources/errorlogging/images/details_open.png" alt="View" name="'+aData[0]+ '" class="rootCause">' );
-                        }
-                        $j('td:eq(8)', nRow).html('<input type="button" id="tableExceptionLogReportBtn" value="<spring:message code="errorlogging.exceptionLogTable.report" />"/>');
-                        $j('.removExcLogButton').html('<input type="button" id="removeExcLogs" value="<spring:message code="errorlogging.tableNavigation.removeSelected" />" style="display:none;" onclick="removeSelectedExcLogs()"/>');
                         return nRow;
                     }
                 });
             }else{
-                oTable.fnSettings()._iDisplayStart=0;
-                oTable.fnDraw();           
-            }
+                oTable.fnSettings()._iDisplayStart = 0;                
+                oTable.fnDraw();                 
+            }            
         });                 
           
         $j('#exceptionLogTable tbody td img.detailExLog, #exceptionLogTable tbody td img.rootCause').live( 'click', function () {
@@ -357,7 +392,7 @@
     }
     
     function selectTableExcLogCheckBox(){
-        if($j(".tableExceptionLogSelect").length - 1 == $j(".tableExceptionLogSelect:checked").length) {
+        if($j(".tableExceptionLogSelect").length == $j(".tableExceptionLogSelect:checked").length) {
             $j("#selectAllExcLogs").attr("checked", "checked");               
         } else {
             $j("#selectAllExcLogs").removeAttr("checked");
@@ -366,6 +401,9 @@
     }
     
     function showHideRemoveButton(){
+        if(excFrequency!=undefined && excFrequency!=null && excFrequency!=''){
+            return;
+        }
         if($j("#exceptionLogTable").find("input:checkbox:checked:not('#selectAllExcLogs')").length > 0){
             $j("#removeExcLogs").css("display","block");
         }else{

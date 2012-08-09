@@ -11,11 +11,14 @@
  */
 package org.openmrs.module.errorlogging.api.db.hibernate;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.*;
 import org.openmrs.User;
@@ -73,13 +76,42 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 	}
 	
 	/**
-	 * @see {@link ExceptionLogDAO#getExceptionLogs(String, String, String, String, Integer, Date, Date, Integer, Integer)}
+	 * @see {@link ExceptionLogDAO#getExceptionLogs(String, String, String, String, Integer, Integer, Date, Date, Integer, Integer)}
 	 */
 	@Override
 	public List<ExceptionLog> getExceptionLogs(String username, String exceptionClass, String exceptionMessage,
 	                                           String openmrsVersion, String fileName, String methodName, Integer lineNum,
-	                                           Date startExceptionDateTime, Date endExceptionDateTime, Integer start,
-	                                           Integer length) {
+	                                           Integer frequency, Date startExceptionDateTime, Date endExceptionDateTime,
+	                                           Integer start, Integer length) {
+		if (frequency != null) {
+			Query query = createSearchQuery(frequency);
+			if (start != null && start >= 0) {
+				query.setFirstResult(start);
+			}
+			if (length != null && length >= 0) {
+				query.setMaxResults(length);
+			}
+			List results = query.list();
+			
+			List<ExceptionLog> resultList = new ArrayList<ExceptionLog>();
+			if (!results.isEmpty()) {
+				Iterator resultIterator = results.iterator();
+				int id = 1;
+				while (resultIterator.hasNext()) {
+					Object[] columnsOfRow = (Object[]) resultIterator.next();
+					ExceptionLog excLog = new ExceptionLog((String) columnsOfRow[0], (String) columnsOfRow[1],
+					        (String) columnsOfRow[2]);
+					excLog.setId(-1 * id);
+					ExceptionLogDetail excLogDetail = new ExceptionLogDetail((String) columnsOfRow[3],
+					        (String) columnsOfRow[4], (String) columnsOfRow[5], (Integer) columnsOfRow[6]);
+					excLogDetail.setId(-1 * id);
+					excLog.setExceptionLogDetail(excLogDetail);
+					resultList.add(excLog);
+					id++;
+				}
+			}
+			return resultList;
+		}
 		Criteria criteria = createExceptionLogSearchCriteria(username, exceptionClass, exceptionMessage, openmrsVersion,
 		    fileName, methodName, lineNum, startExceptionDateTime, endExceptionDateTime);
 		criteria.addOrder(Order.desc("dateCreated"));
@@ -93,12 +125,17 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 	}
 	
 	/**
-	 * @see {@link ExceptionLogDAO#getCountOfExceptionLogs(String, String, String, String, String, Integer, Date, Date)}
+	 * @see {@link ExceptionLogDAO#getCountOfExceptionLogs(String, String, String, String, String, Integer, Integer, Date, Date)}
 	 */
 	@Override
 	public Integer getCountOfExceptionLogs(String username, String exceptionClass, String exceptionMessage,
 	                                       String openmrsVersion, String fileName, String methodName, Integer lineNum,
-	                                       Date startExceptionDateTime, Date endExceptionDateTime) {
+	                                       Integer frequency, Date startExceptionDateTime, Date endExceptionDateTime) {
+		if (frequency != null) {
+			Query query = createSearchQuery(frequency);
+			List results = query.list();
+			return new Integer(results.size());
+		}
 		Criteria criteria = createExceptionLogSearchCriteria(username, exceptionClass, exceptionMessage, openmrsVersion,
 		    fileName, methodName, lineNum, startExceptionDateTime, endExceptionDateTime);
 		criteria.setProjection(Projections.rowCount());
@@ -173,5 +210,26 @@ public class HibernateExceptionLogDAO implements ExceptionLogDAO {
 		}
 		criteria.add(junction);
 		return criteria;
+	}
+	
+	private Query createSearchQuery(Integer frequency) {
+		StringBuilder sb = new StringBuilder();
+		sb
+		        .append("SELECT el.exceptionClass, el.exceptionMessage, el.openmrsVersion, eld.fileName, eld.className, eld.methodName, eld.lineNumber FROM ExceptionLog el, ExceptionLogDetail eld "
+		                + "WHERE :frequency <= ( SELECT COUNT( * ) "
+		                + "FROM ExceptionLog elinner, ExceptionLogDetail eldinner "
+		                + "WHERE el.exceptionClass = elinner.exceptionClass "
+		                + "AND el.exceptionMessage = elinner.exceptionMessage "
+		                + "AND el.openmrsVersion = elinner.openmrsVersion "
+		                + "AND eld.fileName = eldinner.fileName "
+		                + "AND eld.className = eldinner.className "
+		                + "AND eld.methodName = eldinner.methodName "
+		                + "AND eld.lineNumber = eldinner.lineNumber "
+		                + "AND el.exceptionLogId = elinner.exceptionLogId "
+		                + "AND el.exceptionLogId = eld.exceptionLogDetailId) "
+		                + "GROUP BY el.exceptionClass , el.exceptionMessage , el.openmrsVersion, eld.fileName, eld.className, eld.methodName, eld.lineNumber");
+		Query query = sessionFactory.getCurrentSession().createQuery(sb.toString());
+		query.setInteger("frequency", frequency);
+		return query;
 	}
 }

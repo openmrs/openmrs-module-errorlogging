@@ -45,7 +45,7 @@ public class ViewErrorLoggingController {
 	}
 	
 	@RequestMapping(value = "/module/errorlogging/viewExceptionLogs.json", method = RequestMethod.POST)
-	public void pageLoad(HttpServletRequest request, HttpServletResponse response) {
+	public void showErrors(HttpServletRequest request, HttpServletResponse response) {
 		JSONObject json = new JSONObject();
 		JSONArray data = new JSONArray();
 		String username = processString(String.valueOf(request.getParameter("username")));
@@ -55,6 +55,7 @@ public class ViewErrorLoggingController {
 		String excFileName = processString(String.valueOf(request.getParameter("excFileName")));
 		String excMethodName = processString(String.valueOf(request.getParameter("excMethodName")));
 		Integer excLineNum = processInteger(request.getParameter("excLineNum"));
+		Integer excFrequency = processInteger(request.getParameter("excFrequency"));
 		Date startDateTime = getDateTime(processString(String.valueOf(request.getParameter("startDateTimeString"))));
 		Date endDateTime = getDateTime(processString(String.valueOf(request.getParameter("endDateTimeString"))));
 		String sEcho = request.getParameter("sEcho");
@@ -63,30 +64,59 @@ public class ViewErrorLoggingController {
 		
 		ExceptionLogService exceptionLogService = Context.getService(ExceptionLogService.class);
 		List<ExceptionLog> exceptionLogs = exceptionLogService.getExceptionLogs(username, excClass, excMessage,
-		    excOpenMRSVersion, excFileName, excMethodName, excLineNum, startDateTime, endDateTime, start, length);
+		    excOpenMRSVersion, excFileName, excMethodName, excLineNum, excFrequency, startDateTime, endDateTime, start,
+		    length);
 		Integer count = exceptionLogService.getCountOfExceptionLogs(username, excClass, excMessage, excOpenMRSVersion,
-		    excFileName, excMethodName, excLineNum, startDateTime, endDateTime);
+		    excFileName, excMethodName, excLineNum, excFrequency, startDateTime, endDateTime);
 		response.setContentType("application/json");
-		for (ExceptionLog exLog : exceptionLogs) {
-			JSONArray excLog = new JSONArray();
-			excLog.put(exLog.getExceptionLogId());
-			excLog.put(exLog.getExceptionClass());
-			excLog.put(exLog.getExceptionMessage());
-			excLog.put(exLog.getOpenmrsVersion());
-			excLog.put(getFormattedExceptionDateTime(exLog.getExceptionDateTime()));
-			excLog.put(exLog.getUser().getUsername());
-			if (exLog.getExceptionLogDetail() != null) {
-				excLog.put("View");
-			} else {
+		if (excFrequency != null) {
+			for (ExceptionLog exLog : exceptionLogs) {
+				JSONArray excLog = new JSONArray();
+				List<ExceptionLog> exceptionLogsFr = exceptionLogService.getExceptionLogs(null, exLog.getExceptionClass(),
+				    exLog.getExceptionMessage(), exLog.getOpenmrsVersion(), exLog.getExceptionLogDetail().getFileName(),
+				    exLog.getExceptionLogDetail().getMethodName(), exLog.getExceptionLogDetail().getLineNumber(), null,
+				    null, null, 0, 1);
+				excLog.put(exceptionLogsFr.get(0).getExceptionLogId());
+				excLog.put(exceptionLogsFr.get(0).getExceptionClass());
+				excLog.put(exceptionLogsFr.get(0).getExceptionMessage());
+				excLog.put(exceptionLogsFr.get(0).getOpenmrsVersion());
 				excLog.put("");
-			}
-			if (exLog.getExceptionRootCause() != null) {
-				excLog.put("View");
-			} else {
 				excLog.put("");
+				if (exceptionLogsFr.get(0).getExceptionLogDetail() != null) {
+					excLog.put("View");
+				} else {
+					excLog.put("");
+				}
+				if (exceptionLogsFr.get(0).getExceptionRootCause() != null) {
+					excLog.put("View");
+				} else {
+					excLog.put("");
+				}
+				excLog.put("Report");
+				data.put(excLog);
 			}
-			excLog.put("Report");
-			data.put(excLog);
+		} else {
+			for (ExceptionLog exLog : exceptionLogs) {
+				JSONArray excLog = new JSONArray();
+				excLog.put(exLog.getExceptionLogId());
+				excLog.put(exLog.getExceptionClass());
+				excLog.put(exLog.getExceptionMessage());
+				excLog.put(exLog.getOpenmrsVersion());
+				excLog.put(getFormattedExceptionDateTime(exLog.getExceptionDateTime()));
+				excLog.put(exLog.getUser().getUsername());
+				if (exLog.getExceptionLogDetail() != null) {
+					excLog.put("View");
+				} else {
+					excLog.put("");
+				}
+				if (exLog.getExceptionRootCause() != null) {
+					excLog.put("View");
+				} else {
+					excLog.put("");
+				}
+				excLog.put("Report");
+				data.put(excLog);
+			}
 		}
 		try {
 			json.put("aaData", data);

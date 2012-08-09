@@ -72,18 +72,19 @@ public class ExceptionLogServiceTest extends BaseModuleContextSensitiveTest {
 	}
 	
 	/**
-	 * @see {@link ExceptionLogService#getExceptionLogs(String, Date, Date, Integer, Integer)}
+	 * @see {@link ExceptionLogService#getExceptionLogs(String, String, String, String, String, String, Integer, Integer, Date, Date, Integer, Integer)}
 	 */
 	@Test
 	public void getExceptionLogs_shouldReturnAllExceptionLogsByInputParameters() {
-		List<ExceptionLog> excLogList = service
-		        .getExceptionLogs(null, null, null, null, null, null, null, null, null, 0, 10);
+		List<ExceptionLog> excLogList = service.getExceptionLogs(null, null, null, null, null, null, null, null, null, null,
+		    0, 10);
 		assertEquals("Should return all exception logs since 0 to 9", excLogList.size(), 10);
 		
-		excLogList = service.getExceptionLogs(null, null, null, null, null, null, null, null, null, 10, 10);
+		excLogList = service.getExceptionLogs(null, null, null, null, null, null, null, null, null, null, 10, 10);
 		assertEquals("Should return all exception logs since 10 to 19", excLogList.size(), 1);
 		
-		excLogList = service.getExceptionLogs(null, "Exception Log Class2", null, null, null, null, null, null, null, 0, 10);
+		excLogList = service.getExceptionLogs(null, "Exception Log Class2", null, null, null, null, null, null, null, null,
+		    0, 10);
 		assertEquals("Should all exeption logs with exceptionClass \"Exception Log Class2\"", excLogList.size(), 3);
 		
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -97,52 +98,56 @@ public class ExceptionLogServiceTest extends BaseModuleContextSensitiveTest {
 			log.error("Cannot parse date", ex);
 		}
 		
-		excLogList = service.getExceptionLogs(null, null, null, null, null, null, null, startDate, null, 0, 10);
+		excLogList = service.getExceptionLogs(null, null, null, null, null, null, null, null, startDate, null, 0, 10);
 		assertEquals("Should return all exception logs since date 2012-15-06 19:10:11", excLogList.size(), 8);
 		
-		excLogList = service.getExceptionLogs(null, null, null, null, null, null, null, startDate, endDate, 0, 10);
+		excLogList = service.getExceptionLogs(null, null, null, null, null, null, null, null, startDate, endDate, 0, 10);
 		assertEquals("Should return all exception logs since 2012-15-06 19:10:11 to 2012-24-06 10:14:29", excLogList.size(),
 		    7);
 		
-		excLogList = service.getExceptionLogs(null, "Exception Log Class3", null, null, null, null, null, startDate, null,
-		    0, 10);
+		excLogList = service.getExceptionLogs(null, "Exception Log Class3", null, null, null, null, null, null, startDate,
+		    null, 0, 10);
 		assertEquals("Should return all exception logs with exceptionClass \"Exception Log Class3\" "
 		        + "and since date 2012-15-06 19:10:11", excLogList.size(), 2);
 		
 		excLogList = service.getExceptionLogs("errorloggingfirstusername", null, null, null, null, null, null, null, null,
-		    0, 10);
+		    null, 0, 10);
 		assertEquals("Should return all exception logs with username \"errorloggingfirstusername\"", excLogList.size(), 3);
 		
 		excLogList = service.getExceptionLogs("errorloggingfirstusername", "Exception Log Class5", null, null, null, null,
-		    null, startDate, endDate, 0, 10);
+		    null, null, startDate, endDate, 0, 10);
 		assertEquals("Should return all exception logs with username \"errorloggingfirstusername\" and exceptionClass "
 		        + "\"Exception Log Class5\" since 2012-15-06 19:10:11 to 2012-24-06 10:14:29", excLogList.size(), 1);
 		
-		excLogList = service
-		        .getExceptionLogs(null, null, "Exception Log Message", null, null, null, null, null, null, 0, 20);
+		excLogList = service.getExceptionLogs(null, null, "Exception Log Message", null, null, null, null, null, null, null,
+		    0, 20);
 		assertEquals("Should return all exception logs that include exceptionMessage \"Exception Log Class\"", excLogList
 		        .size(), 11);
 		
-		excLogList = service.getExceptionLogs(null, null, "Exception Log Message5", null, null, null, null, null, null, 0,
-		    10);
+		excLogList = service.getExceptionLogs(null, null, "Exception Log Message5", null, null, null, null, null, null,
+		    null, 0, 10);
 		assertEquals("Should return all exception logs that include exceptionMessage \"Exception Log Class5\"", excLogList
 		        .size(), 4);
 		
-		excLogList = service.getExceptionLogs(null, null, null, null, "File Name Of Exception2", null, null, null, null, 0,
-		    10);
+		excLogList = service.getExceptionLogs(null, null, null, null, "File Name Of Exception2", null, null, null, null,
+		    null, 0, 10);
 		assertEquals("Should return all exception logs that include fileName \"File Name Of Exception2\"",
-		    excLogList.size(), 2);
+		    excLogList.size(), 3);
 		
 		excLogList = service.getExceptionLogs(null, null, null, null, null, "Method Name Of Exception2", null, null, null,
-		    0, 10);
+		    null, 0, 10);
 		assertEquals("Should return all exception logs that include metrhodName \"Method Name Of Exception2\"", excLogList
-		        .size(), 2);
+		        .size(), 3);
 		
-		excLogList = service.getExceptionLogs(null, null, null, null, null, null, 25, null, null, 0, 10);
-		assertEquals("Should return all exception logs that include lineNumber 25", excLogList.size(), 2);
+		excLogList = service.getExceptionLogs(null, null, null, null, null, null, 25, null, null, null, 0, 10);
+		assertEquals("Should return all exception logs that include lineNumber 25", excLogList.size(), 3);
 		
-		excLogList = service.getExceptionLogs(null, null, null, "1.7.3", null, null, null, null, null, 0, 10);
+		excLogList = service.getExceptionLogs(null, null, null, "1.7.3", null, null, null, null, null, null, 0, 10);
 		assertEquals("Should return all exception logs that include openmrsVersion 1.7.3", excLogList.size(), 4);
+		
+		excLogList = service.getExceptionLogs(null, null, null, null, null, null, null, 3, null, null, 0, 10);
+		assertEquals("Should return all exception logs that occurred more than 3 times", excLogList.size(), 2);
+		
 	}
 	
 	/**
@@ -157,14 +162,15 @@ public class ExceptionLogServiceTest extends BaseModuleContextSensitiveTest {
 	}
 	
 	/**
-	 * @see {@link ExceptionLogService#getCountOfExceptionLogs(String, Date))}
+	 * @see {@link ExceptionLogService#getCountOfExceptionLogs(String, String, String, String, String, String, Integer, Integer, Date, Date)}
 	 */
 	@Test
 	public void getCountOfExceptionLogs_shouldReturnCountOfExceptionLogsByClassAndDateTime() {
-		int count = service.getCountOfExceptionLogs(null, null, null, null, null, null, null, null, null);
+		int count = service.getCountOfExceptionLogs(null, null, null, null, null, null, null, null, null, null);
 		assertEquals("Should return count of all exception logs", 11, count);
 		
-		count = service.getCountOfExceptionLogs(null, "Exception Log Class2", null, null, null, null, null, null, null);
+		count = service
+		        .getCountOfExceptionLogs(null, "Exception Log Class2", null, null, null, null, null, null, null, null);
 		assertEquals("Should return count of all exception logs with with exceptionClass \"Exception Log Class2\"", 3, count);
 		
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -178,19 +184,23 @@ public class ExceptionLogServiceTest extends BaseModuleContextSensitiveTest {
 			log.error("Cannot parse date", ex);
 		}
 		
-		count = service.getCountOfExceptionLogs(null, null, null, null, null, null, null, startDate, null);
+		count = service.getCountOfExceptionLogs(null, null, null, null, null, null, null, null, startDate, null);
 		assertEquals("Should return count of all exception logs since date 2012-16-06 21:11:02", 6, count);
 		
-		count = service.getCountOfExceptionLogs(null, null, null, null, null, null, null, startDate, endDate);
+		count = service.getCountOfExceptionLogs(null, null, null, null, null, null, null, null, startDate, endDate);
 		assertEquals("Should return count of all exception logs since 2012-16-06 21:11:02 to 2012-24-06 10:14:29", 5, count);
 		
-		count = service.getCountOfExceptionLogs(null, "Exception Log Class3", null, null, null, null, null, startDate, null);
+		count = service.getCountOfExceptionLogs(null, "Exception Log Class3", null, null, null, null, null, null, startDate,
+		    null);
 		assertEquals("Should return count of all exception logs with with exceptionClass \"Exception Log Class3\" "
 		        + "and since date 2012-16-06 21:11:02", 1, count);
 		
 		count = service.getCountOfExceptionLogs("errorloggingfirstusername", "Exception Log Class5", null, null, null, null,
-		    null, startDate, endDate);
+		    null, null, startDate, endDate);
 		assertEquals("Should return count of all exception logs with with  with username \"errorloggingfirstusername\" and "
 		        + "exceptionClass \"Exception Log Class5\" since 2012-16-06 21:11:02 to 2012-24-06 10:14:29", 1, count);
+		
+		count = service.getCountOfExceptionLogs(null, null, null, null, null, null, null, 3, null, null);
+		assertEquals("Should return count of all exception logs that occurred more than 3 times", 2, count);
 	}
 }
