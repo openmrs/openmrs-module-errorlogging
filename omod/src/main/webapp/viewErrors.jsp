@@ -54,7 +54,8 @@
                     <spring:message code="errorlogging.querytools.since" />:
                 </div>
                 <div>
-                    <input type="text" id="exceptionLogStartDateTime" name="exceptionLogStartDateTime" onfocus="showDateTimePicker(this)" /> 
+                    <input type="text" id="exceptionLogStartDateTime" name="exceptionLogStartDateTime" onfocus="showDateTimePicker(this)" />
+                    <br/><i style="font-weight: normal; font-size: 0.8em;">(<spring:message code="errorlogging.dateTimeFormat" />)</i>
                 </div>
             </td> 
             <td>
@@ -63,6 +64,7 @@
                 </div>
                 <div>
                     <input type="text" id="exceptionLogEndDateTime" name="exceptionLogEndDateTime" onfocus="showDateTimePicker(this)"/> 
+                    <br/><i style="font-weight: normal; font-size: 0.8em;">(<spring:message code="errorlogging.dateTimeFormat" />)</i>
                 </div>
             </td>
         </tr>
@@ -86,19 +88,19 @@
                 </div>
             </td>
             <td>
-                <div>
+                <div class="title">
                     <spring:message code="errorlogging.querytools.lineNum" />:
                 </div>
                 <div>
-                    <input type="text" id="exceptionLogLineNum" name="exceptionLogLineNum" style="width: 50px;"/>
+                    <input type="text" id="exceptionLogLineNum" name="exceptionLogLineNum"/>
                 </div>
             </td>
             <td>
-                <div>
+                <div class="title">
                     <spring:message code="errorlogging.querytools.frequency" />:
                 </div>
                 <div>
-                    <input type="text" id="exceptionLogFrequency" name="exceptionLogFrequency" style="width: 50px;"/>
+                    <input type="text" id="exceptionLogFrequency" name="exceptionLogFrequency"/>
                 </div>
             </td>
         </tr> 

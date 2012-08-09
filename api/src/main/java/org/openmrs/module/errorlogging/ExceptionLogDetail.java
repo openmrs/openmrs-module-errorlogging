@@ -12,6 +12,7 @@
 package org.openmrs.module.errorlogging;
 
 import java.io.Serializable;
+import java.util.UUID;
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.BaseOpenmrsObject;
 
@@ -38,6 +39,9 @@ public class ExceptionLogDetail extends BaseOpenmrsObject implements Serializabl
 	 * Default constructor without parameters
 	 */
 	public ExceptionLogDetail() {
+		if (getUuid() == null) {
+			setUuid(UUID.randomUUID().toString());
+		}
 	}
 	
 	/**
@@ -52,6 +56,9 @@ public class ExceptionLogDetail extends BaseOpenmrsObject implements Serializabl
 		this.className = className;
 		this.methodName = methodName;
 		this.lineNumber = lineNumber;
+		if (getUuid() == null) {
+			setUuid(UUID.randomUUID().toString());
+		}
 	}
 	
 	@Override
