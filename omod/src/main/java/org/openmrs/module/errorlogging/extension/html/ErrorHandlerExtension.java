@@ -46,7 +46,7 @@ public class ErrorHandlerExtension extends Extension {
 					ExceptionLogService service = Context.getService(ExceptionLogService.class);
 					service.saveExceptionLog(excLog);
 				}
-				return createReportBtn(exception, request);
+				//return createReportBtn(exception, request);
 			}
 		}
 		return "";
