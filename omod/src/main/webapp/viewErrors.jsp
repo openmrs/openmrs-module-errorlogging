@@ -239,7 +239,7 @@
                             if(aData[7] == "View"){
                                 $j('td:eq(5)', nRow).html('<img src="${pageContext.request.contextPath}/moduleResources/errorlogging/images/details_open.png" alt="View" name="'+aData[0]+ '" class="rootCause">' );                                
                             }
-                            $j('td:eq(6)', nRow).html('<input type="button" id="tableExceptionLogReportBtn" value="<spring:message code="errorlogging.exceptionLogTable.report" />"/>');    
+                            $j('td:eq(6)', nRow).html('<input type="button" id="tableExceptionLogReportBtn" value="<spring:message code="errorlogging.exceptionLogTable.report" />" onclick="sendReport(this)"/>');    
                         }else{
                             oTable.fnSetColumnVis(4, true);
                             oTable.fnSetColumnVis(5, true);                        
@@ -249,7 +249,7 @@
                             if(aData[7] == "View"){
                                 $j('td:eq(7)', nRow).html('<img src="${pageContext.request.contextPath}/moduleResources/errorlogging/images/details_open.png" alt="View" name="'+aData[0]+ '" class="rootCause">' );
                             }
-                            $j('td:eq(8)', nRow).html('<input type="button" id="tableExceptionLogReportBtn" value="<spring:message code="errorlogging.exceptionLogTable.report" />"/>');
+                            $j('td:eq(8)', nRow).html('<input type="button" id="tableExceptionLogReportBtn" value="<spring:message code="errorlogging.exceptionLogTable.report" />" onclick="sendReport(this)"/>');
                             $j('.removExcLogButton').html('<input type="button" id="removeExcLogs" value="<spring:message code="errorlogging.tableNavigation.removeSelected" />" style="display:none;" onclick="removeSelectedExcLogs()"/>');                        
                         }
                         return nRow;
@@ -316,18 +316,31 @@
                 });                       
             }
         });
-        
-        $j(function(){
-            // add multiple select / deselect functionality
-            $j("#selectAllExcLogs").click(function () {
-                $j('.tableExceptionLogSelect').attr('checked', this.checked);
-                showHideRemoveButton();
-            });        
-        });
-    
+               
+        // add multiple select / deselect functionality
+        $j("#selectAllExcLogs").click(function () {
+            $j('.tableExceptionLogSelect').attr('checked', this.checked);
+            showHideRemoveButton();
+        });        
+                    
         $j('#showExceptionLogs').click();        
     });  
            
+    function sendReport(obj){
+        var reportBugUrl = "<%=org.openmrs.api.context.Context.getAdministrationService().getGlobalProperty(org.openmrs.util.OpenmrsConstants.GLOBAL_PROPERTY_REPORT_BUG_URL)%>";
+        var nTr = obj.parentNode.parentNode;
+        var data = oTable.fnGetData( nTr );
+        var openmrsVersion =  data[3];
+        var username =  data[5];
+        var errorMessage =  data[1] + " "+ data[2];
+        var sForm = '<form action="'+reportBugUrl+'" target="_blank" method="POST">'
+            + '<input type="hidden" name="openmrs_version" value="'+openmrsVersion+'" />'
+            + '<input type="hidden" name="username" value="'+username+'" />'          
+            + '<input type="hidden" name="errorMessage" value="'+errorMessage+'" />';       
+            +'<br/><input type=\"submit\" value=\"Report Problem\"></form>";'                        
+        $j(sForm).submit();                   
+    } 
+     
     function fnFormatDetails ( excLogDetail, logDetailOrRootCause ){
         var sOut = '<table cellpadding="0" cellspacing="0" border="0" style="padding-left:50px;">';
         if(logDetailOrRootCause == "detailExLog"){
