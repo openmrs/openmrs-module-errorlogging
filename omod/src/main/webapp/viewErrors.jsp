@@ -252,6 +252,7 @@
                             $j('td:eq(8)', nRow).html('<input type="button" id="tableExceptionLogReportBtn" value="<spring:message code="errorlogging.exceptionLogTable.report" />" onclick="sendReport(this)"/>');
                             $j('.removExcLogButton').html('<input type="button" id="removeExcLogs" value="<spring:message code="errorlogging.tableNavigation.removeSelected" />" style="display:none;" onclick="removeSelectedExcLogs()"/>');                        
                         }
+                        //Hidden Repor button until the final design
                         oTable.fnSetColumnVis(8, false);
                         return nRow;
                     }

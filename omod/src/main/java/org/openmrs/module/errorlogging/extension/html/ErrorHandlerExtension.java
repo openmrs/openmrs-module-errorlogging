@@ -37,16 +37,19 @@ public class ErrorHandlerExtension extends Extension {
 	
 	@Override
 	public String getOverrideContent(String bodyContent) {
-		HttpServletRequest request = ExceptionLogRequestFilter.getRequest();
-		if (request != null) {
-			Exception exception = (Exception) request.getAttribute("javax.servlet.error.exception");
-			if (exception != null && !ExceptionLogUtil.isIgnoredException(exception)) {
-				ExceptionLog excLog = ExceptionLogUtil.parseException(exception);
-				if (excLog != null) {
-					ExceptionLogService service = Context.getService(ExceptionLogService.class);
-					service.saveExceptionLog(excLog);
+		if (Context.getAuthenticatedUser() != null) {
+			HttpServletRequest request = ExceptionLogRequestFilter.getRequest();
+			if (request != null) {
+				Exception exception = (Exception) request.getAttribute("javax.servlet.error.exception");
+				if (exception != null && !ExceptionLogUtil.isIgnoredException(exception)) {
+					ExceptionLog excLog = ExceptionLogUtil.parseException(exception);
+					if (excLog != null) {
+						ExceptionLogService service = Context.getService(ExceptionLogService.class);
+						service.saveExceptionLog(excLog);
+					}
+					//Hidden Repor button until the final design
+					//return createReportBtn(exception, request);
 				}
-				//return createReportBtn(exception, request);
 			}
 		}
 		return "";
