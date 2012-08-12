@@ -69,15 +69,18 @@ public class ManageErrorLoggingController {
 	 * @return true in the case of a successful saving, otherwise - false
 	 */
 	private boolean saveIgnoredExceprions(String errors) {
+		if (errors == null) {
+			return false;
+		}
 		GlobalProperty glProp = Context.getAdministrationService().getGlobalPropertyObject(
 		    ErrorLoggingConstants.ERRROR_LOGGING_GP_IGNORED_EXCEPTION);
 		if (glProp != null) {
 			glProp.setPropertyValue(errors);
 			GlobalProperty saved = Context.getAdministrationService().saveGlobalProperty(glProp);
-			if (saved != null && saved.getPropertyValue() != null && saved.getPropertyValue().equals(errors)) {
+			if (saved != null) {
 				return true;
 			}
-		}
+		}		
 		return false;
 	}
 	

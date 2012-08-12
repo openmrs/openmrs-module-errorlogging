@@ -208,7 +208,18 @@
                         "sLengthMenu": "<spring:message code="errorlogging.exceptionLogTable.sLengthMenu" />",
                         "sProcessing": "<spring:message code="errorlogging.exceptionLogTable.sProcessing" />",
                         "sZeroRecords": "<spring:message code="errorlogging.exceptionLogTable.sZeroRecords" />"
-                    },             
+                    },
+                    "aoColumns": [
+                        {"sWidth": "1%"},
+                        {"sWidth": "25%" },
+                        {"sWidth": "45%"},
+                        {"sWidth": "10%"},
+                        {"sWidth": "7%"},
+                        {"sWidth": "7%"},
+                        {"sWidth": "2%"},
+                        {"sWidth": "2%"},
+                        {},
+                    ],
                     "fnServerData": function ( sSource, aoData, fnCallback ) {
                         aoData.push( { "name": "username", "value": username },
                         { "name": "excClass", "value": excClass },
