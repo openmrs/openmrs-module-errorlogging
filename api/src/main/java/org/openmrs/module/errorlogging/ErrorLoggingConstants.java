@@ -21,4 +21,8 @@ public class ErrorLoggingConstants {
 	public static final String PRIV_MANAGE_ERROR_LOGGING = "Manage Error Logging";
 	
 	public static final String PRIV_VIEW_ERROR_LOGGING = "View Error Logging";
+	
+	public static final String JSP_LINE_FILE_PATTERN = "(?i).*An error occurred at line:\\s(\\d+)\\sin the jsp file:\\s(/.+\\.jsp)\\s.*";
+	
+	public static final String JSP_FILE_LINE_PATTERN = "(?i)(/.+\\.jsp)\\s\\(line:\\s(\\d+),\\scolumn:\\s\\d+\\).*";
 }

@@ -360,8 +360,12 @@
             sOut+='<thead><tr><th colspan="2"><spring:message code="errorlogging.exceptionLogDetailTable.title" /></th></tr></thead>'
             if(excLogDetail != null){    
                 sOut += '<tr><td><spring:message code="errorlogging.detailTables.file" />:</td><td>'+htmlEscape(excLogDetail.fileName)+'</td></tr>';
-                sOut += '<tr><td><spring:message code="errorlogging.detailTables.class" />:</td><td>'+htmlEscape(excLogDetail.className)+'</td></tr>';
-                sOut += '<tr><td><spring:message code="errorlogging.detailTables.method" />:</td><td>'+htmlEscape(excLogDetail.methodName)+'</td></tr>';
+                if(excLogDetail.className != null && excLogDetail.className != ''){
+                    sOut += '<tr><td><spring:message code="errorlogging.detailTables.class" />:</td><td>'+htmlEscape(excLogDetail.className)+'</td></tr>';
+                }
+                if(excLogDetail.methodName != null && excLogDetail.methodName != ''){
+                    sOut += '<tr><td><spring:message code="errorlogging.detailTables.method" />:</td><td>'+htmlEscape(excLogDetail.methodName)+'</td></tr>';
+                }
                 sOut += '<tr><td><spring:message code="errorlogging.detailTables.lineNumber" />:</td><td>'+htmlEscape(excLogDetail.lineNumber)+'</td></tr>';               
             }
         }else{                                   
