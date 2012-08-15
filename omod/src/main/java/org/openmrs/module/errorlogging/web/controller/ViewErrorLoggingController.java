@@ -78,7 +78,7 @@ public class ViewErrorLoggingController {
 				    null, null, 0, 1);
 				excLog.put(exceptionLogsFr.get(0).getExceptionLogId());
 				excLog.put(exceptionLogsFr.get(0).getExceptionClass());
-				excLog.put(exceptionLogsFr.get(0).getExceptionMessage());
+				excLog.put(processNullString(exceptionLogsFr.get(0).getExceptionMessage()));
 				excLog.put(exceptionLogsFr.get(0).getOpenmrsVersion());
 				excLog.put("");
 				excLog.put("");
@@ -100,7 +100,7 @@ public class ViewErrorLoggingController {
 				JSONArray excLog = new JSONArray();
 				excLog.put(exLog.getExceptionLogId());
 				excLog.put(exLog.getExceptionClass());
-				excLog.put(exLog.getExceptionMessage());
+				excLog.put(processNullString(exLog.getExceptionMessage()));
 				excLog.put(exLog.getOpenmrsVersion());
 				excLog.put(getFormattedExceptionDateTime(exLog.getExceptionDateTime()));
 				excLog.put(exLog.getUser().getUsername());
@@ -220,5 +220,12 @@ public class ViewErrorLoggingController {
 			resultInt = Integer.valueOf(strInt.trim());
 		}
 		return resultInt;
+	}
+	
+	private String processNullString(String str) {
+		if (str == null) {
+			return "";
+		}
+		return str;
 	}
 }
