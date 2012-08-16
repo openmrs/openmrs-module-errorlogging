@@ -38,35 +38,12 @@ public class ExceptionLogUtil {
 		}
 		ExceptionLog excLog = new ExceptionLog(exception.getClass().getName(), exception.getMessage(),
 		        OpenmrsConstants.OPENMRS_VERSION_SHORT);
+		boolean isJspException = false;
 		if (exception.getClass().getName().equals("javax.servlet.jsp.JspException")
 		        || exception.getClass().getName().equals("org.apache.jasper.JasperException")) {
-			Pattern pattern = Pattern.compile(ErrorLoggingConstants.JSP_LINE_FILE_PATTERN);
-			Matcher matcher = pattern.matcher(exception.getMessage());
-			String line = null;
-			String jsp = null;
-			if (matcher.find()) {
-				line = matcher.group(1);
-				jsp = matcher.group(2);
-				
-			}
-			if (line != null && jsp != null) {
-				Integer lineNum = Integer.valueOf(line);
-				ExceptionLogDetail excLogDetail = new ExceptionLogDetail(jsp, "", "", lineNum);
-				excLog.setExceptionLogDetail(excLogDetail);
-			} else {
-				pattern = Pattern.compile(ErrorLoggingConstants.JSP_FILE_LINE_PATTERN);
-				matcher = pattern.matcher(exception.getMessage());
-				if (matcher.find()) {
-					jsp = matcher.group(1);
-					line = matcher.group(2);
-					if (line != null && jsp != null) {
-						Integer lineNum = Integer.valueOf(line);
-						ExceptionLogDetail excLogDetail = new ExceptionLogDetail(jsp, "", "", lineNum);
-						excLog.setExceptionLogDetail(excLogDetail);
-					}
-				}
-			}
-		} else {
+			isJspException = parseJspExceptionMessage(excLog, exception.getMessage());			
+		}
+		if (!isJspException) {
 			StackTraceElement[] stTrElements = exception.getStackTrace();
 			if (stTrElements != null && stTrElements.length > 0) {
 				ExceptionLogDetail excLogDetail = new ExceptionLogDetail(stTrElements[0].getFileName(), stTrElements[0]
@@ -118,6 +95,46 @@ public class ExceptionLogUtil {
 			return ieString.split(",");
 		}
 		return null;
+	}
+	
+	/**
+	 * Try to get filename and line number of jsp exception. 
+	 * If filename and line number cannot be got return false, otherwise true
+	 * 
+	 * @param excLog exception log
+	 * @param message exception message for parsing
+	 * @return true if message matches patterns, otherwise false
+	 */
+	private static boolean parseJspExceptionMessage(ExceptionLog excLog, String message) {
+		Pattern pattern = Pattern.compile(ErrorLoggingConstants.JSP_LINE_FILE_PATTERN);
+		Matcher matcher = pattern.matcher(message);
+		String line = null;
+		String jsp = null;
+		if (matcher.find()) {
+			line = matcher.group(1);
+			jsp = matcher.group(2);
+			
+		}
+		if (line != null && jsp != null) {
+			Integer lineNum = Integer.valueOf(line);
+			ExceptionLogDetail excLogDetail = new ExceptionLogDetail(jsp, "", "", lineNum);
+			excLog.setExceptionLogDetail(excLogDetail);
+			return true;
+		} else {
+			pattern = Pattern.compile(ErrorLoggingConstants.JSP_FILE_LINE_PATTERN);
+			matcher = pattern.matcher(message);
+			if (matcher.find()) {
+				jsp = matcher.group(1);
+				line = matcher.group(2);
+				if (line != null && jsp != null) {
+					Integer lineNum = Integer.valueOf(line);
+					ExceptionLogDetail excLogDetail = new ExceptionLogDetail(jsp, "", "", lineNum);
+					excLog.setExceptionLogDetail(excLogDetail);
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	/**
