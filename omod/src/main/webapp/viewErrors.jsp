@@ -182,6 +182,7 @@
                 }
                 if(intexcFrequency < 1){
                     alert("<spring:message code="errorlogging.querytools.frequency.lessThanOneValueMessage" />");
+                    return;
                 }
             }   
             if(oTable == undefined){
@@ -309,8 +310,7 @@
             var nTr = this.parentNode.parentNode;
             var td = nTr.parentNode.parentNode.parentNode;
             var position = $j(this).position();
-            if ( this.src.match('details_close') )
-            {
+            if (this.src.match('details_close')){
                 /* This row is already open - close it */
                 this.src = "${pageContext.request.contextPath}/moduleResources/errorlogging/images/details_open.png";
                 $j("#rootCauseDetail" + this.name).remove();
