@@ -22,9 +22,9 @@
     </organization>
 
     <scm>
-        <connection>scm:git:https://github.com/openmrs/openmrs-module-yourmoduleid/</connection>
-        <developerConnection>scm:git:https://github.com/openmrs/openmrs-module-yourmoduleid/</developerConnection>
-        <url>https://github.com/openmrs/openmrs-module-yourmoduleid/</url>
+        <connection>scm:git:https://github.com/openmrs/openmrs-module-errorlogging/</connection>
+        <developerConnection>scm:git:https://github.com/openmrs/openmrs-module-errorlogging/</developerConnection>
+        <url>https://github.com/openmrs/openmrs-module-errorlogging/</url>
     </scm>
 
     <modules>
