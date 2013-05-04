@@ -22,9 +22,9 @@
     </organization>
 
     <scm>
-        <connection>scm:svn:https://svn.openmrs.org/openmrs-modules/errorlogging/trunk/</connection>
-        <developerConnection>scm:svn:https://svn.openmrs.org/openmrs-modules/errorlogging/trunk/</developerConnection>
-        <url>https://svn.openmrs.org/openmrs-modules/errorlogging/trunk/</url>
+        <connection>scm:git:https://github.com/openmrs/openmrs-module-yourmoduleid/</connection>
+        <developerConnection>scm:git:https://github.com/openmrs/openmrs-module-yourmoduleid/</developerConnection>
+        <url>https://github.com/openmrs/openmrs-module-yourmoduleid/</url>
     </scm>
 
     <modules>
@@ -40,20 +40,20 @@
     <dependencyManagement>
         <dependencies>
 		
-			<!--
-			Libraries to add as dependencies with compile or runtime scope:
-			Find matching dependencies in the maven central repository.
-			<dependency>
-				<groupId>org.other.library</groupId>
-				<artifactId>library-name</artifactId>
-				<version>library.version</version>
-				<scope>compile</scope>
-			</dependency>
-			-->
+            <!--
+            Libraries to add as dependencies with compile or runtime scope:
+            Find matching dependencies in the maven central repository.
+            <dependency>
+                    <groupId>org.other.library</groupId>
+                    <artifactId>library-name</artifactId>
+                    <version>library.version</version>
+                    <scope>compile</scope>
+            </dependency>
+            -->
 			
 			
 
-			<!-- Begin OpenMRS core -->
+            <!-- Begin OpenMRS core -->
 			
             <dependency>
                 <groupId>org.openmrs.api</groupId>
@@ -79,7 +79,7 @@
                 <scope>test</scope>
             </dependency>
 						
-			<!-- End OpenMRS core -->
+            <!-- End OpenMRS core -->
 
         </dependencies>
     </dependencyManagement>
